@@ -3,16 +3,16 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 const CheckIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00FFB3"
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-    style={{ flexShrink: 0, marginTop: '2px' }}>
+    style={{ flexShrink: 0, marginTop: '2px', color: 'var(--highlight-text)' }}>
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 
 const XIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)"
-    strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: '2px' }}>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: '2px', color: 'var(--text-disabled)' }}>
     <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
   </svg>
 );
@@ -179,7 +179,7 @@ function PackageCard({ pkg, billing }) {
       ? '0 0 50px rgba(108,99,255,0.25)'
       : isVip
       ? '0 0 30px rgba(255,215,0,0.15)'
-      : 'none',
+      : 'var(--card-shadow)',
     ...(isVip && {
       background: 'linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(135deg, #FFD700, #FF8E53) border-box',
     }),
@@ -321,7 +321,7 @@ export default function Pakete() {
           style={{ marginBottom: '3rem', textAlign: 'center' }}
         >
           <p style={{
-            fontFamily: 'ui-monospace, monospace', color: '#6C63FF',
+            fontFamily: 'ui-monospace, monospace', color: 'var(--accent-text)',
             fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600,
           }}>
             04 · Pakete
@@ -340,7 +340,7 @@ export default function Pakete() {
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '19px', margin: '0 auto 3rem', maxWidth: '540px', lineHeight: 1.6 }}>
             Jedes Paket beinhaltet eine persönliche{' '}
-            <span style={{ color: '#6C63FF', fontWeight: 600 }}>1:1 Beratung per WhatsApp</span>.
+            <span style={{ color: 'var(--accent-text)', fontWeight: 600 }}>1:1 Beratung per WhatsApp</span>.
           </p>
 
           {/* Billing toggle */}

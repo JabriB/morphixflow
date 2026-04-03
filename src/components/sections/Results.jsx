@@ -37,7 +37,7 @@ function StatCard({ stat, inView }) {
         borderRadius: '20px', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
         padding: '2.25rem', textAlign: 'center',
         transition: 'all 0.3s ease',
-        boxShadow: '0 0 0 1px rgba(108,99,255,0.05)',
+        boxShadow: 'var(--card-shadow)',
       }}>
       <div style={{
         fontSize: '52px', fontWeight: 700, lineHeight: 1, marginBottom: '0.75rem',
@@ -112,7 +112,7 @@ export default function Results() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           style={{ marginBottom: '4rem' }}>
-          <p style={{ fontFamily: 'ui-monospace, monospace', color: '#6C63FF', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <p style={{ fontFamily: 'ui-monospace, monospace', color: 'var(--accent-text)', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
             05 · Ergebnisse
           </p>
           <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, margin: '0 0 1rem', lineHeight: 1.1 }}>

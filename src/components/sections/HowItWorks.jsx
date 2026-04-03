@@ -70,7 +70,7 @@ function StepCard({ step }) {
         position: 'relative', background: 'var(--bg-card)', border: '1px solid var(--border)',
         borderRadius: '20px', padding: '2rem', textAlign: 'center', overflow: 'hidden',
         backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.3s ease', boxShadow: 'var(--card-shadow)',
       }}>
       {/* Ghost number background */}
       <div aria-hidden="true" style={{
@@ -96,7 +96,7 @@ function StepCard({ step }) {
         {step.icon}
       </div>
       <div style={{
-        fontFamily: 'ui-monospace, monospace', fontSize: '13px', color: '#6C63FF',
+        fontFamily: 'ui-monospace, monospace', fontSize: '13px', color: 'var(--accent-text)',
         letterSpacing: '0.15em', marginBottom: '0.75rem', position: 'relative', zIndex: 1,
         fontWeight: 700,
       }}>
@@ -136,7 +136,7 @@ export default function HowItWorks() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           style={{ marginBottom: '4rem', textAlign: 'center' }}>
-          <p style={{ fontFamily: 'ui-monospace, monospace', color: '#6C63FF', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <p style={{ fontFamily: 'ui-monospace, monospace', color: 'var(--accent-text)', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
             03 · Prozess
           </p>
           <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, margin: '0 0 1.5rem', lineHeight: 1.1 }}>

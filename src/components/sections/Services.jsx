@@ -99,7 +99,7 @@ function ServiceCard({ card }) {
         background: 'var(--bg-card)', border: '1px solid var(--border)',
         borderRadius: '20px', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
         padding: '2.25rem', cursor: 'default', position: 'relative', overflow: 'hidden',
-        transition: 'all 0.3s ease',
+        transition: 'all 0.3s ease', boxShadow: 'var(--card-shadow)',
       }}>
       {/* Corner glow */}
       <div aria-hidden="true" style={{
@@ -158,7 +158,7 @@ export default function Services() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           style={{ marginBottom: '4rem', textAlign: 'center' }}>
-          <p style={{ fontFamily: 'ui-monospace, monospace', color: '#6C63FF', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <p style={{ fontFamily: 'ui-monospace, monospace', color: 'var(--accent-text)', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
             02 · Leistungen
           </p>
           <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, margin: '0 0 1.5rem', lineHeight: 1.1 }}>

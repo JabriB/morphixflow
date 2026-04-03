@@ -74,7 +74,7 @@ export default function Contact() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <p style={{ fontFamily: 'ui-monospace, monospace', color: '#6C63FF', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <p style={{ fontFamily: 'ui-monospace, monospace', color: 'var(--accent-text)', fontSize: '12px', letterSpacing: '0.15em', margin: '0 0 1rem', textTransform: 'uppercase', fontWeight: 600 }}>
             06 · Kontakt
           </p>
           <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, margin: '0 0 1.5rem', lineHeight: 1.1 }}>
@@ -229,7 +229,7 @@ export default function Contact() {
               borderRadius: '9999px', padding: '8px 18px', color: 'var(--text-muted)', fontSize: '14px',
               backdropFilter: 'blur(10px)',
             }}>
-              <span style={{ color: '#6C63FF', display: 'flex' }}>{detail.icon}</span>
+              <span style={{ color: 'var(--accent-text)', display: 'flex' }}>{detail.icon}</span>
               {detail.label}
             </div>
           ))}
