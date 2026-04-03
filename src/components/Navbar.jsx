@@ -11,7 +11,8 @@ const navLinks = [
 ];
 
 const SunIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="5"/>
     <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
     <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
@@ -21,16 +22,17 @@ const SunIcon = () => (
 );
 
 const MoonIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>
 );
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive]     = useState('#home');
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled]  = useState(false);
+  const [active, setActive]      = useState('#home');
+  const [menuOpen, setMenuOpen]  = useState(false);
   const isDark = theme === 'dark';
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow   = menuOpen ? 'hidden' : '';
+    document.body.style.overflow    = menuOpen ? 'hidden' : '';
     document.body.style.touchAction = menuOpen ? 'none' : '';
     return () => { document.body.style.overflow = ''; document.body.style.touchAction = ''; };
   }, [menuOpen]);
@@ -49,7 +51,7 @@ export default function Navbar() {
     const sections = navLinks.map((l) => document.querySelector(l.href));
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive('#' + e.target.id); }),
-      { threshold: 0.4 }
+      { threshold: 0.35 }
     );
     sections.forEach((s) => s && observer.observe(s));
     return () => observer.disconnect();
@@ -61,52 +63,65 @@ export default function Navbar() {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const lineColor = isDark ? 'rgba(255,255,255,0.85)' : 'rgba(10,10,15,0.8)';
-  const textColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(10,10,15,0.65)';
+  const lineColor = isDark ? 'rgba(239,246,248,0.8)' : 'rgba(13,21,32,0.75)';
+  const textColor = isDark ? 'rgba(239,246,248,0.65)' : 'rgba(13,21,32,0.6)';
 
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        className="fixed top-0 left-0 right-0 z-50"
         style={{
-          backdropFilter: scrolled ? 'blur(20px)' : 'blur(0px)',
-          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'blur(0px)',
+          backdropFilter: scrolled ? 'blur(18px) saturate(1.5)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(18px) saturate(1.5)' : 'none',
           background: scrolled ? 'var(--nav-bg)' : 'transparent',
           borderBottom: scrolled ? '1px solid var(--nav-border)' : 'none',
+          transition: 'all 0.3s ease',
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1.5rem', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
           {/* Logo */}
           <a href="#home" onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}
-            className="text-xl font-semibold tracking-tight"
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              background: 'linear-gradient(135deg, #6C63FF, #00D4FF)',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: '20px', fontWeight: 800, letterSpacing: '-0.02em',
+              textDecoration: 'none',
+              background: 'linear-gradient(135deg, #0D9488, #14B8A6)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              filter: 'drop-shadow(0 0 8px rgba(108,99,255,0.4))',
-            }}
-          >
+              filter: 'drop-shadow(0 0 6px rgba(13,148,136,0.35))',
+            }}>
             MorphixFlow
           </a>
 
           {/* Desktop nav */}
-          <ul className="hidden lg:flex items-center gap-8">
+          <ul style={{ display: 'flex', alignItems: 'center', gap: '2.5rem', listStyle: 'none', padding: 0, margin: 0 }}
+            className="hidden lg:flex">
             {navLinks.map((link) => (
               <li key={link.num}>
-                <a href={link.href} onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
-                  className="flex flex-col items-center group cursor-pointer relative">
-                  <span className="text-xs leading-none mb-0.5"
-                    style={{ fontFamily: 'ui-monospace, monospace', color: '#6C63FF', letterSpacing: '0.06em', opacity: 0.7 }}>
+                <a href={link.href}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
+                  style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', position: 'relative' }}>
+                  <span style={{
+                    fontFamily: 'ui-monospace, monospace', fontSize: '10px', fontWeight: 700,
+                    letterSpacing: '0.1em', color: 'var(--accent-text)', opacity: 0.6,
+                    lineHeight: 1, marginBottom: '2px',
+                  }}>
                     {link.num}
                   </span>
-                  <span className="text-sm font-medium transition-all duration-200"
-                    style={{ color: active === link.href ? '#6C63FF' : textColor }}>
+                  <span style={{
+                    fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em',
+                    color: active === link.href ? 'var(--accent-primary)' : textColor,
+                    transition: 'color 0.2s',
+                  }}>
                     {link.label}
                   </span>
                   {active === link.href && (
                     <motion.span layoutId="nav-underline"
-                      className="absolute -bottom-1 left-0 right-0 h-px"
-                      style={{ background: 'linear-gradient(90deg, #6C63FF, #00D4FF)' }}
+                      style={{
+                        position: 'absolute', bottom: '-4px', left: 0, right: 0, height: '2px',
+                        background: 'linear-gradient(90deg, #0D9488, #14B8A6)',
+                        borderRadius: '9999px',
+                      }}
                     />
                   )}
                 </a>
@@ -114,46 +129,46 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Right side: theme toggle + CTA + hamburger */}
-          <div className="flex items-center gap-3">
+          {/* Right side */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
+            <button onClick={toggleTheme} aria-label="Toggle theme"
               style={{
-                width: '38px', height: '38px', borderRadius: '50%',
-                border: '1px solid var(--border)',
-                background: 'var(--bg-card)', color: '#6C63FF',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', transition: 'all 0.2s',
-                backdropFilter: 'blur(10px)', flexShrink: 0,
+                width: '36px', height: '36px', borderRadius: '10px',
+                border: '1px solid var(--border)', background: 'var(--bg-card)',
+                color: 'var(--accent-primary)', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', cursor: 'pointer',
+                backdropFilter: 'blur(10px)', transition: 'all 0.2s', flexShrink: 0,
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; e.currentTarget.style.boxShadow = '0 0 14px rgba(108,99,255,0.3)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
-            >
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--border-teal)'; e.currentTarget.style.boxShadow = '0 0 12px rgba(13,148,136,0.2)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}>
               {isDark ? <SunIcon /> : <MoonIcon />}
             </button>
 
-            <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}
-              className="hidden sm:inline-flex items-center px-5 py-2 rounded-full text-sm font-semibold text-white transition-all duration-200"
+            {/* CTA */}
+            <a href="#contact"
+              onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}
+              className="hidden sm:inline-flex items-center"
               style={{
-                background: 'linear-gradient(135deg, #6C63FF, #00D4FF)',
-                boxShadow: '0 0 18px rgba(108,99,255,0.35)',
+                padding: '9px 20px', borderRadius: '10px',
+                background: 'linear-gradient(135deg, #0F766E, #0D9488)',
+                color: '#fff', fontSize: '13px', fontWeight: 700,
+                textDecoration: 'none', letterSpacing: '0.02em',
+                boxShadow: '0 0 18px rgba(13,148,136,0.3)',
+                transition: 'all 0.25s ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 30px rgba(108,99,255,0.6)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 18px rgba(108,99,255,0.35)'; e.currentTarget.style.transform = 'none'; }}>
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 30px rgba(13,148,136,0.5)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 18px rgba(13,148,136,0.3)'; e.currentTarget.style.transform = 'none'; }}>
               Kostenlos beraten
             </a>
 
             {/* Hamburger */}
             <button className="lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer"
-              onClick={() => setMenuOpen((o) => !o)} aria-label="Toggle menu">
-              <span className="block h-0.5 w-6 transition-all duration-300"
-                style={{ background: lineColor, transform: menuOpen ? 'rotate(45deg) translateY(8px)' : 'none' }} />
-              <span className="block h-0.5 w-6 transition-all duration-300"
-                style={{ background: lineColor, opacity: menuOpen ? 0 : 1 }} />
-              <span className="block h-0.5 w-6 transition-all duration-300"
-                style={{ background: lineColor, transform: menuOpen ? 'rotate(-45deg) translateY(-8px)' : 'none' }} />
+              onClick={() => setMenuOpen((o) => !o)} aria-label="Toggle menu"
+              style={{ background: 'none', border: 'none' }}>
+              <span style={{ display: 'block', height: '2px', width: '22px', background: lineColor, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none', borderRadius: '2px' }} />
+              <span style={{ display: 'block', height: '2px', width: '22px', background: lineColor, transition: 'all 0.3s', opacity: menuOpen ? 0 : 1, borderRadius: '2px' }} />
+              <span style={{ display: 'block', height: '2px', width: '22px', background: lineColor, transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none', borderRadius: '2px' }} />
             </button>
           </div>
         </div>
@@ -164,40 +179,31 @@ export default function Navbar() {
         {menuOpen && (
           <motion.div key="mobile-menu"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center"
-            style={{ background: 'var(--mobile-bg)', backdropFilter: 'blur(20px)' }}>
-            {/* Background orb */}
-            <div style={{
-              position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)',
-              width: '400px', height: '400px', borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(108,99,255,0.15) 0%, transparent 70%)',
-              filter: 'blur(60px)', pointerEvents: 'none',
-            }} />
-            <ul className="flex flex-col items-center gap-8" style={{ position: 'relative', zIndex: 1 }}>
+            transition={{ duration: 0.2 }}
+            style={{ position: 'fixed', inset: 0, zIndex: 40, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--mobile-bg)', backdropFilter: 'blur(20px)' }}>
+            <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(13,148,136,0.1) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 1 }}>
               {navLinks.map((link, i) => (
-                <motion.li key={link.num} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}>
-                  <a href={link.href} onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
-                    className="flex flex-col items-center gap-1 cursor-pointer">
-                    <span className="text-xs" style={{ fontFamily: 'ui-monospace, monospace', color: '#6C63FF' }}>
+                <motion.li key={link.num}
+                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07 }}>
+                  <a href={link.href}
+                    onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', textDecoration: 'none', cursor: 'pointer' }}>
+                    <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '11px', color: 'var(--accent-text)', fontWeight: 700 }}>
                       {link.num}
                     </span>
-                    <span className="text-2xl font-semibold transition-colors"
-                      style={{ color: active === link.href ? '#6C63FF' : 'var(--text-primary)' }}>
+                    <span style={{ fontSize: '26px', fontWeight: 800, color: active === link.href ? 'var(--accent-primary)' : 'var(--text-primary)', letterSpacing: '-0.02em' }}>
                       {link.label}
                     </span>
                   </a>
                 </motion.li>
               ))}
-              <motion.li initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.08 }}>
-                <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}
-                  className="inline-flex items-center px-8 py-3 rounded-full text-base font-semibold text-white mt-4"
-                  style={{
-                    background: 'linear-gradient(135deg, #6C63FF, #00D4FF)',
-                    boxShadow: '0 0 24px rgba(108,99,255,0.45)',
-                  }}>
+              <motion.li initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.07 }}>
+                <a href="#contact"
+                  onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}
+                  style={{ display: 'inline-flex', alignItems: 'center', padding: '14px 32px', borderRadius: '12px', background: 'linear-gradient(135deg, #0F766E, #0D9488)', color: '#fff', fontWeight: 700, fontSize: '16px', textDecoration: 'none', boxShadow: '0 0 24px rgba(13,148,136,0.4)', marginTop: '0.5rem' }}>
                   Kostenlos beraten
                 </a>
               </motion.li>

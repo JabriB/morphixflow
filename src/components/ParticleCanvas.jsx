@@ -4,38 +4,35 @@ import * as THREE from 'three';
 
 function Particles() {
   const pointsRef = useRef();
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef  = useRef({ x: 0, y: 0 });
   const targetRef = useRef({ x: 0, y: 0 });
   const { camera } = useThree();
 
-  const count = 2200;
+  const count = 1800;
 
   const { positions, colors } = useMemo(() => {
     const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
+    const colors    = new Float32Array(count * 3);
 
-    // Violet + Cyan mix for galactic effect
-    const violetColor = new THREE.Color('#6C63FF');   // Electric Violet
-    const cyanColor   = new THREE.Color('#00D4FF');   // Neon Cyan
-    const purpleColor = new THREE.Color('#A855F7');   // Purple accent
+    const teal1  = new THREE.Color('#14B8A6');
+    const teal2  = new THREE.Color('#2DD4BF');
+    const blue   = new THREE.Color('#60A5FA');
+    const slate  = new THREE.Color('#94A3B8');
 
     for (let i = 0; i < count; i++) {
       const theta = Math.random() * Math.PI * 2;
       const phi   = Math.acos(2 * Math.random() - 1);
-      const r     = 4.5 * Math.cbrt(Math.random());
+      const r     = 4.8 * Math.cbrt(Math.random());
 
       positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = r * Math.cos(phi);
 
-      // Mix violet, cyan, and purple depending on random
       const t = Math.random();
       let mixed;
-      if (t < 0.5) {
-        mixed = violetColor.clone().lerp(cyanColor, t * 2);
-      } else {
-        mixed = cyanColor.clone().lerp(purpleColor, (t - 0.5) * 2);
-      }
+      if (t < 0.4)       mixed = teal1.clone().lerp(teal2, t * 2.5);
+      else if (t < 0.7)  mixed = teal2.clone().lerp(blue, (t - 0.4) * 3.3);
+      else                mixed = blue.clone().lerp(slate, (t - 0.7) * 3.3);
 
       colors[i * 3]     = mixed.r;
       colors[i * 3 + 1] = mixed.g;
@@ -47,7 +44,7 @@ function Particles() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       mouseRef.current = {
-        x: (e.clientX / window.innerWidth) * 2 - 1,
+        x:  (e.clientX / window.innerWidth)  * 2 - 1,
         y: -(e.clientY / window.innerHeight) * 2 + 1,
       };
     };
@@ -57,12 +54,11 @@ function Particles() {
 
   useFrame(() => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += 0.0007;
-      pointsRef.current.rotation.x += 0.0002;
+      pointsRef.current.rotation.y += 0.0006;
+      pointsRef.current.rotation.x += 0.00015;
     }
-
-    targetRef.current.x += (mouseRef.current.x * 0.3 - targetRef.current.x) * 0.05;
-    targetRef.current.y += (mouseRef.current.y * 0.3 - targetRef.current.y) * 0.05;
+    targetRef.current.x += (mouseRef.current.x * 0.25 - targetRef.current.x) * 0.045;
+    targetRef.current.y += (mouseRef.current.y * 0.25 - targetRef.current.y) * 0.045;
     camera.position.x = targetRef.current.x;
     camera.position.y = targetRef.current.y;
     camera.lookAt(0, 0, 0);
@@ -75,11 +71,11 @@ function Particles() {
         <bufferAttribute attach="attributes-color"    args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.022}
-        sizeAttenuation={true}
-        vertexColors={true}
-        transparent={true}
-        opacity={0.85}
+        size={0.02}
+        sizeAttenuation
+        vertexColors
+        transparent
+        opacity={0.7}
         depthWrite={false}
       />
     </points>
@@ -88,15 +84,8 @@ function Particles() {
 
 export default function ParticleCanvas() {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: 'none',
-      }}
-      aria-hidden="true"
-    >
+    <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}
+      aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 60 }}
         gl={{ antialias: false, alpha: true }}
