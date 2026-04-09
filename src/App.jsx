@@ -11,18 +11,16 @@ import Footer from './components/Footer';
 export default function App() {
   return (
     <ThemeProvider>
-      <div style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}>
-        <Navbar />
-        <main>
-          <Hero />
-          <Services />
-          <HowItWorks />
-          <Results />
-          <Pakete />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
+      <Navbar />
+      <main id="main-content">
+        <Hero />
+        <Services />
+        <HowItWorks />
+        <Results />
+        <Pakete />
+        <Contact />
+      </main>
+      <Footer />
     </ThemeProvider>
   );
 }

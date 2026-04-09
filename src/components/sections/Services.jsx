@@ -1,56 +1,52 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { Layers, Bot, MonitorPlay, BarChart3 } from 'lucide-react';
 
+/* Each card maps to a CSS-variable accent slot — no hardcoded hex */
 const cards = [
   {
-    accent: '#0D9488', accentDim: 'rgba(13,148,136,0.1)', glowColor: 'rgba(13,148,136,0.2)',
-    gradFrom: '#0D9488', gradTo: '#2DD4BF',
+    accentColor:  'var(--color-primary)',
+    accentBg:     'var(--color-primary-dim)',
+    accentBorder: 'var(--border-primary)',
+    accentGlow:   'var(--color-primary-glow)',
     title: 'Web Development',
-    description: 'Professionelle Webseiten, Landing Pages, Web Apps & E-Commerce — komplett nach deinen Vorstellungen. Design, Farben, Logo — du entscheidest.',
+    description:
+      'Professionelle Webseiten, Landing Pages, Web Apps & E-Commerce — komplett nach deinen Vorstellungen. Design, Farben, Logo — du entscheidest.',
     tags: ['Webseite', 'Landing Page', 'Web App', 'E-Commerce'],
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" />
-      </svg>
-    ),
+    Icon: Layers,
   },
   {
-    accent: '#8B5CF6', accentDim: 'rgba(139,92,246,0.1)', glowColor: 'rgba(139,92,246,0.2)',
-    gradFrom: '#7C3AED', gradTo: '#A78BFA',
+    accentColor:  'var(--color-blue)',
+    accentBg:     'var(--color-blue-dim)',
+    accentBorder: 'color-mix(in srgb, var(--color-blue) 22%, transparent)',
+    accentGlow:   'var(--color-blue-glow)',
     title: 'AI Automationen',
-    description: 'Intelligente Workflow-Automationen die dein Business auf Autopilot stellen. CRM, Lead-Generierung, E-Mail & mehr — powered by KI.',
+    description:
+      'Intelligente Workflow-Automationen die dein Business auf Autopilot stellen. CRM, Lead-Generierung, E-Mail & mehr — powered by KI.',
     tags: ['n8n', 'Make.com', 'CRM-Sync', 'AI-Powered'],
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-      </svg>
-    ),
+    Icon: Bot,
   },
   {
-    accent: '#F59E0B', accentDim: 'rgba(245,158,11,0.1)', glowColor: 'rgba(245,158,11,0.18)',
-    gradFrom: '#D97706', gradTo: '#FBBF24',
+    accentColor:  'var(--color-amber)',
+    accentBg:     'var(--color-amber-dim)',
+    accentBorder: 'color-mix(in srgb, var(--color-amber) 22%, transparent)',
+    accentGlow:   'var(--color-amber-glow)',
     title: 'Werbe Kampagnen',
-    description: 'Datengetriebene Werbekampagnen auf Meta (Facebook & Instagram), TikTok und Google Ads. Maximale Reichweite, echte Conversions.',
+    description:
+      'Datengetriebene Werbekampagnen auf Meta (Facebook & Instagram), TikTok und Google Ads. Maximale Reichweite, echte Conversions.',
     tags: ['Meta Ads', 'TikTok Ads', 'Google Ads', 'Retargeting'],
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-      </svg>
-    ),
+    Icon: MonitorPlay,
   },
   {
-    accent: '#3B82F6', accentDim: 'rgba(59,130,246,0.1)', glowColor: 'rgba(59,130,246,0.18)',
-    gradFrom: '#2563EB', gradTo: '#60A5FA',
+    accentColor:  'var(--color-success)',
+    accentBg:     'var(--color-success-dim)',
+    accentBorder: 'color-mix(in srgb, var(--color-success) 22%, transparent)',
+    accentGlow:   'var(--color-success-glow)',
     title: 'AI SEO & Conversions',
-    description: 'KI-gestützte Suchmaschinenoptimierung für nachhaltigen organischen Traffic. Conversion-Optimierung für maximale Ergebnisse.',
+    description:
+      'KI-gestützte Suchmaschinenoptimierung für nachhaltigen organischen Traffic. Conversion-Optimierung für maximale Ergebnisse.',
     tags: ['AI SEO', 'On-Page SEO', 'Conversion-Rate', 'Analytics'],
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-        <polyline points="17 6 23 6 23 12" />
-      </svg>
-    ),
+    Icon: BarChart3,
   },
 ];
 
@@ -60,60 +56,97 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 36 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } },
 };
 
 function ServiceCard({ card }) {
   const prefersReduced = useReducedMotion();
+  const { Icon } = card;
+
   return (
     <motion.div
       variants={cardVariants}
       whileHover={prefersReduced ? {} : {
         y: -5,
-        boxShadow: `0 8px 40px ${card.glowColor}, var(--card-shadow)`,
-        borderColor: card.accent + '50',
+        boxShadow: `0 10px 44px ${card.accentGlow}`,
+        borderColor: card.accentBorder,
         transition: { duration: 0.22 },
       }}
       style={{
-        background: 'var(--bg-card)', border: '1px solid var(--border)',
-        borderRadius: '18px', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)',
-        padding: '2rem', cursor: 'default', position: 'relative', overflow: 'hidden',
-        transition: 'all 0.3s ease', boxShadow: 'var(--card-shadow)',
-      }}>
-      {/* Corner accent */}
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-2xl)',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        padding: '2.25rem',
+        cursor: 'default',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'all 0.3s ease',
+        boxShadow: 'var(--card-shadow)',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* Subtle corner accent wash */}
       <div aria-hidden="true" style={{
-        position: 'absolute', top: 0, right: 0, width: '120px', height: '120px',
-        background: `radial-gradient(circle at top right, ${card.glowColor}, transparent 70%)`,
-        pointerEvents: 'none', opacity: 0.7,
+        position: 'absolute', top: 0, right: 0,
+        width: '130px', height: '130px',
+        background: `radial-gradient(circle at top right, ${card.accentGlow}, transparent 70%)`,
+        pointerEvents: 'none',
       }} />
 
       {/* Icon */}
       <div style={{
-        width: '52px', height: '52px', borderRadius: '14px',
-        background: `linear-gradient(135deg, ${card.gradFrom}20, ${card.gradTo}20)`,
-        border: `1px solid ${card.gradFrom}35`,
+        width: '50px', height: '50px',
+        borderRadius: 'var(--radius-lg)',
+        background: card.accentBg,
+        border: `1px solid ${card.accentBorder}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginBottom: '1.4rem', color: card.accent,
-        boxShadow: `0 4px 16px ${card.glowColor}`,
+        marginBottom: '1.5rem',
+        color: card.accentColor,
+        flexShrink: 0,
       }}>
-        {card.icon}
+        <Icon size={20} aria-hidden="true" />
       </div>
 
-      <h3 style={{ color: 'var(--text-primary)', fontSize: '18px', fontWeight: 700, margin: '0 0 0.6rem', letterSpacing: '-0.01em' }}>
+      <h3 style={{
+        fontFamily: 'var(--font-display)',
+        color: 'var(--text-primary)',
+        fontSize: 'var(--text-lg)',
+        fontWeight: 400,
+        margin: '0 0 0.65rem',
+        letterSpacing: '-0.01em',
+        lineHeight: 1.2,
+      }}>
         {card.title}
       </h3>
-      <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.72, margin: '0 0 1.5rem' }}>
+
+      <p style={{
+        fontFamily: 'var(--font-body)',
+        color: 'var(--text-muted)',
+        fontSize: 'var(--text-base)',
+        lineHeight: 1.7,
+        margin: '0 0 1.5rem',
+        flex: 1,
+      }}>
         {card.description}
       </p>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
+      {/* Tags */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
         {card.tags.map((tag) => (
           <span key={tag} style={{
-            background: `${card.gradFrom}12`,
-            border: `1px solid ${card.gradFrom}28`,
-            borderRadius: '6px', padding: '4px 11px', fontSize: '12px',
-            color: card.accent, fontWeight: 600,
+            background: card.accentBg,
+            border: `1px solid ${card.accentBorder}`,
+            borderRadius: 'var(--radius-md)',
+            padding: '3px 10px',
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--text-xs)',
+            color: card.accentColor,
+            fontWeight: 600,
+            letterSpacing: '0.02em',
           }}>
             {tag}
           </span>
@@ -128,30 +161,62 @@ export default function Services() {
   const prefersReduced  = useReducedMotion();
 
   return (
-    <section id="solutions" ref={ref}
-      style={{ padding: '8rem 1.5rem', backgroundColor: 'var(--bg-secondary)', transition: 'background-color 0.3s', position: 'relative', overflow: 'hidden' }}>
-
-      {/* Background mesh */}
-      <div aria-hidden="true" className="bg-mesh" style={{ position: 'absolute', inset: 0, opacity: 0.4, pointerEvents: 'none' }} />
+    <section
+      id="solutions"
+      ref={ref}
+      style={{
+        padding: '7rem 1.5rem',
+        backgroundColor: 'var(--bg-secondary)',
+        transition: 'background-color 0.3s',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div aria-hidden="true" className="bg-mesh" style={{ position: 'absolute', inset: 0, opacity: 0.35, pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: '80rem', margin: '0 auto', position: 'relative' }}>
+
         <motion.div
-          initial={{ opacity: 0, y: prefersReduced ? 0 : 26 }}
+          initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: '3.5rem', textAlign: 'center' }}>
-          <p className="section-label" style={{ margin: '0 0 0.9rem' }}>02 · Leistungen</p>
-          <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(30px, 5vw, 50px)', fontWeight: 800, margin: '0 0 1.2rem', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+          style={{ marginBottom: '3.5rem', textAlign: 'center' }}
+        >
+          <p className="section-label" style={{ margin: '0 0 1rem' }}>02 · Leistungen</p>
+          <h2 style={{
+            fontFamily: 'var(--font-display)',
+            color: 'var(--text-primary)',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: 400,
+            margin: '0 0 1.1rem',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
+          }}>
             Alles was dein Business braucht
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '18px', margin: '0 auto', maxWidth: '520px', lineHeight: 1.68 }}>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            color: 'var(--text-muted)',
+            fontSize: 'var(--text-base)',
+            margin: '0 auto',
+            maxWidth: '520px',
+            lineHeight: 1.7,
+          }}>
             Von der Webseite bis zur Werbekampagne — ich kümmere mich um dein digitales Wachstum.
           </p>
         </motion.div>
 
         {inView && (
-          <motion.div variants={containerVariants} initial="hidden" animate="visible"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))',
+              gap: '1.25rem',
+            }}
+          >
             {cards.map((card) => <ServiceCard key={card.title} card={card} />)}
           </motion.div>
         )}

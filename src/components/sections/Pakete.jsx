@@ -1,29 +1,17 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { Check, X, Crown, Star } from 'lucide-react';
 
-const CheckIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-    style={{ flexShrink: 0, marginTop: '2px', color: 'var(--highlight-text)' }}>
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
-
-const XIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round"
-    style={{ flexShrink: 0, marginTop: '2px', color: 'var(--text-disabled)' }}>
-    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-  </svg>
-);
-
+/* ── Package data ── */
 const packages = [
   {
     id: 1, badge: null, name: 'Essential', tagline: 'Dein digitaler Auftritt',
-    accent: '#0D9488', accentDim: 'rgba(13,148,136,0.1)',
-    gradFrom: '#0F766E', gradTo: '#0D9488',
-    glowColor: 'rgba(13,148,136,0.18)',
+    accentColor:  'var(--color-primary)',
+    accentBg:     'var(--color-primary-dim)',
+    accentBorder: 'var(--border-primary)',
+    accentGlow:   'var(--color-primary-glow)',
+    gradient:     'var(--gradient-primary)',
     featured: false, vip: false,
     pricing: {
       monthly: { main: '99 €',   suffix: '/ Monat', note: null },
@@ -41,10 +29,12 @@ const packages = [
     cta: 'Jetzt anfragen',
   },
   {
-    id: 2, badge: '⭐ Beliebteste Wahl', name: 'Customized', tagline: 'Website + Automation',
-    accent: '#0D9488', accentDim: 'rgba(13,148,136,0.15)',
-    gradFrom: '#0F766E', gradTo: '#2DD4BF',
-    glowColor: 'rgba(13,148,136,0.3)',
+    id: 2, badge: 'Beliebteste Wahl', name: 'Customized', tagline: 'Website + Automation',
+    accentColor:  'var(--color-primary)',
+    accentBg:     'var(--color-primary-dim)',
+    accentBorder: 'var(--border-primary)',
+    accentGlow:   'var(--color-primary-glow)',
+    gradient:     'var(--gradient-primary)',
     featured: true, vip: false,
     pricing: {
       monthly: { main: '149 €',  suffix: '/ Monat', note: null },
@@ -63,9 +53,11 @@ const packages = [
   },
   {
     id: 3, badge: null, name: 'All-in-One Premium', tagline: 'Das Komplettpaket',
-    accent: '#7C3AED', accentDim: 'rgba(124,58,237,0.1)',
-    gradFrom: '#7C3AED', gradTo: '#A78BFA',
-    glowColor: 'rgba(124,58,237,0.2)',
+    accentColor:  'var(--color-blue)',
+    accentBg:     'var(--color-blue-dim)',
+    accentBorder: 'color-mix(in srgb, var(--color-blue) 22%, transparent)',
+    accentGlow:   'var(--color-blue-glow)',
+    gradient:     'var(--gradient-blue)',
     featured: false, vip: false,
     pricing: {
       monthly: { main: '249 €',  suffix: '/ Monat', note: null },
@@ -83,10 +75,12 @@ const packages = [
     cta: 'Jetzt anfragen',
   },
   {
-    id: 4, badge: '👑 Exklusiv', name: 'VIP', tagline: 'Alles — ohne Kompromisse',
-    accent: '#D97706', accentDim: 'rgba(217,119,6,0.1)',
-    gradFrom: '#D97706', gradTo: '#FBBF24',
-    glowColor: 'rgba(217,119,6,0.2)',
+    id: 4, badge: 'Exklusiv', name: 'VIP', tagline: 'Alles — ohne Kompromisse',
+    accentColor:  'var(--color-amber)',
+    accentBg:     'var(--color-amber-dim)',
+    accentBorder: 'color-mix(in srgb, var(--color-amber) 22%, transparent)',
+    accentGlow:   'var(--color-amber-glow)',
+    gradient:     'var(--gradient-amber)',
     featured: false, vip: true,
     pricing: {
       monthly: { main: 'Auf Anfrage', suffix: null, note: 'Individuelles Angebot' },
@@ -111,43 +105,60 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 44 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
 
-function PriceDisplay({ pricing, billing, pkg }) {
+/* ── Price display with animated transitions ── */
+function PriceDisplay({ pricing, billing, isFeatured }) {
   const p = pricing[billing];
-  const dividerColor = pkg.featured ? 'rgba(255,255,255,0.15)' : 'var(--price-divider)';
-  const noteColor    = pkg.featured ? 'rgba(255,255,255,0.6)' : 'var(--price-note)';
+  const dividerColor = isFeatured ? 'rgba(255,255,255,0.18)' : 'var(--price-divider)';
+  const noteColor    = isFeatured ? 'rgba(255,255,255,0.65)' : 'var(--price-note)';
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={billing}
-        initial={{ opacity: 0, y: 7 }}
+        initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -7 }}
+        exit={{ opacity: 0, y: -6 }}
         transition={{ duration: 0.18 }}
-        style={{ marginBottom: '1.6rem', paddingBottom: '1.6rem', borderBottom: `1px solid ${dividerColor}` }}>
+        style={{
+          marginBottom: '1.5rem',
+          paddingBottom: '1.5rem',
+          borderBottom: `1px solid ${dividerColor}`,
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '7px', flexWrap: 'wrap' }}>
           <span style={{
-            fontSize: p.suffix ? '34px' : '22px', fontWeight: 800, lineHeight: 1, letterSpacing: '-0.03em',
-            background: pkg.featured ? 'none' : `linear-gradient(135deg, ${pkg.gradFrom}, ${pkg.gradTo})`,
-            WebkitBackgroundClip: pkg.featured ? 'unset' : 'text',
-            WebkitTextFillColor: pkg.featured ? '#fff' : 'transparent',
-            backgroundClip: pkg.featured ? 'unset' : 'text',
-            color: pkg.featured ? '#fff' : 'transparent',
+            fontFamily: 'var(--font-display)',
+            fontSize: p.suffix ? '36px' : '22px',
+            fontWeight: 400,
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            color: isFeatured ? '#fff' : 'var(--color-primary)',
           }}>
             {p.main}
           </span>
           {p.suffix && (
-            <span style={{ fontSize: '14px', color: pkg.featured ? 'rgba(255,255,255,0.72)' : 'var(--text-subtle)', fontWeight: 500 }}>
+            <span style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--text-sm)',
+              color: isFeatured ? 'rgba(255,255,255,0.7)' : 'var(--text-subtle)',
+              fontWeight: 500,
+            }}>
               {p.suffix}
             </span>
           )}
         </div>
         {p.note && (
-          <p style={{ margin: '6px 0 0', fontSize: '13px', color: noteColor, fontWeight: 500 }}>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            margin: '5px 0 0',
+            fontSize: 'var(--text-xs)',
+            color: noteColor,
+            fontWeight: 500,
+          }}>
             {p.note}
           </p>
         )}
@@ -156,40 +167,57 @@ function PriceDisplay({ pricing, billing, pkg }) {
   );
 }
 
+/* ── Individual package card ── */
 function PackageCard({ pkg, billing }) {
   const prefersReduced = useReducedMotion();
   const { featured: isFeatured, vip: isVip } = pkg;
 
-  const cardStyle = {
-    background: isFeatured
-      ? `linear-gradient(160deg, ${pkg.gradFrom}E0, ${pkg.gradTo}CC)`
-      : isVip
-      ? 'linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(135deg, #D97706, #FBBF24) border-box'
-      : 'var(--bg-card)',
-    border: isFeatured
-      ? 'none'
-      : isVip
-      ? '2px solid transparent'
-      : '1px solid var(--border)',
-    borderRadius: '20px',
-    padding: '2.25rem',
-    position: 'relative',
-    backdropFilter: isFeatured ? 'none' : 'blur(14px)',
-    WebkitBackdropFilter: isFeatured ? 'none' : 'blur(14px)',
-    boxShadow: isFeatured
-      ? `0 8px 48px ${pkg.glowColor}, 0 0 0 1px rgba(255,255,255,0.1)`
-      : isVip
-      ? `0 8px 32px ${pkg.glowColor}`
-      : 'var(--card-shadow)',
-    transition: 'all 0.3s ease',
-  };
+  /* Featured: solid primary gradient; VIP: gradient border; others: glass card */
+  const cardStyle = isFeatured
+    ? {
+        background: 'var(--gradient-cta)',
+        border: 'none',
+        borderRadius: 'var(--radius-2xl)',
+        padding: '2.25rem',
+        position: 'relative',
+        boxShadow: `0 10px 52px var(--color-primary-glow), 0 0 0 1px rgba(255,255,255,0.08)`,
+        transition: 'all 0.3s ease',
+      }
+    : isVip
+    ? {
+        background: 'var(--bg-card)',
+        border: '2px solid transparent',
+        backgroundClip: 'padding-box',
+        outline: '2px solid',
+        outlineColor: 'var(--color-amber)',
+        outlineOffset: '-2px',
+        borderRadius: 'var(--radius-2xl)',
+        padding: '2.25rem',
+        position: 'relative',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        boxShadow: `0 6px 32px var(--color-amber-glow)`,
+        transition: 'all 0.3s ease',
+      }
+    : {
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-2xl)',
+        padding: '2.25rem',
+        position: 'relative',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        boxShadow: 'var(--card-shadow)',
+        transition: 'all 0.3s ease',
+      };
 
   return (
     <motion.div variants={cardVariants} style={{ position: 'relative' }}>
+      {/* Ambient glow halo for featured / VIP */}
       {(isFeatured || isVip) && (
         <div aria-hidden="true" style={{
-          position: 'absolute', inset: -24, borderRadius: '44px',
-          background: `radial-gradient(ellipse at 50% 0%, ${pkg.glowColor}, transparent 65%)`,
+          position: 'absolute', inset: -20, borderRadius: '40px',
+          background: `radial-gradient(ellipse at 50% 0%, ${pkg.accentGlow}, transparent 65%)`,
           pointerEvents: 'none', zIndex: -1,
         }} />
       )}
@@ -198,223 +226,350 @@ function PackageCard({ pkg, billing }) {
         whileHover={prefersReduced ? {} : {
           y: -5,
           boxShadow: isFeatured
-            ? `0 16px 64px ${pkg.glowColor}`
+            ? `0 18px 64px var(--color-primary-glow)`
             : isVip
-            ? `0 12px 48px ${pkg.glowColor}`
-            : `0 8px 36px ${pkg.glowColor}, var(--card-shadow)`,
+            ? `0 14px 52px var(--color-amber-glow)`
+            : `0 10px 40px ${pkg.accentGlow}`,
           transition: { duration: 0.2 },
         }}
-        style={cardStyle}>
-
+        style={cardStyle}
+      >
         {/* Badge */}
         {pkg.badge && (
           <div style={{ marginBottom: '1.1rem' }}>
             <span style={{
-              display: 'inline-flex', alignItems: 'center', padding: '5px 14px',
-              borderRadius: '9999px', fontSize: '11.5px', fontWeight: 700, letterSpacing: '0.03em',
-              background: isFeatured
-                ? 'rgba(255,255,255,0.18)'
+              display: 'inline-flex', alignItems: 'center', gap: '5px',
+              padding: '4px 13px',
+              borderRadius: 'var(--radius-full)',
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              ...(isFeatured
+                ? {
+                    background: 'rgba(255,255,255,0.2)',
+                    border: '1px solid rgba(255,255,255,0.32)',
+                    color: '#fff',
+                  }
                 : isVip
-                ? 'rgba(217,119,6,0.12)'
-                : `${pkg.gradFrom}18`,
-              border: isFeatured
-                ? '1px solid rgba(255,255,255,0.3)'
-                : isVip
-                ? '1px solid rgba(217,119,6,0.35)'
-                : `1px solid ${pkg.gradFrom}35`,
-              color: isFeatured ? '#fff' : isVip ? '#D97706' : pkg.accent,
+                ? {
+                    background: 'var(--color-amber-dim)',
+                    border: '1px solid color-mix(in srgb, var(--color-amber) 35%, transparent)',
+                    color: 'var(--color-amber)',
+                  }
+                : {
+                    background: pkg.accentBg,
+                    border: `1px solid ${pkg.accentBorder}`,
+                    color: pkg.accentColor,
+                  }),
             }}>
+              {isVip ? <Crown size={11} aria-hidden="true" /> : <Star size={11} aria-hidden="true" />}
               {pkg.badge}
             </span>
           </div>
         )}
 
-        {/* Package name */}
+        {/* Plan name */}
         <h3 style={{
-          margin: '0 0 0.3rem', fontSize: '22px', fontWeight: 800,
-          letterSpacing: '-0.02em',
-          color: isFeatured ? '#fff' : isVip ? '#D97706' : 'var(--text-primary)',
+          fontFamily: 'var(--font-display)',
+          margin: '0 0 0.3rem',
+          fontSize: 'var(--text-xl)',
+          fontWeight: 400,
+          letterSpacing: '-0.01em',
+          lineHeight: 1.15,
+          color: isFeatured ? '#fff' : isVip ? 'var(--color-amber)' : 'var(--text-primary)',
         }}>
           {pkg.name}
         </h3>
 
         {/* Tagline */}
         <p style={{
-          color: isFeatured ? 'rgba(255,255,255,0.75)' : 'var(--text-muted)',
-          fontSize: '14px', margin: '0 0 1.6rem', fontWeight: 500,
+          fontFamily: 'var(--font-body)',
+          color: isFeatured ? 'rgba(255,255,255,0.72)' : 'var(--text-muted)',
+          fontSize: 'var(--text-sm)',
+          margin: '0 0 1.5rem',
+          fontWeight: 500,
         }}>
           {pkg.tagline}
         </p>
 
-        <PriceDisplay pricing={pkg.pricing} billing={billing} pkg={pkg} />
+        <PriceDisplay pricing={pkg.pricing} billing={billing} isFeatured={isFeatured} />
 
-        {/* Features */}
-        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {/* Feature list */}
+        <ul style={{
+          listStyle: 'none', padding: 0,
+          margin: '0 0 2rem',
+          display: 'flex', flexDirection: 'column', gap: '10px',
+        }}>
           {pkg.features.map((f) => (
             <li key={f.text} style={{
               display: 'flex', alignItems: 'flex-start', gap: '9px',
-              fontSize: '14px',
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--text-sm)',
               color: f.included
-                ? (isFeatured ? 'rgba(255,255,255,0.92)' : 'var(--text-feature)')
-                : (isFeatured ? 'rgba(255,255,255,0.28)' : 'var(--text-disabled)'),
+                ? (isFeatured ? 'rgba(255,255,255,0.94)' : 'var(--text-feature)')
+                : (isFeatured ? 'rgba(255,255,255,0.32)' : 'var(--text-disabled)'),
               textDecoration: f.included ? 'none' : 'line-through',
-              lineHeight: 1.55,
+              lineHeight: 1.6,
             }}>
-              {f.included ? <CheckIcon /> : <XIcon />}
+              {f.included
+                ? <Check size={14} style={{ flexShrink: 0, marginTop: '2px', color: isFeatured ? 'rgba(255,255,255,0.9)' : 'var(--color-success)' }} aria-hidden="true" />
+                : <X size={14} style={{ flexShrink: 0, marginTop: '2px', color: isFeatured ? 'rgba(255,255,255,0.28)' : 'var(--text-disabled)' }} aria-hidden="true" />
+              }
               {f.text}
             </li>
           ))}
         </ul>
 
-        {/* CTA */}
+        {/* CTA button */}
         <motion.a
           href="#contact"
           onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
           whileHover={prefersReduced ? {} : {
             scale: 1.02,
             boxShadow: isFeatured
-              ? '0 0 28px rgba(255,255,255,0.25)'
-              : `0 0 22px ${pkg.glowColor}`,
+              ? '0 0 32px rgba(255,255,255,0.28)'
+              : `0 0 24px ${pkg.accentGlow}`,
           }}
           whileTap={prefersReduced ? {} : { scale: 0.97 }}
           style={{
-            display: 'block', textAlign: 'center', padding: '14px 22px',
-            borderRadius: '12px', fontWeight: 700, fontSize: '15px',
-            textDecoration: 'none', cursor: 'pointer', transition: 'all 0.22s ease',
+            display: 'block', textAlign: 'center',
+            padding: '14px 20px',
+            borderRadius: 'var(--radius-lg)',
+            fontFamily: 'var(--font-body)',
+            fontWeight: 700,
+            fontSize: 'var(--text-sm)',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.22s ease',
             letterSpacing: '0.01em',
+            minHeight: '48px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
             ...(isFeatured
-              ? { background: '#fff', color: '#0F766E', boxShadow: '0 4px 20px rgba(255,255,255,0.18)' }
+              ? { background: '#fff', color: 'var(--color-primary-dark)', boxShadow: '0 4px 20px rgba(255,255,255,0.2)' }
               : isVip
-              ? { background: 'linear-gradient(135deg, #D97706, #FBBF24)', color: '#1a0f00', boxShadow: `0 4px 16px ${pkg.glowColor}` }
+              ? { background: 'var(--gradient-amber)', color: '#1a0f00', boxShadow: `0 4px 16px var(--color-amber-glow)` }
               : {
-                  background: `linear-gradient(135deg, ${pkg.gradFrom}, ${pkg.gradTo})`,
+                  background: pkg.gradient,
                   color: '#fff',
-                  boxShadow: `0 4px 14px ${pkg.glowColor}`,
+                  boxShadow: `0 4px 14px ${pkg.accentGlow}`,
                 }),
-          }}>
-          {pkg.cta} →
+          }}
+        >
+          {pkg.cta}
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+          </svg>
         </motion.a>
       </motion.div>
     </motion.div>
   );
 }
 
+/* ── Section ── */
 export default function Pakete() {
   const { ref, inView } = useInView({ threshold: 0.04, triggerOnce: true });
   const prefersReduced  = useReducedMotion();
   const [billing, setBilling] = useState('monthly');
 
   return (
-    <section id="pakete" ref={ref} style={{
-      padding: '8rem 1.5rem', position: 'relative',
-      backgroundColor: 'var(--bg-primary)', overflow: 'hidden', transition: 'background-color 0.3s',
-    }}>
-      {/* Ambient glow */}
+    <section
+      id="pakete"
+      ref={ref}
+      style={{
+        padding: '7rem 1.5rem',
+        position: 'relative',
+        backgroundColor: 'var(--bg-primary)',
+        overflow: 'hidden',
+        transition: 'background-color 0.3s',
+      }}
+    >
+      {/* Ambient top glow */}
       <div aria-hidden="true" style={{
         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-        width: '900px', height: '400px',
-        background: 'radial-gradient(ellipse at 50% 0%, rgba(13,148,136,0.08) 0%, transparent 70%)',
+        width: '900px', height: '380px',
+        background: 'radial-gradient(ellipse at 50% 0%, var(--color-primary-dim) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
-      <div style={{ maxWidth: '86rem', margin: '0 auto', position: 'relative' }}>
-        {/* Header */}
+      <div style={{ maxWidth: '88rem', margin: '0 auto', position: 'relative' }}>
+
+        {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: prefersReduced ? 0 : 26 }}
+          initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: '3rem', textAlign: 'center' }}>
-          <p className="section-label" style={{ margin: '0 0 0.9rem' }}>04 · Pakete</p>
+          style={{ marginBottom: '3rem', textAlign: 'center' }}
+        >
+          <p className="section-label" style={{ margin: '0 0 1rem' }}>04 · Pakete</p>
           <h2 style={{
-            color: 'var(--text-primary)', fontSize: 'clamp(30px, 5vw, 54px)',
-            fontWeight: 800, margin: '0 0 1.25rem', lineHeight: 1.06, letterSpacing: '-0.025em',
+            fontFamily: 'var(--font-display)',
+            color: 'var(--text-primary)',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: 400,
+            margin: '0 0 1.1rem',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
           }}>
             Wähle dein{' '}
             <span style={{
-              background: 'linear-gradient(135deg, #0D9488, #2DD4BF)',
+              background: 'var(--gradient-primary)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              fontStyle: 'italic',
             }}>
               Paket
             </span>
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '17px', margin: '0 auto 2.75rem', maxWidth: '500px', lineHeight: 1.68 }}>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            color: 'var(--text-muted)',
+            fontSize: 'var(--text-base)',
+            margin: '0 auto 2.5rem',
+            maxWidth: '480px',
+            lineHeight: 1.7,
+          }}>
             Jedes Paket beinhaltet eine persönliche{' '}
-            <span style={{ color: 'var(--accent-text)', fontWeight: 600 }}>1:1 Beratung per WhatsApp</span>.
+            <span style={{ color: 'var(--accent-text)', fontWeight: 600 }}>
+              1:1 Beratung per WhatsApp
+            </span>.
           </p>
 
-          {/* Billing toggle */}
-          <div style={{
-            display: 'inline-flex', alignItems: 'center',
-            background: 'var(--toggle-bg)', border: '1px solid var(--toggle-border)',
-            borderRadius: '14px', padding: '4px', gap: '2px',
-          }}>
+          {/* ── Billing toggle — polished segmented control ── */}
+          <div
+            role="group"
+            aria-label="Abrechnungszeitraum wählen"
+            style={{
+              display: 'inline-flex', alignItems: 'center',
+              background: 'var(--toggle-bg)',
+              border: '1px solid var(--toggle-border)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '4px',
+              gap: '2px',
+            }}
+          >
             {[
               { key: 'monthly', label: 'Monatlich', sub: 'Abo' },
               { key: 'onetime', label: 'Einmalig',  sub: 'Kauf' },
-            ].map((opt) => (
-              <button key={opt.key} onClick={() => setBilling(opt.key)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '7px',
-                  padding: '9px 22px', borderRadius: '10px', border: 'none',
-                  cursor: 'pointer', fontFamily: 'inherit', fontSize: '14px', fontWeight: 700,
-                  transition: 'all 0.22s ease',
-                  ...(billing === opt.key
-                    ? { background: 'linear-gradient(135deg, #0F766E, #0D9488)', color: '#fff', boxShadow: '0 2px 12px rgba(13,148,136,0.35)' }
-                    : { background: 'transparent', color: 'var(--toggle-text-inactive)' }),
-                }}>
-                {opt.label}
-                <span style={{
-                  fontSize: '11px', fontWeight: 600, padding: '2px 7px', borderRadius: '6px',
-                  ...(billing === opt.key
-                    ? { background: 'rgba(255,255,255,0.2)', color: '#fff' }
-                    : { background: 'var(--toggle-inactive)', color: 'var(--toggle-text-inactive)' }),
-                }}>
-                  {opt.sub}
-                </span>
-              </button>
-            ))}
+            ].map((opt) => {
+              const active = billing === opt.key;
+              return (
+                <button
+                  key={opt.key}
+                  onClick={() => setBilling(opt.key)}
+                  aria-pressed={active}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '7px',
+                    padding: '9px 22px',
+                    borderRadius: 'var(--radius-lg)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 700,
+                    transition: 'all 0.22s ease',
+                    minHeight: '44px',
+                    ...(active
+                      ? {
+                          background: 'var(--gradient-cta)',
+                          color: '#fff',
+                          boxShadow: '0 2px 12px var(--color-primary-glow)',
+                        }
+                      : {
+                          background: 'transparent',
+                          color: 'var(--toggle-text-inactive)',
+                        }),
+                  }}
+                >
+                  {opt.label}
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 'var(--text-xs)',
+                    fontWeight: 600,
+                    padding: '2px 7px',
+                    borderRadius: 'var(--radius-md)',
+                    ...(active
+                      ? { background: 'rgba(255,255,255,0.22)', color: '#fff' }
+                      : { background: 'var(--toggle-inactive)', color: 'var(--toggle-text-inactive)' }),
+                  }}>
+                    {opt.sub}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {billing === 'onetime' && (
-            <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
-              style={{ color: 'var(--text-subtle)', fontSize: '13px', marginTop: '10px' }}>
-              Einmalzahlung + Wartungsabo ab 29 € / Monat — inklusive Updates & Support
+            <motion.p
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: 'var(--text-subtle)',
+                fontSize: 'var(--text-xs)',
+                marginTop: '10px',
+              }}
+            >
+              Einmalzahlung + Wartungsabo ab 29 € / Monat — inkl. Updates & Support
             </motion.p>
           )}
         </motion.div>
 
-        {/* Cards */}
+        {/* Package cards */}
         {inView && (
           <motion.div
-            variants={containerVariants} initial="hidden" animate="visible"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.25rem', alignItems: 'start' }}>
-            {packages.map((pkg) => <PackageCard key={pkg.id} pkg={pkg} billing={billing} />)}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(248px, 1fr))',
+              gap: '1.25rem',
+              alignItems: 'start',
+            }}
+          >
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} billing={billing} />
+            ))}
           </motion.div>
         )}
 
-        {/* WhatsApp CTA */}
+        {/* WhatsApp consultation nudge */}
         <motion.div
-          initial={{ opacity: 0, y: prefersReduced ? 0 : 18 }}
+          initial={{ opacity: 0, y: prefersReduced ? 0 : 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.75, duration: 0.55 }}
-          style={{ marginTop: '3rem', textAlign: 'center' }}>
-          <p style={{ color: 'var(--text-subtle)', fontSize: '14px', marginBottom: '1rem' }}>
+          transition={{ delay: 0.75, duration: 0.5 }}
+          style={{ marginTop: '3rem', textAlign: 'center' }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            color: 'var(--text-subtle)',
+            fontSize: 'var(--text-sm)',
+            marginBottom: '1rem',
+          }}>
             Nicht sicher welches Paket passt? Kein Problem.
           </p>
-          <motion.a href="#contact"
+          <motion.a
+            href="#contact"
             onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
             whileHover={prefersReduced ? {} : { scale: 1.03, boxShadow: '0 0 28px rgba(37,211,102,0.32)' }}
             whileTap={prefersReduced ? {} : { scale: 0.97 }}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '9px',
-              background: 'rgba(37,211,102,0.09)',
-              border: '1px solid rgba(37,211,102,0.28)',
-              color: '#25D366', borderRadius: '12px', padding: '13px 26px',
-              fontWeight: 600, fontSize: '14px', textDecoration: 'none', cursor: 'pointer',
+              background: 'rgba(37,211,102,0.08)',
+              border: '1px solid rgba(37,211,102,0.26)',
+              color: '#25D366',
+              borderRadius: 'var(--radius-lg)',
+              padding: '12px 24px',
+              fontFamily: 'var(--font-body)',
+              fontWeight: 600, fontSize: 'var(--text-sm)',
+              textDecoration: 'none', cursor: 'pointer',
               transition: 'all 0.28s ease',
-            }}>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="#25D366">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.9 12.9 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+              minHeight: '44px',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.9 12.9 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
             </svg>
             Kostenlos per WhatsApp beraten lassen
           </motion.a>
