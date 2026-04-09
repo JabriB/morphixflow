@@ -9,6 +9,7 @@ import Services from './components/sections/Services';
 import HowItWorks from './components/sections/HowItWorks';
 import Results from './components/sections/Results';
 import Pakete from './components/sections/Pakete';
+import GoogleReviews from './components/sections/GoogleReviews';
 import Contact from './components/sections/Contact';
 import Footer from './components/Footer';
 
@@ -27,6 +28,7 @@ function LandingPage() {
         <Services />
         <HowItWorks />
         <Results />
+        <GoogleReviews />
         <Pakete />
         <Contact />
       </main>
@@ -45,7 +47,6 @@ export default function App() {
           colorCycleDuration={10}
           dotSize={5}
           spacing={18}
-          backgroundColor="#0a0a0c"
           style={{ position: 'fixed', zIndex: 0, pointerEvents: 'none' }}
         />
         <div className="bg-mesh" style={{ position: 'relative', zIndex: 1, minHeight: '100vh' }}>

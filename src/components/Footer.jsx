@@ -51,21 +51,24 @@ export default function Footer() {
       position: 'relative',
     }}>
 
-      {/* Subtle teal accent line at top */}
+      {/* Multi-color accent line at top */}
       <div aria-hidden="true" style={{
         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-        width: '480px', height: '1px',
-        background: 'linear-gradient(90deg, transparent, var(--color-primary-glow), transparent)',
+        width: '600px', height: '1px',
+        background: 'linear-gradient(90deg, transparent, #4fd1c5 20%, #a78bfa 50%, #f472b6 80%, transparent)',
         pointerEvents: 'none',
+        opacity: 0.6,
       }} />
 
       <div style={{ maxWidth: '80rem', margin: '0 auto' }}>
 
         {/* Top row */}
         <div style={{
-          display: 'flex', flexWrap: 'wrap', gap: '2.5rem',
-          justifyContent: 'space-between', alignItems: 'flex-start',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+          gap: '2.5rem',
           marginBottom: '2.75rem',
+          alignItems: 'flex-start',
         }}>
 
           {/* Brand */}
@@ -124,7 +127,7 @@ export default function Footer() {
           </nav>
 
           {/* Social icons */}
-          <div style={{ flex: '1 1 120px', display: 'flex', gap: '0.6rem', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start' }}>
             {socials.map((social) => (
               <a
                 key={social.label}
@@ -133,22 +136,20 @@ export default function Footer() {
                 style={{
                   width: '40px', height: '40px',
                   borderRadius: 'var(--radius-lg)',
-                  background: 'var(--bg-surface)',
-                  border: '1px solid var(--border)',
+                  background: social.dim,
+                  border: `1px solid ${social.border}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-muted)',
+                  color: social.color,
                   textDecoration: 'none',
                   transition: 'all 0.22s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = social.color;
-                  e.currentTarget.style.borderColor = social.border;
-                  e.currentTarget.style.background = social.dim;
+                  e.currentTarget.style.opacity = '0.7';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--text-muted)';
-                  e.currentTarget.style.borderColor = 'var(--border)';
-                  e.currentTarget.style.background = 'var(--bg-surface)';
+                  e.currentTarget.style.opacity = '1';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
                 {social.icon}

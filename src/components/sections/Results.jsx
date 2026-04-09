@@ -243,12 +243,8 @@ export default function Results() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-              gap: '1.25rem',
-              marginBottom: '3.5rem',
-            }}
+            className="results-stats-grid"
+            style={{ marginBottom: '3.5rem' }}
           >
             {stats.map((stat) => (
               <StatCard key={stat.label} stat={stat} inView={inView} />
@@ -279,11 +275,7 @@ export default function Results() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '1.25rem',
-            }}
+            className="results-projects-grid"
           >
             {projects.map((project) => (
               <ProjectCard key={project.name} project={project} />

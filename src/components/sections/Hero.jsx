@@ -54,44 +54,28 @@ export default function Hero() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 'clamp(4.5rem, 8vw, 6.5rem) 1.5rem 3rem',
-        backgroundColor: 'var(--bg-primary)',
+        padding: 'clamp(4.5rem, 8vw, 6.5rem) clamp(1rem, 3vw, 1.5rem) 3rem',
+        backgroundColor: 'transparent',
         overflow: 'hidden',
       }}
     >
-      {/* Multi-color ambient orbs behind the card */}
+      {/* Ambient orbs */}
       <div aria-hidden="true" style={{
         position: 'absolute', top: '-12%', left: '20%',
-        width: '600px', height: '400px',
+        width: 'clamp(300px,50vw,600px)', height: 'clamp(200px,35vw,400px)',
         background: 'radial-gradient(ellipse, rgba(167,139,250,0.18) 0%, transparent 70%)',
         pointerEvents: 'none', filter: 'blur(40px)',
         animation: prefersReduced ? 'none' : 'glow-pulse 10s ease-in-out infinite',
       }} />
       <div aria-hidden="true" style={{
         position: 'absolute', bottom: '5%', right: '10%',
-        width: '500px', height: '400px',
+        width: 'clamp(250px,40vw,500px)', height: 'clamp(200px,35vw,400px)',
         background: 'radial-gradient(ellipse, rgba(251,191,36,0.14) 0%, transparent 70%)',
         pointerEvents: 'none', filter: 'blur(40px)',
         animation: prefersReduced ? 'none' : 'glow-pulse 12s ease-in-out infinite 3s',
       }} />
-      <div aria-hidden="true" style={{
-        position: 'absolute', top: '30%', right: '5%',
-        width: '400px', height: '400px',
-        background: 'radial-gradient(ellipse, rgba(79,209,197,0.14) 0%, transparent 70%)',
-        pointerEvents: 'none', filter: 'blur(40px)',
-        animation: prefersReduced ? 'none' : 'glow-pulse 9s ease-in-out infinite 1.5s',
-      }} />
 
-      {/* Noise grain */}
-      <svg aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.03, pointerEvents: 'none', zIndex: 1 }}>
-        <filter id="hero-noise">
-          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#hero-noise)" />
-      </svg>
-
-      {/* ── Hero Card ── */}
+      {/* Hero Card */}
       <motion.div
         initial={{ opacity: 0, y: prefersReduced ? 0 : 32 }}
         animate={{ opacity: 1, y: 0 }}
@@ -99,50 +83,41 @@ export default function Hero() {
         style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '88rem' }}
       >
         <Card
-          className="w-full relative overflow-hidden"
+          className="w-full relative overflow-hidden hero-card-inner"
           style={{
-            background: 'rgba(10,10,12,0.96)',
-            minHeight: 'clamp(480px, 65vh, 680px)',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'var(--hero-card-bg)',
+            border: '1px solid var(--hero-card-border)',
           }}
         >
-          {/* Spotlight beam */}
           <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
 
-          {/* Multi-color inner glows */}
+          {/* Inner glows */}
           <div aria-hidden="true" style={{
             position: 'absolute', bottom: 0, right: 0,
             width: '520px', height: '520px',
-            background: 'radial-gradient(circle at bottom right, rgba(167,139,250,0.18) 0%, transparent 60%)',
+            background: 'radial-gradient(circle at bottom right, rgba(167,139,250,0.15) 0%, transparent 60%)',
             pointerEvents: 'none', zIndex: 0,
           }} />
           <div aria-hidden="true" style={{
             position: 'absolute', top: 0, left: '30%',
             width: '400px', height: '300px',
-            background: 'radial-gradient(ellipse, rgba(79,209,197,0.1) 0%, transparent 70%)',
-            pointerEvents: 'none', zIndex: 0,
-          }} />
-          <div aria-hidden="true" style={{
-            position: 'absolute', bottom: '20%', left: '5%',
-            width: '300px', height: '300px',
-            background: 'radial-gradient(ellipse, rgba(244,114,182,0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(79,209,197,0.08) 0%, transparent 70%)',
             pointerEvents: 'none', zIndex: 0,
           }} />
 
-          {/* ── Split layout ── */}
-          <div className="flex h-full" style={{ minHeight: 'inherit' }}>
+          {/* ── Responsive split layout ── */}
+          <div className="hero-layout">
 
             {/* LEFT — content */}
-            <div className="flex-1 flex flex-col justify-center"
-              style={{ padding: 'clamp(2rem, 5vw, 3.5rem)', position: 'relative', zIndex: 10 }}>
+            <div className="hero-content">
 
-              {/* Eyebrow badge — violet accent */}
+              {/* Eyebrow badge */}
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0.1}
-                style={{ display: 'inline-flex', marginBottom: '1.75rem' }}>
+                style={{ display: 'inline-flex', marginBottom: '1.5rem' }}>
                 <span style={{
                   border: '1px solid rgba(167,139,250,0.3)',
                   borderRadius: 'var(--radius-full)',
-                  padding: '7px 18px',
+                  padding: '6px 16px',
                   fontFamily: 'var(--font-body)',
                   fontSize: 'var(--text-xs)',
                   fontWeight: 600,
@@ -157,76 +132,50 @@ export default function Hero() {
                     background: 'linear-gradient(135deg,#4fd1c5,#a78bfa)',
                     boxShadow: '0 0 8px rgba(167,139,250,0.7)',
                     animation: prefersReduced ? 'none' : 'pulse 2.2s ease-in-out infinite',
+                    flexShrink: 0,
                   }} />
                   Freelancer · Digital Solutions · DE
                 </span>
               </motion.div>
 
-              {/* Primary Brand Heading */}
-              <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0.2} style={{ marginBottom: '1.25rem' }}>
-                <h2 style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(18px, 2.8vw, 24px)',
-                  fontWeight: 700,
-                  letterSpacing: '-0.01em',
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px'
-                }}>
-                  MorphixFlow
-                  <span style={{ 
-                    width: '5px', height: '5px', borderRadius: '50%', background: 'var(--color-primary)' 
-                  }} />
-                  <span style={{ 
-                    background: 'var(--gradient-brand)', 
-                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}>
-                    Premium Freelancing Solutions
-                  </span>
-                </h2>
-              </motion.div>
-
               {/* Headline */}
               <h1 style={{ margin: '0 0 1.25rem', lineHeight: 1.05 }}>
-                {/* Line 1 — white to grey */}
                 <div style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(32px, 5vw, 64px)',
+                  fontSize: 'clamp(28px, 6vw, 64px)',
                   fontWeight: 700,
                   letterSpacing: '-0.02em',
-                  background: 'linear-gradient(to bottom, #f0f0f2, #8a8a95)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                   display: 'flex', flexWrap: 'wrap', gap: '0 0.22em',
                 }}>
                   {['Mehr', 'Kunden.'].map((word, i) => (
                     <motion.span key={word} custom={prefersReduced ? 0 : i}
                       initial="hidden" animate="visible"
                       variants={prefersReduced ? {} : wordVariant}
-                      style={{ display: 'inline-block' }}>
+                      style={{
+                        display: 'inline-block',
+                        background: 'var(--hero-heading-gradient)',
+                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      }}>
                       {word}
                     </motion.span>
                   ))}
                 </div>
-
-                {/* Line 2 — teal → violet → amber multi-color */}
                 <div style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(32px, 5vw, 64px)',
+                  fontSize: 'clamp(28px, 6vw, 64px)',
                   fontWeight: 700,
                   letterSpacing: '-0.02em',
-                  fontStyle: 'italic',
-                  background: 'var(--gradient-hero)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                   display: 'flex', flexWrap: 'wrap', gap: '0 0.22em',
                 }}>
                   {['Mehr', 'Umsatz.'].map((word, i) => (
                     <motion.span key={word} custom={prefersReduced ? 0 : 2 + i}
                       initial="hidden" animate="visible"
                       variants={prefersReduced ? {} : wordVariant}
-                      style={{ display: 'inline-block' }}>
+                      style={{
+                        display: 'inline-block',
+                        background: 'var(--gradient-hero)',
+                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      }}>
                       {word}
                     </motion.span>
                   ))}
@@ -238,15 +187,15 @@ export default function Hero() {
                 initial="hidden" animate="visible" variants={fadeUp} custom={0.4}
                 style={{
                   fontFamily: 'var(--font-body)',
-                  color: '#a0a0aa',
-                  fontSize: 'clamp(15px, 1.6vw, 17px)',
+                  color: 'var(--hero-subtext)',
+                  fontSize: 'clamp(14px, 1.6vw, 17px)',
                   maxWidth: '420px',
-                  margin: '0 0 2rem',
+                  margin: '0 0 1.75rem',
                   lineHeight: 1.72,
                 }}
               >
                 Webseiten, Automationen & Werbekampagnen — alles aus einer Hand.{' '}
-                <span style={{ color: '#34d399', fontWeight: 600 }}>
+                <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>
                   Persönlich 1:1 per WhatsApp beraten.
                 </span>
               </motion.p>
@@ -254,7 +203,7 @@ export default function Hero() {
               {/* CTAs */}
               <motion.div
                 initial="hidden" animate="visible" variants={fadeUp} custom={0.55}
-                style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '1.75rem' }}
+                style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '1.5rem' }}
               >
                 <motion.a
                   href="#contact"
@@ -266,11 +215,11 @@ export default function Hero() {
                     background: 'var(--gradient-cta)',
                     color: '#fff',
                     borderRadius: 'var(--radius-lg)',
-                    padding: '13px 24px',
+                    padding: '12px 22px',
                     fontFamily: 'var(--font-body)',
                     fontWeight: 700, fontSize: '14px',
                     textDecoration: 'none',
-                    boxShadow: '0 4px 20px rgba(124,58,237,0.35)',
+                    boxShadow: 'var(--btn-shadow)',
                     minHeight: '46px',
                   }}
                 >
@@ -287,14 +236,14 @@ export default function Hero() {
                   whileTap={prefersReduced ? {} : { scale: 0.97 }}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '6px',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    color: '#a0a0aa',
+                    border: '1px solid var(--hero-cta2-border)',
+                    color: 'var(--hero-cta2-color)',
                     borderRadius: 'var(--radius-lg)',
-                    padding: '13px 22px',
+                    padding: '12px 20px',
                     fontFamily: 'var(--font-body)',
                     fontWeight: 600, fontSize: '14px',
                     textDecoration: 'none',
-                    background: 'rgba(255,255,255,0.04)',
+                    background: 'var(--hero-cta2-bg)',
                     backdropFilter: 'blur(10px)',
                     minHeight: '46px',
                     transition: 'all 0.2s ease',
@@ -307,23 +256,20 @@ export default function Hero() {
                 </motion.a>
               </motion.div>
 
-              {/* Colored service pills */}
+              {/* Service pills */}
               <motion.div
                 initial="hidden" animate="visible"
-                style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '1.75rem' }}
+                style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '1.5rem' }}
               >
                 {services.map((s, i) => (
                   <motion.span
-                    key={s.label}
-                    custom={i}
-                    variants={pillVariant}
-                    initial="hidden"
-                    animate="visible"
+                    key={s.label} custom={i}
+                    variants={pillVariant} initial="hidden" animate="visible"
                     style={{
                       background: `rgba(${s.color === '#4fd1c5' ? '79,209,197' : s.color === '#a78bfa' ? '167,139,250' : s.color === '#f472b6' ? '244,114,182' : s.color === '#fbbf24' ? '251,191,36' : '56,189,248'},0.1)`,
                       border: `1px solid ${s.glow.replace('0.18', '0.3')}`,
                       borderRadius: 'var(--radius-full)',
-                      padding: '5px 13px',
+                      padding: '5px 12px',
                       fontFamily: 'var(--font-body)',
                       fontSize: '12px',
                       color: s.color,
@@ -336,14 +282,15 @@ export default function Hero() {
                 ))}
               </motion.div>
 
-              {/* 4-color metrics strip */}
+              {/* Metrics strip */}
               <motion.div
                 initial="hidden" animate="visible" variants={fadeUp} custom={0.9}
+                className="hero-metrics"
                 style={{
                   display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-                  border: '1px solid rgba(255,255,255,0.07)',
+                  border: '1px solid var(--hero-metrics-border)',
                   borderRadius: 'var(--radius-xl)',
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'var(--hero-metrics-bg)',
                   backdropFilter: 'blur(16px)',
                   overflow: 'hidden',
                   maxWidth: '440px',
@@ -351,13 +298,13 @@ export default function Hero() {
               >
                 {metrics.map((m, i) => (
                   <div key={m.label} style={{
-                    padding: '1rem 0.5rem',
+                    padding: '0.875rem 0.5rem',
                     textAlign: 'center',
-                    borderRight: i < metrics.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+                    borderRight: i < metrics.length - 1 ? '1px solid var(--hero-metrics-border)' : 'none',
                   }}>
                     <div style={{
                       fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(18px, 2vw, 24px)',
+                      fontSize: 'clamp(16px, 2vw, 24px)',
                       fontWeight: 700,
                       lineHeight: 1,
                       marginBottom: '4px',
@@ -366,7 +313,7 @@ export default function Hero() {
                     }}>
                       {m.value}
                     </div>
-                    <div style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#5a5a65', fontWeight: 500 }}>
+                    <div style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: 'var(--hero-metric-label)', fontWeight: 500 }}>
                       {m.label}
                     </div>
                   </div>
@@ -374,8 +321,8 @@ export default function Hero() {
               </motion.div>
             </div>
 
-            {/* RIGHT — Spline robot */}
-            <div className="flex-1 relative hidden md:block" style={{ minHeight: '480px' }}>
+            {/* RIGHT — Spline robot (always visible) */}
+            <div className="hero-robot">
               <SplineScene
                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                 className="w-full h-full"

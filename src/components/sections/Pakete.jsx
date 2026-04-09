@@ -110,7 +110,7 @@ const cardVariants = {
 };
 
 /* ── Price display with animated transitions ── */
-function PriceDisplay({ pricing, billing }) {
+function PriceDisplay({ pricing, billing, accentColor }) {
   const p = pricing[billing];
   const dividerColor = 'var(--price-divider)';
   const noteColor    = 'var(--price-note)';
@@ -136,7 +136,7 @@ function PriceDisplay({ pricing, billing }) {
             fontWeight: 400,
             lineHeight: 1,
             letterSpacing: '-0.02em',
-            color: 'var(--color-primary)',
+            color: accentColor || 'var(--color-primary)',
           }}>
             {p.main}
           </span>
@@ -296,7 +296,7 @@ function PackageCard({ pkg, billing }) {
           {pkg.tagline}
         </p>
 
-        <PriceDisplay pricing={pkg.pricing} billing={billing} />
+        <PriceDisplay pricing={pkg.pricing} billing={billing} accentColor={pkg.accentColor} />
 
         {/* Feature list */}
         <ul style={{
@@ -385,11 +385,17 @@ export default function Pakete() {
         transition: 'background-color 0.3s',
       }}
     >
-      {/* Ambient top glow */}
+      {/* Ambient glows — multi-color */}
       <div aria-hidden="true" style={{
-        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-        width: '900px', height: '380px',
-        background: 'radial-gradient(ellipse at 50% 0%, var(--color-primary-dim) 0%, transparent 70%)',
+        position: 'absolute', top: 0, left: '25%',
+        width: '500px', height: '300px',
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(79,209,197,0.12) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div aria-hidden="true" style={{
+        position: 'absolute', top: 0, right: '20%',
+        width: '400px', height: '280px',
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(167,139,250,0.1) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -414,7 +420,7 @@ export default function Pakete() {
           }}>
             Wähle dein{' '}
             <span style={{
-              background: 'var(--gradient-primary)',
+              background: 'var(--gradient-hero)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               fontStyle: 'italic',
             }}>
@@ -521,12 +527,8 @@ export default function Pakete() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(248px, 1fr))',
-              gap: '1.25rem',
-              alignItems: 'start',
-            }}
+            className="pakete-grid"
+            style={{ alignItems: 'start' }}
           >
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} billing={billing} />

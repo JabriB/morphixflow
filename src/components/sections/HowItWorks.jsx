@@ -231,12 +231,7 @@ export default function HowItWorks() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
-              gap: '1.25rem',
-              position: 'relative',
-            }}
+            className="how-it-works-grid"
           >
             {steps.map((step, i) => (
               <StepCard key={step.num} step={step} isLast={i === steps.length - 1} />
