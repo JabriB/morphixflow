@@ -339,8 +339,9 @@ export default function Hero() {
         transition={{ repeat: Infinity, duration: 2.2 }}
         onClick={() => document.querySelector('#solutions')?.scrollIntoView({ behavior: 'smooth' })}
         style={{
-          position: 'absolute', bottom: '1.5rem', left: '50%',
-          transform: 'translateX(-50%)', zIndex: 10,
+          position: 'absolute', bottom: '1.5rem',
+          left: 0, right: 0, margin: '0 auto',
+          width: 'fit-content', zIndex: 10,
           opacity: 0.4, cursor: 'pointer',
           background: 'none', border: 'none', padding: '8px',
         }}
