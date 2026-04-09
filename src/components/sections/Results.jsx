@@ -2,12 +2,12 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import useCountUp from '../../hooks/useCountUp';
 
-/* Success / growth metrics use --color-success; plain counts use --color-primary */
+/* Vibrant dynamic colors for the stats panel */
 const stats = [
-  { value: '50+', label: 'Projekte umgesetzt',  useSuccess: false },
-  { value: '98%', label: 'Kundenzufriedenheit', useSuccess: true  },
-  { value: '3x',  label: 'Durchschn. ROI',      useSuccess: true  },
-  { value: '24h', label: 'Antwortzeit',          useSuccess: false },
+  { value: '50+', label: 'Projekte umgesetzt',  color: 'var(--color-primary)', gradient: 'var(--gradient-primary)', glow: 'var(--color-primary-glow)' },
+  { value: '98%', label: 'Kundenzufriedenheit', color: 'var(--color-success)', gradient: 'var(--gradient-success)', glow: 'var(--color-success-glow)' },
+  { value: '3x',  label: 'Durchschn. ROI',      color: 'var(--color-amber)',   gradient: 'var(--gradient-amber)',   glow: 'var(--color-amber-glow)' },
+  { value: '24h', label: 'Antwortzeit',         color: 'var(--color-blue)',    gradient: 'var(--gradient-blue)',    glow: 'var(--color-blue-glow)' },
 ];
 
 const projects = [
@@ -22,15 +22,15 @@ const projects = [
     name: 'Lead Automation',
     category: 'AI Automation · CRM',
     result: '40 Std./Monat gespart',
-    accentGlow: 'var(--color-blue-glow)',
-    gradient: 'var(--gradient-blue)',
+    accentGlow: 'var(--color-violet-glow)',
+    gradient: 'var(--gradient-violet)',
   },
   {
     name: 'Meta Ads Kampagne',
     category: 'Facebook & Instagram Ads',
     result: '4.2× ROAS erzielt',
-    accentGlow: 'var(--color-amber-glow)',
-    gradient: 'var(--gradient-amber)',
+    accentGlow: 'var(--color-rose-glow)',
+    gradient: 'var(--gradient-rose)',
   },
 ];
 
@@ -53,10 +53,8 @@ function StatCard({ stat, inView }) {
       variants={itemVariants}
       whileHover={{
         y: -4,
-        boxShadow: stat.useSuccess
-          ? '0 8px 32px var(--color-success-glow)'
-          : '0 8px 32px var(--color-primary-glow)',
-        borderColor: stat.useSuccess ? 'color-mix(in srgb, var(--color-success) 25%, transparent)' : 'var(--border-primary)',
+        boxShadow: `0 8px 32px ${stat.glow}`,
+        borderColor: `color-mix(in srgb, ${stat.color} 25%, transparent)`,
         transition: { duration: 0.2 },
       }}
       style={{
@@ -77,7 +75,7 @@ function StatCard({ stat, inView }) {
         fontWeight: 400,
         lineHeight: 1,
         marginBottom: '0.5rem',
-        background: stat.useSuccess ? 'var(--gradient-success)' : 'var(--gradient-primary)',
+        background: stat.gradient,
         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
         letterSpacing: '-0.02em',
       }}>
@@ -221,10 +219,10 @@ export default function Results() {
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 400,
+            fontWeight: 700,
             margin: '0 0 0.9rem',
             lineHeight: 1.1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
           }}>
             Zahlen sprechen für sich
           </h2>

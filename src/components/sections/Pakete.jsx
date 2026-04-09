@@ -30,11 +30,11 @@ const packages = [
   },
   {
     id: 2, badge: 'Beliebteste Wahl', name: 'Customized', tagline: 'Website + Automation',
-    accentColor:  'var(--color-primary)',
-    accentBg:     'var(--color-primary-dim)',
-    accentBorder: 'var(--border-primary)',
-    accentGlow:   'var(--color-primary-glow)',
-    gradient:     'var(--gradient-primary)',
+    accentColor:  'var(--color-violet)',
+    accentBg:     'var(--color-violet-dim)',
+    accentBorder: 'color-mix(in srgb, var(--color-violet) 22%, transparent)',
+    accentGlow:   'var(--color-violet-glow)',
+    gradient:     'var(--gradient-violet)',
     featured: true, vip: false,
     pricing: {
       monthly: { main: '149 €',  suffix: '/ Monat', note: null },
@@ -110,10 +110,10 @@ const cardVariants = {
 };
 
 /* ── Price display with animated transitions ── */
-function PriceDisplay({ pricing, billing, isFeatured }) {
+function PriceDisplay({ pricing, billing }) {
   const p = pricing[billing];
-  const dividerColor = isFeatured ? 'rgba(255,255,255,0.18)' : 'var(--price-divider)';
-  const noteColor    = isFeatured ? 'rgba(255,255,255,0.65)' : 'var(--price-note)';
+  const dividerColor = 'var(--price-divider)';
+  const noteColor    = 'var(--price-note)';
 
   return (
     <AnimatePresence mode="wait">
@@ -136,7 +136,7 @@ function PriceDisplay({ pricing, billing, isFeatured }) {
             fontWeight: 400,
             lineHeight: 1,
             letterSpacing: '-0.02em',
-            color: isFeatured ? '#fff' : 'var(--color-primary)',
+            color: 'var(--color-primary)',
           }}>
             {p.main}
           </span>
@@ -144,7 +144,7 @@ function PriceDisplay({ pricing, billing, isFeatured }) {
             <span style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-sm)',
-              color: isFeatured ? 'rgba(255,255,255,0.7)' : 'var(--text-subtle)',
+              color: 'var(--text-subtle)',
               fontWeight: 500,
             }}>
               {p.suffix}
@@ -172,15 +172,17 @@ function PackageCard({ pkg, billing }) {
   const prefersReduced = useReducedMotion();
   const { featured: isFeatured, vip: isVip } = pkg;
 
-  /* Featured: solid primary gradient; VIP: gradient border; others: glass card */
+  /* Featured: elevated surface + accent border; VIP: amber border; others: glass card */
   const cardStyle = isFeatured
     ? {
-        background: 'var(--gradient-cta)',
-        border: 'none',
+        background: 'var(--bg-elevated)',
+        border: `1px solid color-mix(in srgb, ${pkg.accentColor} 38%, transparent)`,
         borderRadius: 'var(--radius-2xl)',
         padding: '2.25rem',
         position: 'relative',
-        boxShadow: `0 10px 52px var(--color-primary-glow), 0 0 0 1px rgba(255,255,255,0.08)`,
+        boxShadow: `0 0 0 1px color-mix(in srgb, ${pkg.accentColor} 8%, transparent), 0 12px 48px rgba(0,0,0,0.6), 0 0 32px color-mix(in srgb, ${pkg.accentColor} 10%, transparent)`,
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
         transition: 'all 0.3s ease',
       }
     : isVip
@@ -226,7 +228,7 @@ function PackageCard({ pkg, billing }) {
         whileHover={prefersReduced ? {} : {
           y: -5,
           boxShadow: isFeatured
-            ? `0 18px 64px var(--color-primary-glow)`
+            ? `0 18px 64px ${pkg.accentGlow}`
             : isVip
             ? `0 14px 52px var(--color-amber-glow)`
             : `0 10px 40px ${pkg.accentGlow}`,
@@ -248,9 +250,9 @@ function PackageCard({ pkg, billing }) {
               textTransform: 'uppercase',
               ...(isFeatured
                 ? {
-                    background: 'rgba(255,255,255,0.2)',
-                    border: '1px solid rgba(255,255,255,0.32)',
-                    color: '#fff',
+                    background: pkg.accentBg,
+                    border: `1px solid color-mix(in srgb, ${pkg.accentColor} 32%, transparent)`,
+                    color: pkg.accentColor,
                   }
                 : isVip
                 ? {
@@ -275,10 +277,10 @@ function PackageCard({ pkg, billing }) {
           fontFamily: 'var(--font-display)',
           margin: '0 0 0.3rem',
           fontSize: 'var(--text-xl)',
-          fontWeight: 400,
-          letterSpacing: '-0.01em',
+          fontWeight: 700,
+          letterSpacing: '-0.02em',
           lineHeight: 1.15,
-          color: isFeatured ? '#fff' : isVip ? 'var(--color-amber)' : 'var(--text-primary)',
+          color: isFeatured ? pkg.accentColor : isVip ? 'var(--color-amber)' : 'var(--text-primary)',
         }}>
           {pkg.name}
         </h3>
@@ -286,7 +288,7 @@ function PackageCard({ pkg, billing }) {
         {/* Tagline */}
         <p style={{
           fontFamily: 'var(--font-body)',
-          color: isFeatured ? 'rgba(255,255,255,0.72)' : 'var(--text-muted)',
+          color: 'var(--text-muted)',
           fontSize: 'var(--text-sm)',
           margin: '0 0 1.5rem',
           fontWeight: 500,
@@ -294,7 +296,7 @@ function PackageCard({ pkg, billing }) {
           {pkg.tagline}
         </p>
 
-        <PriceDisplay pricing={pkg.pricing} billing={billing} isFeatured={isFeatured} />
+        <PriceDisplay pricing={pkg.pricing} billing={billing} />
 
         {/* Feature list */}
         <ul style={{
@@ -307,15 +309,13 @@ function PackageCard({ pkg, billing }) {
               display: 'flex', alignItems: 'flex-start', gap: '9px',
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-sm)',
-              color: f.included
-                ? (isFeatured ? 'rgba(255,255,255,0.94)' : 'var(--text-feature)')
-                : (isFeatured ? 'rgba(255,255,255,0.32)' : 'var(--text-disabled)'),
+              color: f.included ? 'var(--text-feature)' : 'var(--text-disabled)',
               textDecoration: f.included ? 'none' : 'line-through',
               lineHeight: 1.6,
             }}>
               {f.included
-                ? <Check size={14} style={{ flexShrink: 0, marginTop: '2px', color: isFeatured ? 'rgba(255,255,255,0.9)' : 'var(--color-success)' }} aria-hidden="true" />
-                : <X size={14} style={{ flexShrink: 0, marginTop: '2px', color: isFeatured ? 'rgba(255,255,255,0.28)' : 'var(--text-disabled)' }} aria-hidden="true" />
+                ? <Check size={14} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--color-success)' }} aria-hidden="true" />
+                : <X size={14} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--text-disabled)' }} aria-hidden="true" />
               }
               {f.text}
             </li>
@@ -329,7 +329,7 @@ function PackageCard({ pkg, billing }) {
           whileHover={prefersReduced ? {} : {
             scale: 1.02,
             boxShadow: isFeatured
-              ? '0 0 32px rgba(255,255,255,0.28)'
+              ? `0 0 32px ${pkg.accentGlow}`
               : `0 0 24px ${pkg.accentGlow}`,
           }}
           whileTap={prefersReduced ? {} : { scale: 0.97 }}
@@ -347,7 +347,7 @@ function PackageCard({ pkg, billing }) {
             minHeight: '48px',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
             ...(isFeatured
-              ? { background: '#fff', color: 'var(--color-primary-dark)', boxShadow: '0 4px 20px rgba(255,255,255,0.2)' }
+              ? { background: pkg.gradient, color: '#fff', boxShadow: `0 4px 20px color-mix(in srgb, ${pkg.accentColor} 40%, transparent)` }
               : isVip
               ? { background: 'var(--gradient-amber)', color: '#1a0f00', boxShadow: `0 4px 16px var(--color-amber-glow)` }
               : {
@@ -400,17 +400,17 @@ export default function Pakete() {
           initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: '3rem', textAlign: 'center' }}
+          style={{ marginBottom: '3rem' }}
         >
           <p className="section-label" style={{ margin: '0 0 1rem' }}>04 · Pakete</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 400,
+            fontWeight: 700,
             margin: '0 0 1.1rem',
             lineHeight: 1.1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
           }}>
             Wähle dein{' '}
             <span style={{
@@ -425,7 +425,7 @@ export default function Pakete() {
             fontFamily: 'var(--font-body)',
             color: 'var(--text-muted)',
             fontSize: 'var(--text-base)',
-            margin: '0 auto 2.5rem',
+            margin: '0 0 2.5rem',
             maxWidth: '480px',
             lineHeight: 1.7,
           }}>

@@ -16,10 +16,10 @@ const cards = [
     Icon: Layers,
   },
   {
-    accentColor:  'var(--color-blue)',
-    accentBg:     'var(--color-blue-dim)',
-    accentBorder: 'color-mix(in srgb, var(--color-blue) 22%, transparent)',
-    accentGlow:   'var(--color-blue-glow)',
+    accentColor:  'var(--color-violet)',
+    accentBg:     'var(--color-violet-dim)',
+    accentBorder: 'rgba(167,139,250,0.25)',
+    accentGlow:   'var(--color-violet-glow)',
     title: 'AI Automationen',
     description:
       'Intelligente Workflow-Automationen die dein Business auf Autopilot stellen. CRM, Lead-Generierung, E-Mail & mehr — powered by KI.',
@@ -38,10 +38,10 @@ const cards = [
     Icon: MonitorPlay,
   },
   {
-    accentColor:  'var(--color-success)',
-    accentBg:     'var(--color-success-dim)',
-    accentBorder: 'color-mix(in srgb, var(--color-success) 22%, transparent)',
-    accentGlow:   'var(--color-success-glow)',
+    accentColor:  'var(--color-blue)',
+    accentBg:     'var(--color-blue-dim)',
+    accentBorder: 'rgba(56,189,248,0.25)',
+    accentGlow:   'var(--color-blue-glow)',
     title: 'AI SEO & Conversions',
     description:
       'KI-gestützte Suchmaschinenoptimierung für nachhaltigen organischen Traffic. Conversion-Optimierung für maximale Ergebnisse.',
@@ -66,6 +66,7 @@ function ServiceCard({ card }) {
 
   return (
     <motion.div
+      className="service-card-wrap"
       variants={cardVariants}
       whileHover={prefersReduced ? {} : {
         y: -5,
@@ -152,6 +153,14 @@ function ServiceCard({ card }) {
           </span>
         ))}
       </div>
+
+      {/* Hover reveal — "Mehr erfahren" */}
+      <span className="service-link-reveal" aria-hidden="true">
+        Mehr erfahren
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+        </svg>
+      </span>
     </motion.div>
   );
 }
@@ -180,17 +189,17 @@ export default function Services() {
           initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: '3.5rem', textAlign: 'center' }}
+          style={{ marginBottom: '3.5rem' }}
         >
           <p className="section-label" style={{ margin: '0 0 1rem' }}>02 · Leistungen</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 400,
+            fontWeight: 700,
             margin: '0 0 1.1rem',
             lineHeight: 1.1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
           }}>
             Alles was dein Business braucht
           </h2>
@@ -198,7 +207,7 @@ export default function Services() {
             fontFamily: 'var(--font-body)',
             color: 'var(--text-muted)',
             fontSize: 'var(--text-base)',
-            margin: '0 auto',
+            margin: 0,
             maxWidth: '520px',
             lineHeight: 1.7,
           }}>
@@ -211,11 +220,7 @@ export default function Services() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))',
-              gap: '1.25rem',
-            }}
+            className="services-grid"
           >
             {cards.map((card) => <ServiceCard key={card.title} card={card} />)}
           </motion.div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Mail, MapPin, Clock } from 'lucide-react';
+import { Select } from '../ui/select';
 
 /* ── Field wrapper ── */
 function Field({ label, required, children, err }) {
@@ -33,24 +34,32 @@ function Field({ label, required, children, err }) {
 }
 
 const trustPoints = [
-  { label: 'hello@morphixflow.io', Icon: Mail },
-  { label: 'Aachen, Deutschland',  Icon: MapPin },
-  { label: 'Antwort in 24h',       Icon: Clock },
+  { label: 'hello@morphixflow.io', Icon: Mail, color: 'var(--color-blue)' },
+  { label: 'Aachen, Deutschland',  Icon: MapPin, color: 'var(--color-amber)' },
+  { label: 'Antwort in 24h',       Icon: Clock, color: 'var(--color-success)' },
+];
+
+const paketOptions = [
+  { label: 'Essential', value: 'essential' },
+  { label: 'Customized', value: 'customized' },
+  { label: 'All-in-One Premium', value: 'premium' },
+  { label: 'VIP', value: 'vip' },
+  { label: 'Noch unsicher', value: 'unsicher' },
 ];
 
 const inputBase = {
   background: 'var(--input-bg)',
   border: '1.5px solid var(--input-border)',
   borderRadius: 'var(--radius-lg)',
-  padding: '14px 18px',
+  padding: '16px 20px',
   color: 'var(--text-primary)',
   fontFamily: 'var(--font-body)',
   fontSize: 'var(--text-base)',
   width: '100%',
   boxSizing: 'border-box',
   outline: 'none',
-  transition: 'border-color 0.22s ease, box-shadow 0.22s ease',
-  minHeight: '50px',
+  transition: 'all 0.22s ease',
+  minHeight: '56px',
 };
 
 export default function Contact() {
@@ -115,17 +124,17 @@ export default function Contact() {
           initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', marginBottom: '2.75rem' }}
+          style={{ marginBottom: '2.75rem' }}
         >
           <p className="section-label" style={{ margin: '0 0 1rem' }}>06 · Kontakt</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 400,
+            fontWeight: 700,
             margin: '0 0 1rem',
             lineHeight: 1.1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
           }}>
             Lass uns gemeinsam loslegen
           </h2>
@@ -207,9 +216,9 @@ export default function Contact() {
             background: 'var(--bg-card)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-2xl)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
-            padding: '2.25rem',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            padding: 'clamp(1.5rem, 5vw, 3.5rem)',
             boxShadow: 'var(--card-shadow)',
           }}
         >
@@ -260,10 +269,10 @@ export default function Contact() {
                 key="form"
                 onSubmit={handleSubmit}
                 noValidate
-                style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
               >
                 {/* Row 1: Name + Email */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem' }}>
                   <Field label="Vollständiger Name" required err={errors.name}>
                     <input
                       type="text"
@@ -291,7 +300,7 @@ export default function Contact() {
                 </div>
 
                 {/* Row 2: Phone + Package */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem' }}>
                   <Field label="Telefonnummer" required err={errors.phone}>
                     <input
                       type="tel"
@@ -305,19 +314,12 @@ export default function Contact() {
                     />
                   </Field>
                   <Field label="Welches Paket interessiert dich?">
-                    <select
+                    <Select
+                      options={paketOptions}
                       value={form.paket}
-                      onChange={(e) => setForm({ ...form, paket: e.target.value })}
-                      onFocus={handleFocus} onBlur={handleBlur}
-                      style={{ ...inputBase, cursor: 'pointer' }}
-                    >
-                      <option value="">— Paket wählen —</option>
-                      <option value="essential">Essential</option>
-                      <option value="customized">Customized</option>
-                      <option value="premium">All-in-One Premium</option>
-                      <option value="vip">VIP</option>
-                      <option value="unsicher">Noch unsicher</option>
-                    </select>
+                      onChange={(val) => setForm({ ...form, paket: val })}
+                      placeholder="— Paket wählen —"
+                    />
                   </Field>
                 </div>
 
@@ -352,7 +354,7 @@ export default function Contact() {
                     color: '#fff',
                     border: 'none',
                     borderRadius: 'var(--radius-lg)',
-                    padding: '16px 28px',
+                    padding: '18px 28px',
                     fontFamily: 'var(--font-body)',
                     fontWeight: 700,
                     fontSize: 'var(--text-base)',
@@ -360,7 +362,7 @@ export default function Contact() {
                     boxShadow: 'var(--btn-shadow)',
                     transition: 'all 0.28s ease',
                     letterSpacing: '0.01em',
-                    minHeight: '52px',
+                    minHeight: '56px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                   }}
                 >
@@ -384,7 +386,7 @@ export default function Contact() {
             gap: '0.6rem', marginTop: '1.75rem',
           }}
         >
-          {trustPoints.map(({ label, Icon }) => (
+          {trustPoints.map(({ label, Icon, color }) => (
             <div key={label} style={{
               display: 'inline-flex', alignItems: 'center', gap: '7px',
               background: 'var(--bg-card)',
@@ -397,7 +399,7 @@ export default function Contact() {
               backdropFilter: 'blur(10px)',
               fontWeight: 500,
             }}>
-              <Icon size={13} style={{ color: 'var(--accent-text)', flexShrink: 0 }} aria-hidden="true" />
+              <Icon size={13} style={{ color: color, flexShrink: 0 }} aria-hidden="true" />
               {label}
             </div>
           ))}

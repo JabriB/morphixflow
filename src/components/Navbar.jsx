@@ -70,10 +70,10 @@ export default function Navbar() {
             onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '20px', fontWeight: 400,
-              letterSpacing: '-0.01em',
+              fontSize: '20px', fontWeight: 700,
+              letterSpacing: '-0.02em',
               textDecoration: 'none',
-              background: 'var(--gradient-primary)',
+              background: 'var(--gradient-brand)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}
           >

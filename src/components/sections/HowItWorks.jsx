@@ -17,11 +17,11 @@ const steps = [
   },
   {
     num: '02',
-    accentColor:  'var(--color-blue)',
-    accentBg:     'var(--color-blue-dim)',
-    accentBorder: 'color-mix(in srgb, var(--color-blue) 22%, transparent)',
-    accentGlow:   'var(--color-blue-glow)',
-    gradient:     'var(--gradient-blue)',
+    accentColor:  'var(--color-violet)',
+    accentBg:     'var(--color-violet-dim)',
+    accentBorder: 'rgba(167,139,250,0.25)',
+    accentGlow:   'var(--color-violet-glow)',
+    gradient:     'var(--gradient-violet)',
     Icon: PenTool,
     title: 'Individuelles Konzept',
     body: 'Du bekommst ein maßgeschneidertes Angebot. Kein Copy-Paste — jedes Projekt wird nach deinen genauen Wünschen geplant.',
@@ -200,17 +200,17 @@ export default function HowItWorks() {
           initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: '3.5rem', textAlign: 'center' }}
+          style={{ marginBottom: '3.5rem' }}
         >
           <p className="section-label" style={{ margin: '0 0 1rem' }}>03 · Prozess</p>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             color: 'var(--text-primary)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 400,
+            fontWeight: 700,
             margin: '0 0 1.1rem',
             lineHeight: 1.1,
-            letterSpacing: '-0.01em',
+            letterSpacing: '-0.02em',
           }}>
             So arbeiten wir zusammen
           </h2>
@@ -218,7 +218,7 @@ export default function HowItWorks() {
             fontFamily: 'var(--font-body)',
             color: 'var(--text-muted)',
             fontSize: 'var(--text-base)',
-            margin: '0 auto',
+            margin: 0,
             lineHeight: 1.7,
             maxWidth: '460px',
           }}>
