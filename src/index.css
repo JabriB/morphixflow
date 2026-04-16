@@ -843,6 +843,7 @@ h4 {
 @media (min-width: 768px) {
   .hero-layout {
     flex-direction: row;
+    align-items: flex-end;
   }
 }
 
@@ -867,6 +868,17 @@ h4 {
   height: clamp(420px, 100vw, 560px);
   position: relative;
   flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Push Spline canvas so robot feet sit at the container bottom */
+.hero-robot > * {
+  width: 100%;
+  height: 130%;
+  transform: translateY(-8%);
 }
 
 @media (min-width: 768px) {
