@@ -864,7 +864,7 @@ h4 {
 
 .hero-robot {
   width: 100%;
-  height: clamp(420px, 100vw, 560px);
+
   position: relative;
   flex-shrink: 0;
 }
@@ -1041,11 +1041,6 @@ iframe {
   /* ── Hero card inner padding ── */
   .hero-content {
     padding: 1rem 0.875rem !important;
-  }
-
-  /* ── Hero robot: Fold 5 outer screen ── */
-  .hero-robot {
-    height: 320px !important;
   }
 
   /* ── Hero metrics: always 2×2 ── */

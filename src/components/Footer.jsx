@@ -1,38 +1,38 @@
 const navLinks = [
-  { label: 'Start',      href: '#home' },
+  { label: 'Start', href: '#home' },
   { label: 'Leistungen', href: '#solutions' },
-  { label: 'Prozess',    href: '#how-it-works' },
-  { label: 'Pakete',     href: '#pakete' },
-  { label: 'Kontakt',    href: '#contact' },
+  { label: 'Prozess', href: '#how-it-works' },
+  { label: 'Pakete', href: '#pakete' },
+  { label: 'Kontakt', href: '#contact' },
 ];
 
 const socials = [
-  {
-    label: 'LinkedIn', href: '#',
-    color: 'var(--color-blue)', dim: 'var(--color-blue-dim)', border: 'color-mix(in srgb, var(--color-blue) 22%, transparent)',
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-      </svg>
-    ),
-  },
   {
     label: 'Instagram', href: '#',
     color: 'var(--color-rose)', dim: 'var(--color-rose-dim)', border: 'color-mix(in srgb, var(--color-rose) 22%, transparent)',
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
       </svg>
     ),
   },
   {
-    label: 'X / Twitter', href: '#',
+    label: 'TikTok', href: '#',
     color: 'var(--color-primary)', dim: 'var(--color-primary-dim)', border: 'color-mix(in srgb, var(--color-primary) 22%, transparent)',
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.75a8.16 8.16 0 0 0 4.77 1.52V6.82a4.85 4.85 0 0 1-1-.13z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'WhatsApp', href: '#',
+    color: 'var(--color-success)', dim: 'var(--color-success-dim)', border: 'color-mix(in srgb, var(--color-success) 22%, transparent)',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M16 2C8.268 2 2 8.268 2 16c0 2.478.648 4.804 1.782 6.818L2 30l7.374-1.758A13.932 13.932 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.52 11.52 0 01-5.874-1.608l-.42-.248-4.374 1.042 1.078-4.258-.274-.44A11.52 11.52 0 014.4 16C4.4 9.594 9.594 4.4 16 4.4S27.6 9.594 27.6 16 22.406 27.6 16 27.6zm6.32-8.62c-.346-.174-2.05-1.012-2.368-1.128-.318-.116-.55-.174-.78.174-.232.346-.896 1.128-1.098 1.36-.202.232-.404.26-.75.086-.346-.174-1.46-.538-2.78-1.714-1.028-.916-1.722-2.048-1.924-2.394-.202-.346-.022-.534.152-.706.156-.154.346-.404.52-.606.172-.202.23-.346.346-.578.116-.232.058-.434-.028-.608-.087-.174-.78-1.882-1.07-2.578-.282-.676-.568-.584-.78-.594l-.664-.012c-.232 0-.608.086-.926.434-.318.346-1.214 1.186-1.214 2.892s1.242 3.354 1.416 3.586c.174.232 2.444 3.732 5.922 5.234.828.358 1.474.572 1.978.732.832.264 1.588.226 2.186.138.666-.1 2.05-.838 2.34-1.648.29-.81.29-1.504.202-1.648-.086-.144-.318-.232-.664-.406z" />
       </svg>
     ),
   },
@@ -171,7 +171,7 @@ export default function Footer() {
             fontSize: 'var(--text-xs)',
             margin: 0,
           }}>
-            © 2025 MorphixFlow. Alle Rechte vorbehalten.
+            © 2026 MorphixFlow. Alle Rechte vorbehalten.
           </p>
           <a
             href="#"
