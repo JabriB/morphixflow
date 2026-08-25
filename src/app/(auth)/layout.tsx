@@ -20,11 +20,11 @@ export default function AuthLayout({
           {site.name}
         </Link>
 
-        <main className="flex flex-1 items-center justify-center py-12">
+        <main id="inhalt" className="flex flex-1 items-center justify-center py-12">
           <div className="w-full max-w-sm">{children}</div>
         </main>
 
-        <p className="text-2xs text-ink-faint">
+        <p className="text-2xs text-ink-subtle">
           {site.city}, {site.country}
         </p>
       </div>

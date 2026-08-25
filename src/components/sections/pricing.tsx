@@ -161,14 +161,14 @@ export function Pricing() {
                     <Minus
                       size={14}
                       weight="bold"
-                      className="mt-0.5 shrink-0 text-ink-faint"
+                      className="mt-0.5 shrink-0 text-ink-subtle"
                       aria-hidden="true"
                     />
                   )}
                   <span
                     className={cn(
                       'text-xs leading-relaxed',
-                      feature.included ? 'text-ink-muted' : 'text-ink-faint',
+                      feature.included ? 'text-ink-muted' : 'text-ink-subtle',
                     )}
                   >
                     {feature.label}

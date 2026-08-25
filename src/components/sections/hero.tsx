@@ -68,7 +68,7 @@ export function Hero() {
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.62, ease: EASE }}
-          className="mt-9 flex flex-wrap items-center gap-3"
+          className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
         >
           <ButtonLink
             href={waHref}

@@ -26,7 +26,7 @@ function GoogleMark({ size = 16 }: { size?: number }) {
 
 function Stars({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5" aria-label={`${rating} von 5 Sternen`}>
+    <div role="img" className="flex gap-0.5" aria-label={`${rating} von 5 Sternen`}>
       {Array.from({ length: 5 }, (_, i) => (
         <Star
           key={i}

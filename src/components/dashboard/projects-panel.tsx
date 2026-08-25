@@ -22,7 +22,7 @@ const statusTone: Record<StatusKey, string> = {
   active: 'bg-positive/12 text-positive',
   completed: 'bg-white/8 text-ink-muted',
   review: 'bg-notice/12 text-notice',
-  paused: 'bg-white/6 text-ink-subtle',
+  paused: 'bg-white/6 text-ink-muted',
 }
 
 const filterKeys = ['all', 'active', 'completed', 'web', 'ai', 'ads'] as const
@@ -82,7 +82,7 @@ export function ProjectsPanel() {
   }
 
   return (
-    <main className="min-w-0 flex-1 p-6">
+    <main id="inhalt" className="min-w-0 flex-1 p-6">
       <header className="mb-7 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-xl">{S.title}</h1>
@@ -268,7 +268,7 @@ export function ProjectsPanel() {
                         data-numeric
                         className={cn(
                           'px-6 py-3.5 text-sm font-bold',
-                          p.roi ? 'text-positive' : 'text-ink-faint',
+                          p.roi ? 'text-positive' : 'text-ink-subtle',
                         )}
                       >
                         {p.roi ?? 'k. A.'}
@@ -283,7 +283,7 @@ export function ProjectsPanel() {
                           </div>
                           <span
                             data-numeric
-                            className="w-8 text-2xs text-ink-subtle"
+                            className="w-8 text-2xs text-ink-muted"
                           >
                             {p.progress}%
                           </span>
