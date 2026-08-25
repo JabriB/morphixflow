@@ -1,0 +1,246 @@
+@import 'tailwindcss';
+
+/* ══════════════════════════════════════════════════════════════════
+   MorphixFlow — Dark Cinematic
+   ------------------------------------------------------------------
+   The interface is achromatic. Colour enters the page through
+   photography, never through decoration. One accent exists and it
+   only ever marks something you can act on.
+   ══════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Ground ─────────────────────────────────────────────────────
+     A near-black with a faint cool cast, so photography sitting on
+     it reads warm by contrast. */
+  --color-ground: #08080a;
+  --color-raised: #0e0e11;
+  --color-card: #141418;
+  --color-well: #111114;
+
+  /* ── Ink ──────────────────────────────────────────────────────── */
+  --color-ink: #fafafa;
+  --color-ink-muted: #a0a0a8;
+  --color-ink-subtle: #6b6b75;
+  --color-ink-faint: #45454e;
+
+  /* ── Accent ─────────────────────────────────────────────────────
+     One. 6.4:1 on ground. Reserved for actionable surfaces:
+     primary buttons, focus rings, active nav, links on hover. */
+  --color-accent: #ff5c29;
+  --color-accent-hover: #ff7245;
+  --color-accent-press: #e84a18;
+  --color-accent-ink: #0a0a0b;
+
+  /* ── Data semantics ─────────────────────────────────────────────
+     Dashboard only, where a number's direction carries meaning.
+     Never used as decoration on the marketing pages. */
+  --color-positive: #3fcf8e;
+  --color-negative: #f5544f;
+  --color-notice: #e5a93d;
+
+  /* ── Lines ──────────────────────────────────────────────────────
+     Elevation is declared once: a hairline OR a shadow, never both. */
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.13);
+
+  /* ── Type ───────────────────────────────────────────────────────
+     --font-display / --font-body are wired to next/font in layout. */
+  --font-display: var(--font-cabinet), 'Inter', system-ui, sans-serif;
+  --font-body: var(--font-satoshi), 'Inter', system-ui, sans-serif;
+
+  /* Fluid scale. Display tops out at 6rem per the craft floor. */
+  --text-2xs: clamp(0.6875rem, 0.67rem + 0.09vw, 0.75rem);
+  --text-xs: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.85rem + 0.13vw, 0.9375rem);
+  --text-base: clamp(0.9375rem, 0.9rem + 0.19vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.06rem + 0.32vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.5rem + 1.2vw, 2.5rem);
+  --text-3xl: clamp(2.25rem, 1.8rem + 2.2vw, 3.75rem);
+  --text-4xl: clamp(2.75rem, 1.9rem + 4.2vw, 6rem);
+
+  /* ── Radius ─────────────────────────────────────────────────────
+     Cards sit at 12–16px. Pills are for small controls only. */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+
+  /* ── Depth ──────────────────────────────────────────────────────
+     Every shadow carries an offset and a soft blur. No zero-offset
+     coloured halos. */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 6px rgb(0 0 0 / 0.28);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.45), 0 12px 32px rgb(0 0 0 / 0.32);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.5), 0 24px 64px rgb(0 0 0 / 0.42);
+
+  /* ── Motion ─────────────────────────────────────────────────────
+     Exponential ease-out. One authored moment per surface. */
+  --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-expo: cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Base
+   ══════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* clip, not hidden: keeps position:fixed working */
+    overflow-x: clip;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    /* Tracking floor is -0.04em; -0.025em reads better at these sizes. */
+    letter-spacing: -0.025em;
+    line-height: 1.04;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+    margin: 0;
+  }
+
+  /* ── Browser surfaces ─────────────────────────────────────────
+     The parts we did not draw still belong to the design. */
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  :root {
+    caret-color: var(--color-accent);
+    scrollbar-color: rgb(255 255 255 / 0.16) transparent;
+    scrollbar-width: thin;
+    accent-color: var(--color-accent);
+    color-scheme: dark;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 0.14);
+    border: 3px solid var(--color-ground);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(255 255 255 / 0.24);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+  }
+
+  /* Numbers in data contexts line up column to column. */
+  table,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-ink-subtle);
+    opacity: 1;
+  }
+
+  img,
+  video,
+  svg,
+  canvas {
+    max-width: 100%;
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Utilities
+   ══════════════════════════════════════════════════════════════════ */
+
+@utility measure {
+  /* Body copy sits at 65–75ch. */
+  max-width: 68ch;
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+}
+
+/* A film-grade vertical scrim for laying type over photography. */
+@utility scrim-b {
+  background-image: linear-gradient(
+    to top,
+    rgb(8 8 10 / 0.96) 0%,
+    rgb(8 8 10 / 0.82) 26%,
+    rgb(8 8 10 / 0.4) 58%,
+    rgb(8 8 10 / 0) 100%
+  );
+}
