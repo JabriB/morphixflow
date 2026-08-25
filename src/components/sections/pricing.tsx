@@ -154,7 +154,7 @@ export function Pricing() {
                     <Check
                       size={14}
                       weight="bold"
-                      className="mt-0.5 shrink-0 text-accent"
+                      className="mt-0.5 shrink-0 text-ink"
                       aria-hidden="true"
                     />
                   ) : (

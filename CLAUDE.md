@@ -17,11 +17,25 @@
 
 ## 📁 Project Context
 
-- **Stack:** React + Vite, JSX (`allowJs: true`), Framer Motion, `@splinetool/react-spline`
-- **Key entry points:** `src/App.jsx`, `src/index.css`, `src/components/sections/`, `src/components/Navbar.jsx`
-- **Styling:** Tailwind CSS + CSS custom properties in `src/index.css`. Responsive layout via explicit CSS classes (`.hero-robot`, `.nav-links`, etc.) with `!important` media queries — Tailwind breakpoints are unreliable in this project
-- **State management:** Custom `ThemeContext` (dark/light). No Redux/Zustand
-- **Deployment:** Not configured yet
+- **Stack:** Next.js 16 App Router, React 19, TypeScript, Tailwind v4, `motion`, `@phosphor-icons/react`
+- **Key entry points:** `src/app/layout.tsx`, `src/app/globals.css`, `src/content/*.ts`, `src/components/sections/`
+- **Copy:** all user-facing German strings live in `src/content/{site,auth,dashboard}.ts`. Edit copy there, never inline in a component.
+- **Styling:** Tailwind v4 utilities only. Design tokens are defined once in the `@theme` block of `src/app/globals.css`. No inline `style={{}}` objects, no `!important` media queries, no separate Tailwind config file.
+- **Theme:** dark only, by design. The direction is "Dark Cinematic": the UI is achromatic and colour enters through photography. The single accent (`--color-accent`) is reserved for things you can act on: primary buttons, focus rings, active nav, badges. Never use it for decoration.
+- **Fonts:** Cabinet Grotesk + Satoshi, self-hosted in `src/app/fonts/`, wired via `next/font/local` in `src/app/fonts.ts`.
+- **Imagery:** `public/media/*.jpg`, generated via the OpenArt MCP as one cinematic shoot. Regenerate with the shared style preamble so new assets match.
+- **Deployment:** Not configured yet. The Vite build is preserved on the `master` branch; this work lives on `redesign/next-cinematic`.
+
+## 🎨 Design Floor (do not regress)
+
+These were removed deliberately. Reintroducing any of them undoes the redesign:
+
+- No gradient text, no glass-as-decoration, no grid-line background overlays
+- No eyebrow/kicker labels above headings, no `01 / 02` section numbers
+- No icon + heading + text card grids as page structure
+- Elevation once per surface: a hairline **or** a shadow, never both
+- Body text must clear 4.5:1. `--color-ink-subtle` is the lowest step that passes; `ink-faint` is for decorative marks only
+- Em-dashes are out of the German copy; sentences are split instead
 
 ## ✅ Code Conventions
 
@@ -48,17 +62,23 @@
 
 ## 📌 Current Sprint
 
-- [x] Multi-color palette across all sections
-- [x] Hero gradient heading fix
-- [x] GradientDots site-wide background
-- [x] Full responsive layout (tablet + mobile) incl. robot visible on mobile
-- [x] Light mode as proper opposite of dark mode
-- [x] Google Reviews section (hardcoded)
-- [x] Hamburger navbar on tablet/mobile (CSS `!important` media queries)
-- [x] Samsung Galaxy Z Fold 5 (260px) support
-- [x] Sticky navbar on mobile (`overflow-x: clip` on html)
-- [x] Sticky WhatsApp button bottom-right
-- [x] Robot sizing fix (switched `min-height` → `height` so Spline canvas fills container)
+Done (branch `redesign/next-cinematic`):
+
+- [x] Migrated Vite → Next.js 16 App Router, TypeScript, Tailwind v4
+- [x] Dark Cinematic redesign of all 7 landing sections
+- [x] 8 bespoke images generated via OpenArt, 620kb total; Spline robot removed
+- [x] Auth pages rebuilt: `/login`, `/registrieren`, `/passwort-vergessen`
+- [x] Dashboard rebuilt, chart follows the dataviz rules, demo data labelled
+- [x] Lighthouse 100 / 100 / 100 / 100 on landing, dashboard and signup
+- [x] `/impressum` and `/datenschutz` scaffolded (drafts, need real data)
+
+Next, in priority order:
+
+- [ ] **Fill the legal pages.** They carry a draft banner and marked placeholders. Legally required before launch.
+- [ ] **Replace the WhatsApp number.** `site.whatsappNumber` is a placeholder; the old build had two conflicting numbers.
+- [ ] **Wire up a form backend.** Contact and all three auth forms validate and simulate only; nothing is sent.
+- [ ] **Real social links.** All three footer hrefs are `#`.
+- [ ] **Verify the proof figures.** `50+ / 98% / 3x / 24h` and the three case-study results are unverified claims.
 - [ ] Deployment setup
 
 <!-- BEGIN:nextjs-agent-rules -->
