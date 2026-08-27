@@ -20,9 +20,9 @@ const EASE = [0.23, 1, 0.32, 1] as const
 
 const statusTone: Record<StatusKey, string> = {
   active: 'bg-positive/12 text-positive',
-  completed: 'bg-white/8 text-ink-muted',
+  completed: 'bg-fill-soft text-ink-muted',
   review: 'bg-notice/12 text-notice',
-  paused: 'bg-white/6 text-ink-muted',
+  paused: 'bg-fill-soft text-ink-muted',
 }
 
 const filterKeys = ['all', 'active', 'completed', 'web', 'ai', 'ads'] as const
@@ -92,7 +92,7 @@ export function ProjectsPanel() {
           <MagnifyingGlass
             size={15}
             aria-hidden="true"
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-subtle"
+            className="pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-ink-subtle"
           />
           <Input
             type="search"
@@ -100,7 +100,7 @@ export function ProjectsPanel() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder={S.search}
             aria-label={S.searchLabel}
-            className="h-10 pl-10 text-sm"
+            className="h-10 ps-10 text-sm"
           />
         </div>
       </header>
@@ -160,7 +160,7 @@ export function ProjectsPanel() {
               aria-valuemin={0}
               aria-valuemax={100}
               aria-label={S.progress}
-              className="mt-2 h-1 overflow-hidden rounded-full bg-white/10"
+              className="mt-2 h-1 overflow-hidden rounded-full bg-fill-soft"
             >
               <motion.div
                 key={selected.name}
@@ -200,8 +200,8 @@ export function ProjectsPanel() {
                 className={cn(
                   'rounded-md px-2.5 py-1 text-2xs font-bold transition-colors duration-150',
                   filter === key
-                    ? 'bg-white/10 text-ink'
-                    : 'text-ink-subtle hover:bg-white/[0.04] hover:text-ink',
+                    ? 'bg-fill-soft text-ink'
+                    : 'text-ink-subtle hover:bg-fill-subtle hover:text-ink',
                 )}
               >
                 {S.filters[key]}
@@ -222,7 +222,7 @@ export function ProjectsPanel() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-3xl border-collapse text-left">
+            <table className="w-full min-w-3xl border-collapse text-start">
               <thead>
                 <tr className="border-b border-line">
                   {Object.values(S.columns).map((col) => (
@@ -246,7 +246,7 @@ export function ProjectsPanel() {
                       aria-selected={isSelected}
                       className={cn(
                         'cursor-pointer border-b border-line transition-colors duration-150 last:border-0',
-                        isSelected ? 'bg-white/[0.06]' : 'hover:bg-white/[0.03]',
+                        isSelected ? 'bg-fill-soft' : 'hover:bg-fill-subtle',
                       )}
                     >
                       <td className="px-6 py-3.5 text-sm font-medium text-ink">
@@ -275,9 +275,9 @@ export function ProjectsPanel() {
                       </td>
                       <td className="px-6 py-3.5">
                         <div className="flex items-center gap-2">
-                          <div className="h-1 w-16 overflow-hidden rounded-full bg-white/10">
+                          <div className="h-1 w-16 overflow-hidden rounded-full bg-fill-soft">
                             <div
-                              className="h-full rounded-full bg-white/40"
+                              className="h-full rounded-full bg-ink-subtle"
                               style={{ width: `${p.progress}%` }}
                             />
                           </div>

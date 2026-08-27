@@ -43,8 +43,8 @@ export function GoogleButton({ label }: { label: string }) {
       type="button"
       className={cn(
         'inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-md',
-        'border border-line-strong bg-white/[0.03] text-sm font-bold text-ink',
-        'transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.06]',
+        'border border-line-strong bg-fill-subtle text-sm font-bold text-ink',
+        'transition-colors duration-200 hover:border-line-hover hover:bg-fill-soft',
         'active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent',
       )}
     >

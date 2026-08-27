@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { site } from '@/content/site'
 import { routes } from '@/content/auth'
+import { Logo } from '@/components/ui/logo'
 
 /**
  * Auth chrome. A single quiet column on the left, the cinematic frame on
@@ -15,9 +16,10 @@ export default function AuthLayout({
       <div className="flex flex-col px-6 py-8 sm:px-10">
         <Link
           href={routes.home}
-          className="font-display text-lg font-extrabold tracking-tight text-ink no-underline"
+          aria-label="MorphixFlow, zur Startseite"
+          className="no-underline"
         >
-          {site.name}
+          <Logo />
         </Link>
 
         <main id="inhalt" className="flex flex-1 items-center justify-center py-12">

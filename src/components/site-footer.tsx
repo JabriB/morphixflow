@@ -1,5 +1,7 @@
 import { InstagramLogo, TiktokLogo, WhatsappLogo } from '@phosphor-icons/react/dist/ssr'
-import { footer, navLinks, site } from '@/content/site'
+import { site } from '@/content/site'
+import { DEFAULT_LOCALE, getDictionary, type Locale } from '@/content/dictionary'
+import { Logo } from '@/components/ui/logo'
 
 const socialIcons = {
   Instagram: InstagramLogo,
@@ -7,23 +9,22 @@ const socialIcons = {
   WhatsApp: WhatsappLogo,
 } as const
 
-export function SiteFooter() {
+export function SiteFooter({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
+  const t = getDictionary(locale)
   return (
     <footer className="border-t border-line">
       <div className="shell grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <p className="font-display text-lg font-extrabold tracking-tight text-ink">
-            {site.name}
-          </p>
-          <p className="measure mt-3 text-sm text-ink-subtle">{footer.tagline}</p>
+          <Logo />
+          <p className="measure mt-3 text-sm text-ink-subtle">{t.footer.tagline}</p>
           <p className="mt-4 text-sm text-ink-subtle">
             {site.city}, {site.country}
           </p>
         </div>
 
-        <nav aria-label="Footer Navigation">
+        <nav aria-label={t.ui.footerNav}>
           <ul className="flex flex-col gap-2.5">
-            {navLinks.map((link) => (
+            {t.navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
@@ -38,7 +39,7 @@ export function SiteFooter() {
 
         <div className="flex flex-col gap-5">
           <ul className="flex gap-2.5">
-            {footer.socials.map((social) => {
+            {t.footer.socials.map((social) => {
               const Icon = socialIcons[social.label as keyof typeof socialIcons]
               return (
                 <li key={social.label}>
@@ -63,9 +64,14 @@ export function SiteFooter() {
       </div>
 
       <div className="shell flex flex-wrap items-center justify-between gap-4 border-t border-line py-6">
-        <p className="text-xs text-ink-subtle">{footer.copyright}</p>
+        <div className="flex flex-col gap-1.5">
+          <p className="text-xs text-ink-subtle">{t.footer.copyright}</p>
+          {/* KI-Kennzeichnung nach Art. 50 AI Act. Sichtbar auf jeder Seite,
+              nicht nur im Impressum, wie es die Vorschrift verlangt. */}
+          <p className="text-xs text-ink-subtle">{t.footer.aiNotice}</p>
+        </div>
         <ul className="flex gap-6">
-          {footer.legal.map((item) => (
+          {t.footer.legal.map((item) => (
             <li key={item.href}>
               <a
                 href={item.href}

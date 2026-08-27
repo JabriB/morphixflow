@@ -71,15 +71,26 @@ Done (branch `redesign/next-cinematic`):
 - [x] Dashboard rebuilt, chart follows the dataviz rules, demo data labelled
 - [x] Lighthouse 100 / 100 / 100 / 100 on landing, dashboard and signup
 - [x] `/impressum` and `/datenschutz` scaffolded (drafts, need real data)
+- [x] Lead API hardened: JSON guard, server-side validation in `src/lib/leads.ts`
+      (mirrors the form's German errors), honeypot (`website` field), HubSpot
+      push notification moved behind `after()` so it never blocks the response
+- [x] Contact form: server 400s map to inline field errors, focus moves to the
+      first invalid field and to the success panel, spinner during submit,
+      toast strings moved into `src/content/site.ts`
+- [x] Vitest added (dev-dep only): 11 tests over route + validation, `npm test`
+- [x] README rewritten for the Next build: setup, env vars, API reference
+
+New conventions: `after()` from `next/server` for post-response work; user-visible
+API errors reuse `contact.errors` strings so client and server never drift.
 
 Next, in priority order:
 
 - [ ] **Fill the legal pages.** They carry a draft banner and marked placeholders. Legally required before launch.
 - [ ] **Replace the WhatsApp number.** `site.whatsappNumber` is a placeholder; the old build had two conflicting numbers.
-- [ ] **Wire up a form backend.** Contact and all three auth forms validate and simulate only; nothing is sent.
+- [ ] **Auth form backends.** Contact is wired to HubSpot now; the three auth forms still simulate only.
 - [ ] **Real social links.** All three footer hrefs are `#`.
 - [ ] **Verify the proof figures.** `50+ / 98% / 3x / 24h` and the three case-study results are unverified claims.
-- [ ] Deployment setup
+- [ ] Deployment setup (set the three HubSpot env vars as secrets)
 
 <!-- BEGIN:nextjs-agent-rules -->
 

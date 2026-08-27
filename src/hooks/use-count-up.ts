@@ -11,16 +11,15 @@ export function useCountUp(raw: string, duration = 1600, active = false) {
   const frame = useRef<number | null>(null)
   const start = useRef<number | null>(null)
 
+  /* Parsed during render, not inside the effect. A value with no digits has
+     nothing to animate, and pushing that through setState would cost an extra
+     render pass to arrive at a string we already know. */
+  const end = parseFloat(raw.replace(/[^0-9.]/g, ''))
+  const suffix = raw.replace(/[\d.,]+/, '')
+  const countable = !Number.isNaN(end)
+
   useEffect(() => {
-    if (!active) return
-
-    const end = parseFloat(raw.replace(/[^0-9.]/g, ''))
-    const suffix = raw.replace(/[\d.,]+/, '')
-
-    if (Number.isNaN(end)) {
-      setDisplay(raw)
-      return
-    }
+    if (!active || !countable) return
 
     const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
 
@@ -38,7 +37,7 @@ export function useCountUp(raw: string, duration = 1600, active = false) {
       if (frame.current) cancelAnimationFrame(frame.current)
       start.current = null
     }
-  }, [raw, duration, active])
+  }, [end, suffix, duration, active, countable])
 
-  return display
+  return countable ? display : raw
 }

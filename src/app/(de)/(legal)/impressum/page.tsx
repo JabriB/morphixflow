@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { site } from '@/content/site'
-import { DraftBanner, Fill, LegalProse } from '@/components/legal-prose'
+import { legal, site } from '@/content/site'
+import { DraftBanner, Detail, LegalMasthead, LegalProse, VatReminder } from '@/components/legal-prose'
 
 export const metadata: Metadata = {
   title: 'Impressum',
@@ -10,41 +10,57 @@ export const metadata: Metadata = {
 export default function ImpressumPage() {
   return (
     <>
-      <h1 className="text-2xl">Impressum</h1>
+      <LegalMasthead title="Impressum" updated="August 2026" />
       <DraftBanner />
 
       <LegalProse>
         <h2>Angaben gemäß § 5 DDG</h2>
         <p>
-          <Fill>Vollständiger Name</Fill>
+          {legal.businessName}
           <br />
-          <Fill>Straße und Hausnummer</Fill>
+          Inhaber: <Detail value={legal.fullName} label="Vollständiger Name" />
           <br />
-          <Fill>PLZ</Fill> {site.city}
+          <Detail value={legal.street} label="Straße und Hausnummer" />
+          <br />
+          <Detail value={legal.postalCode} label="PLZ" /> {legal.city}
           <br />
           {site.country}
         </p>
 
         <h2>Kontakt</h2>
         <p>
-          Telefon: <Fill>Telefonnummer</Fill>
+          Telefon: <Detail value={legal.phone} label="Telefonnummer" />
           <br />
           E-Mail: {site.email}
         </p>
 
-        <h2>Umsatzsteuer-Identifikationsnummer</h2>
-        <p>
-          Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:{' '}
-          <Fill>USt-IdNr.</Fill>
-        </p>
-        <p>
-          Wird das Unternehmen als Kleinunternehmer nach § 19 UStG geführt, ist
-          dieser Abschnitt durch den entsprechenden Hinweis zu ersetzen.
-        </p>
+        {/* Omitted entirely when no USt-IdNr is on file. §5 Abs. 1 Nr. 6 DDG
+            requires it only "sofern vorhanden", so an empty section is worse
+            than none: it implies a number exists and is being withheld. */}
+        {legal.kleinunternehmer ? (
+          <>
+            <h2>Umsatzsteuer</h2>
+            <p>
+              Gemäß § 19 UStG wird keine Umsatzsteuer berechnet und daher auch
+              keine Umsatzsteuer-Identifikationsnummer geführt.
+            </p>
+          </>
+        ) : legal.vatId ? (
+          <>
+            <h2>Umsatzsteuer</h2>
+            <p>
+              Umsatzsteuer-Identifikationsnummer gemäß § 27 a
+              Umsatzsteuergesetz: {legal.vatId}
+            </p>
+          </>
+        ) : null}
+
+        <VatReminder />
 
         <h2>Redaktionell verantwortlich</h2>
         <p>
-          <Fill>Vollständiger Name</Fill>, Anschrift wie oben.
+          <Detail value={legal.fullName} label="Vollständiger Name" />, Anschrift
+          wie oben.
         </p>
 
         <h2>Verbraucherstreitbeilegung</h2>

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'motion/react'
-import { services, servicesIntro } from '@/content/site'
+import { useContent } from '@/content/use-content'
 import { Section, SectionHeading } from '@/components/ui/section'
 
 const EASE = [0.23, 1, 0.32, 1] as const
@@ -12,16 +12,17 @@ const EASE = [0.23, 1, 0.32, 1] as const
  * hairline, with the name at display weight and the detail set beside it.
  */
 export function Services() {
+  const { t } = useContent()
   const reduced = useReducedMotion()
 
   return (
     <Section id="leistungen">
-      <SectionHeading sub={servicesIntro.subtext}>
-        {servicesIntro.heading}
+      <SectionHeading sub={t.servicesIntro.subtext}>
+        {t.servicesIntro.heading}
       </SectionHeading>
 
       <ul className="mt-16 border-t border-line">
-        {services.map((service, i) => (
+        {t.services.map((service, i) => (
           <motion.li
             key={service.slug}
             initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}

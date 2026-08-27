@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Jade chip, so the mark holds against a browser tab whether the
+       surrounding chrome is light or dark. Radius 7 is the site's card
+       radius scaled to a 32 grid. -->
+  <rect width="32" height="32" rx="7" fill="#2dd4a7"/>
+  <!-- Inset to 62% and centred. A solid mark needs more breathing room
+       inside a chip than a stroked one, or it reads as crowded at 16px. -->
+  <g transform="translate(6.08 6.08) scale(0.62)">
+    <path d="M2 27V8.3L8.4 6 16 17l7.6-8.7L30 6v21h-6.4V14.6L16 26 8.4 14.6V27H2Z" fill="#04120d"/>
+  </g>
+</svg>

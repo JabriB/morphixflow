@@ -68,7 +68,7 @@ export function RevenueChart() {
                   transition={{ duration: 0.6, delay: 0.1 + i * 0.06, ease: EASE }}
                   className={cn(
                     'w-full rounded-t-[4px] transition-colors duration-200',
-                    isLast ? 'bg-accent' : isHover ? 'bg-white/32' : 'bg-white/18',
+                    isLast ? 'bg-accent' : isHover ? 'bg-ink-faint' : 'bg-fill-strong',
                   )}
                 />
               </li>

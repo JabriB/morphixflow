@@ -39,7 +39,7 @@ export function PasswordInput({
         placeholder={placeholder}
         invalid={invalid}
         aria-describedby={describedBy}
-        className="pr-12"
+        className="pe-12"
       />
       <button
         type="button"
@@ -47,7 +47,7 @@ export function PasswordInput({
         aria-label={shown ? auth.hidePassword : auth.showPassword}
         aria-pressed={shown}
         className={cn(
-          'absolute right-1.5 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-sm',
+          'absolute end-1.5 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-sm',
           'text-ink-subtle transition-colors duration-200 hover:text-ink',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
         )}

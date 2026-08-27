@@ -10,46 +10,73 @@
 
 @theme {
   /* ── Ground ─────────────────────────────────────────────────────
-     A near-black with a faint cool cast, so photography sitting on
-     it reads warm by contrast. */
-  --color-ground: #08080a;
-  --color-raised: #0e0e11;
-  --color-card: #141418;
-  --color-well: #111114;
+     Cooled obsidian with a faint blue cast, so photography and the
+     jade accent both read warm against it. */
+  --color-ground: #07080a;
+  --color-raised: #0c0e12;
+  --color-card: #12151a;
+  --color-well: #0f1216;
 
   /* ── Ink ──────────────────────────────────────────────────────── */
-  --color-ink: #fafafa;
-  --color-ink-muted: #a0a0a8;
-  --color-ink-subtle: #84848e;
-  --color-ink-faint: #45454e;
+  --color-ink: #f7f9f8;
+  --color-ink-muted: #9ba4a6;
+  --color-ink-subtle: #7d8789;
+  --color-ink-faint: #414a4d;
 
   /* ── Accent ─────────────────────────────────────────────────────
-     One. 6.4:1 on ground. Reserved for actionable surfaces:
+     One. Jade, 9.1:1 on ground. Reserved for actionable surfaces:
      primary buttons, focus rings, active nav, links on hover. */
-  --color-accent: #ff5c29;
-  --color-accent-hover: #ff7245;
-  --color-accent-press: #e84a18;
-  --color-accent-ink: #0a0a0b;
+  --color-accent: #2dd4a7;
+  --color-accent-hover: #4ee2bb;
+  --color-accent-press: #1fb88c;
+  --color-accent-ink: #04120d;
 
   /* ── Data semantics ─────────────────────────────────────────────
      Dashboard only, where a number's direction carries meaning.
-     Never used as decoration on the marketing pages. */
-  --color-positive: #3fcf8e;
-  --color-negative: #f5544f;
-  --color-notice: #e5a93d;
+     Never used as decoration on the marketing pages. Positive is
+     shifted off the accent hue so a KPI never reads as a button. */
+  --color-positive: #6ee7a8;
+  --color-negative: #f2665f;
+  --color-notice: #dfae4a;
 
   /* ── Lines ──────────────────────────────────────────────────────
      Elevation is declared once: a hairline OR a shadow, never both. */
   --color-line: rgb(255 255 255 / 0.07);
   --color-line-strong: rgb(255 255 255 / 0.13);
+  --color-line-hover: rgb(255 255 255 / 0.25);
+
+  /* ── Fills ──────────────────────────────────────────────────────
+     Tinted overlays for hover states, chips and inset wells. These
+     exist as tokens rather than `bg-white/6` so they can invert: on a
+     light ground a white overlay is invisible and the same utility
+     has to resolve to a black one. Three tiers is all the design
+     actually used once the ad-hoc alphas were counted. */
+  --color-fill-subtle: rgb(255 255 255 / 0.04);
+  --color-fill-soft: rgb(255 255 255 / 0.07);
+  --color-fill-strong: rgb(255 255 255 / 0.15);
+
+  /* ── Scrim ──────────────────────────────────────────────────────
+     The ground colour as bare channels, so gradients can vary alpha
+     without hardcoding the theme's background in a dozen places. */
+  --scrim-rgb: 7 8 10;
 
   /* ── Type ───────────────────────────────────────────────────────
      --font-display / --font-body are wired to next/font in layout. */
   --font-display: var(--font-cabinet), 'Inter', system-ui, sans-serif;
   --font-body: var(--font-satoshi), 'Inter', system-ui, sans-serif;
 
+  /* Arabic fallback stack, appended for `lang="ar"` below.
+     TODO(owner): self-host a real Arabic face (IBM Plex Sans Arabic or Noto
+     Kufi Arabic) and add it to the front of this stack. It cannot come from a
+     font CDN: the CSP allows `font-src 'self'` only, and the Datenschutz-
+     erklärung states that every font is served from our own server. */
+  --font-arabic:
+    'Noto Sans Arabic', 'Segoe UI', 'Tahoma', 'Geeza Pro', 'Arial', sans-serif;
+
   /* Fluid scale. Display tops out at 6rem per the craft floor. */
-  --text-2xs: clamp(0.6875rem, 0.67rem + 0.09vw, 0.75rem);
+  /* Floor raised from 11px to 12px: below that, meta labels and legal
+     notes stop being comfortably legible on a phone. */
+  --text-2xs: clamp(0.75rem, 0.73rem + 0.09vw, 0.8125rem);
   --text-xs: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
   --text-sm: clamp(0.875rem, 0.85rem + 0.13vw, 0.9375rem);
   --text-base: clamp(0.9375rem, 0.9rem + 0.19vw, 1.0625rem);
@@ -80,6 +107,78 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   Light theme
+   ------------------------------------------------------------------
+   The brand is dark first, so `@theme` above holds the dark values and
+   this block overrides them. Three selectors, because the viewer has
+   three states, not two: an explicit choice stamps data-theme, and the
+   default "system" setting stamps nothing at all.
+
+   Not an inversion. A flipped dark palette produces grey mud: the jade
+   has to darken to hold contrast on white, the hairlines become black
+   at a much lower alpha to avoid reading as borders, and the shadows
+   need real softness because there is no longer a dark ground to hide
+   their edges.
+   ══════════════════════════════════════════════════════════════════ */
+
+@layer theme {
+  /* Applied to <html> only while a theme flip is in flight, then removed.
+     Keeping a permanent `transition: background-color` on every element would
+     also animate every hover state on the page, which makes buttons feel
+     sluggish; this way the cross-fade costs nothing the rest of the time.
+
+     `!important` is warranted here: it has to beat the per-component
+     `transition-colors` utilities for the duration of the switch, otherwise
+     surfaces that already animate their own hover would snap instead. */
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition:
+      background-color 240ms var(--ease-out-expo),
+      border-color 240ms var(--ease-out-expo),
+      color 240ms var(--ease-out-expo),
+      fill 240ms var(--ease-out-expo) !important;
+  }
+
+  :root[data-theme='light'] {
+    --color-ground: #fbfbfa;
+    --color-raised: #f4f5f4;
+    --color-card: #ffffff;
+    --color-well: #f0f2f1;
+
+    --color-ink: #14181a;
+    --color-ink-muted: #4e585b;
+    --color-ink-subtle: #6a7477;
+    --color-ink-faint: #98a2a5;
+
+    --color-accent: #0f8f6b;
+    --color-accent-hover: #0b7658;
+    --color-accent-press: #095e46;
+    --color-accent-ink: #ffffff;
+
+    --color-positive: #12784f;
+    --color-negative: #b3271e;
+    --color-notice: #8a6410;
+
+    --color-line: rgb(20 24 26 / 0.10);
+    --color-line-strong: rgb(20 24 26 / 0.18);
+    --color-line-hover: rgb(20 24 26 / 0.34);
+
+    --color-fill-subtle: rgb(20 24 26 / 0.035);
+    --color-fill-soft: rgb(20 24 26 / 0.06);
+    --color-fill-strong: rgb(20 24 26 / 0.13);
+
+    --scrim-rgb: 251 251 250;
+    --grain-opacity: 0.018;
+
+    --shadow-sm: 0 1px 2px rgb(20 24 26 / 0.06), 0 2px 6px rgb(20 24 26 / 0.05);
+    --shadow-md: 0 4px 12px rgb(20 24 26 / 0.08), 0 12px 32px rgb(20 24 26 / 0.06);
+    --shadow-lg: 0 8px 24px rgb(20 24 26 / 0.10), 0 24px 64px rgb(20 24 26 / 0.08);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    Base
    ══════════════════════════════════════════════════════════════════ */
 
@@ -107,6 +206,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Arabic. The Latin faces carry no Arabic glyphs, so without this the
+     browser silently substitutes a default and the page loses its typography
+     entirely. Tracking is reset to 0 because negative letter-spacing breaks
+     the joins between Arabic letterforms rather than tightening them. */
+  :lang(ar) {
+    font-family: var(--font-arabic);
+  }
+
+  :lang(ar) h1,
+  :lang(ar) h2,
+  :lang(ar) h3,
+  :lang(ar) h4,
+  :lang(ar) [data-numeric] {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
   }
 
   h1,
@@ -140,6 +256,16 @@
     scrollbar-color: rgb(255 255 255 / 0.16) transparent;
     scrollbar-width: thin;
     accent-color: var(--color-accent);
+    /* Drives native form controls, scrollbars and the caret. Must track the
+       theme or a light page renders dark dropdowns. */
+    color-scheme: dark;
+  }
+
+  :root[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  :root[data-theme='dark'] {
     color-scheme: dark;
   }
 
@@ -214,6 +340,11 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      /* Delay has to go too. The reveals use `animation-fill-mode: both`, so a
+         surviving delay would hold the element at its hidden start state for
+         the full stagger before snapping in: the exact effect the setting
+         exists to prevent. */
+      animation-delay: 0ms !important;
     }
   }
 }
@@ -238,9 +369,124 @@
 @utility scrim-b {
   background-image: linear-gradient(
     to top,
-    rgb(8 8 10 / 0.96) 0%,
-    rgb(8 8 10 / 0.82) 26%,
-    rgb(8 8 10 / 0.4) 58%,
-    rgb(8 8 10 / 0) 100%
+    rgb(var(--scrim-rgb) / 0.96) 0%,
+    rgb(var(--scrim-rgb) / 0.82) 26%,
+    rgb(var(--scrim-rgb) / 0.4) 58%,
+    rgb(var(--scrim-rgb) / 0) 100%
   );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Above-the-fold reveals
+   ------------------------------------------------------------------
+   These exist in CSS rather than in Motion for one reason: LCP.
+
+   A JS-driven mount animation renders its start state on the server and
+   only animates once React has hydrated. For the hero that meant the
+   headline shipped as translateY(110%) inside an overflow clip, so the
+   largest text on the page stayed invisible until hydration finished.
+   On a mid-range phone that measured 3,931ms of pure render delay out
+   of a 3,958ms LCP: the network had done its job in 28ms and the pixels
+   were waiting on JavaScript.
+
+   A CSS animation starts at the first frame the browser paints, with no
+   JS involved, which removes hydration from the critical path entirely.
+   Motion still drives every below-the-fold reveal, where scroll
+   triggering is genuinely needed and LCP is not at stake.
+   ══════════════════════════════════════════════════════════════════ */
+
+@keyframes reveal-rise {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-frame {
+  from {
+    opacity: 0;
+    scale: 1.08;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes reveal-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* `both` so the start state applies during the delay and the end state
+   sticks afterwards, without JS ever touching the element. */
+@utility reveal-rise {
+  animation: reveal-rise 850ms var(--ease-out-expo) both;
+}
+
+/* The hero photograph settling in. Also CSS: an opacity-0 background image
+   waiting on hydration delays the first meaningful paint just as much as
+   hidden text does. */
+@utility reveal-frame {
+  animation: reveal-frame 1600ms var(--ease-out-expo) both;
+}
+
+@utility reveal-fade-up {
+  animation: reveal-fade-up 700ms var(--ease-out-expo) both;
+}
+
+/* Marquee. The track holds the list twice; travelling exactly -50%
+   lands on the duplicate, so the seam is never visible. Composited
+   on the GPU, so a continuous loop costs no main-thread work. */
+@keyframes marquee-track {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  animation: marquee-track var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+/* Hovering pauses it, so a name can actually be read. */
+@utility marquee-host {
+  &:hover .marquee-track,
+  &:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Edge fade, so items dissolve instead of being cut off by the viewport. */
+@utility marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 3rem,
+    black calc(100% - 6rem),
+    transparent 100%
+  );
+}
+
+/* Film grain. Fixed and pointer-events-none so it never repaints on scroll. */
+@utility grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  /* Halved on light: the noise texture is dark, so the same opacity that
+     reads as film grain on obsidian reads as dirt on paper. */
+  opacity: var(--grain-opacity, 0.035);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }

@@ -1,12 +1,22 @@
+/**
+ * Client component. Both exports hold a ref and run `useMagnetic`, so this
+ * module cannot render on the server. Without the directive the dashboard
+ * and legal pages, which are Server Components, crash at prerender with
+ * "useRef is not a function". The landing page hid the problem because
+ * every section that imports a button is already a client component.
+ */
+'use client'
+
 import * as React from 'react'
-import { cn } from '@/lib/utils'
+import { cn, mergeRefs } from '@/lib/utils'
+import { useMagnetic } from '@/hooks/use-magnetic'
 
 type Variant = 'primary' | 'secondary' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 
 const base =
   'relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-bold ' +
-  'transition-[background-color,border-color,color,box-shadow,scale] duration-200 ease-[var(--ease-out-expo)] ' +
+  'transition-[background-color,border-color,color,box-shadow,scale,translate] duration-200 ease-[var(--ease-out-expo)] ' +
   'active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40 ' +
   'focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent'
 
@@ -14,8 +24,8 @@ const variants: Record<Variant, string> = {
   primary:
     'bg-accent text-accent-ink shadow-sm hover:bg-accent-hover active:bg-accent-press',
   secondary:
-    'border border-line-strong bg-white/[0.03] text-ink hover:border-white/25 hover:bg-white/[0.06]',
-  ghost: 'text-ink-muted hover:bg-white/[0.05] hover:text-ink',
+    'border border-line-strong bg-fill-subtle text-ink hover:border-line-hover hover:bg-fill-soft',
+  ghost: 'text-ink-muted hover:bg-fill-subtle hover:text-ink',
 }
 
 const sizes: Record<Size, string> = {
@@ -31,13 +41,17 @@ export interface ButtonProps
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', ...props }, ref) => (
-    <button
-      ref={ref}
-      className={cn(base, variants[variant], sizes[size], className)}
-      {...props}
-    />
-  ),
+  ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
+    const innerRef = React.useRef<HTMLButtonElement>(null)
+    useMagnetic(innerRef, variant === 'primary')
+    return (
+      <button
+        ref={mergeRefs(innerRef, ref)}
+        className={cn(base, variants[variant], sizes[size], className)}
+        {...props}
+      />
+    )
+  },
 )
 Button.displayName = 'Button'
 
@@ -48,12 +62,16 @@ export interface ButtonLinkProps
 }
 
 export const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({ className, variant = 'primary', size = 'md', ...props }, ref) => (
-    <a
-      ref={ref}
-      className={cn(base, 'no-underline', variants[variant], sizes[size], className)}
-      {...props}
-    />
-  ),
+  ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
+    const innerRef = React.useRef<HTMLAnchorElement>(null)
+    useMagnetic(innerRef, variant === 'primary')
+    return (
+      <a
+        ref={mergeRefs(innerRef, ref)}
+        className={cn(base, 'no-underline', variants[variant], sizes[size], className)}
+        {...props}
+      />
+    )
+  },
 )
 ButtonLink.displayName = 'ButtonLink'
