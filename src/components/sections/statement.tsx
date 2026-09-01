@@ -11,13 +11,17 @@ const EASE = [0.23, 1, 0.32, 1] as const
  * this one makes an argument, at display scale, with nothing else on the
  * screen competing for attention. Deliberately does not use `Section`:
  * the wider measure and the centred rule are the point of the break.
+ *
+ * `border-b` only, not `border-y`: this now sits directly under Toolchain,
+ * which shares the same bg-raised and already draws the seam between them
+ * with its own bottom border. A top border here would double that line.
  */
 export function Statement() {
   const { t } = useContent()
   const reduced = useReducedMotion()
 
   return (
-    <section className="relative isolate overflow-hidden border-y border-line bg-raised py-28 sm:py-40">
+    <section className="relative isolate overflow-hidden border-b border-line bg-raised py-28 sm:py-40">
       {/* A single low, wide accent wash anchoring the type. Sits under
           everything and never touches a readable edge. */}
       <div

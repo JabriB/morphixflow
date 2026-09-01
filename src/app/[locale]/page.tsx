@@ -17,10 +17,10 @@ import { WhatsAppWidget } from '@/components/whatsapp-widget'
 import { StructuredData } from '@/components/structured-data'
 
 /**
- * Section order is a rhythm, not a list. Dense sections (Services, Showcase,
- * Process) are broken by a quiet one (Toolchain, Statement) so the page reads
- * as chapters rather than one continuous scroll, and the two objection-handling
- * blocks (Faq, Contact) sit after the price.
+ * Section order is a rhythm, not a list. Statement sits right after Toolchain,
+ * so the founder's own claim ("Ich verkaufe dir Anfragen") follows immediately
+ * from the credibility strip, before the dense Services/Showcase/Process run.
+ * The two objection-handling blocks (Faq, Contact) sit after the price.
  *
  * The client sections read their copy from the ContentProvider in the layout.
  * The two server components here take `locale` explicitly, because a Server
@@ -39,10 +39,10 @@ export default async function LandingPage({
       <main id="inhalt">
         <Hero />
         <Toolchain />
+        <Statement />
         <Services />
         <Showcase />
         <Process />
-        <Statement />
         <Results />
         <Reviews />
         <Calculator />
