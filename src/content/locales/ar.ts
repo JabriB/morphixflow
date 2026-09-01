@@ -550,7 +550,7 @@ export const ar: Dictionary = {
       body: 'شكراً لك. سأعود إليك خلال 24 ساعة.',
     },
     trust: [
-      { label: 'hello@morphixflow.io', icon: 'mail' },
+      { label: 'service@morphixflow.de', icon: 'mail' },
       { label: 'آخن، ألمانيا', icon: 'pin' },
       { label: 'الرد خلال 24 ساعة', icon: 'clock' },
     ],

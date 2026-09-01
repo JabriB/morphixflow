@@ -35,7 +35,7 @@ function DeviceFrame({ device }: { device: DeviceId }) {
           {/* ink-subtle, not ink-faint. Dimmed chrome is realistic, but this
               still carries a readable domain, and ink-faint measures 2.1:1. */}
           <div className="ms-3 flex-1 rounded-sm bg-fill-subtle px-3 py-1 text-2xs text-ink-subtle">
-            morphixflow.io
+            morphixflow.de
           </div>
         </div>
       ) : device === 'mobile' ? (

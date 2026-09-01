@@ -17,7 +17,7 @@ export const site = {
      PostalAddress use. The two are deliberately allowed to differ. */
   city: 'Aachen',
   country: 'Deutschland',
-  email: 'hello@morphixflow.io',
+  email: 'service@morphixflow.de',
 
   /** wa.me format: country code plus number, digits only, no plus or spaces. */
   whatsappNumber: '4915755588142',
@@ -724,7 +724,7 @@ export const contact = {
     body: 'Vielen Dank! Ich melde mich innerhalb von 24 Stunden bei dir.',
   },
   trust: [
-    { label: 'hello@morphixflow.io', icon: 'mail' },
+    { label: 'service@morphixflow.de', icon: 'mail' },
     { label: 'Aachen, Deutschland', icon: 'pin' },
     { label: 'Antwort in 24 Stunden', icon: 'clock' },
   ],

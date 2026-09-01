@@ -1,5 +1,6 @@
 import path from 'node:path'
 import type { NextConfig } from 'next'
+import { DEFAULT_LOCALE } from './src/content/dictionary'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -89,6 +90,27 @@ const nextConfig: NextConfig = {
   /* Hides the framework and version from responses. Free, and one less hint
      for anyone fingerprinting the stack for known CVEs. */
   poweredByHeader: false,
+
+  /**
+   * The bare root always goes to German.
+   *
+   * German is the site's default language, not a negotiated one: the business
+   * operates in Germany, the legal pages are German only, and `x-default`
+   * already points at /de. Deciding this from Accept-Language instead sent a
+   * German visitor with an English browser to /en, which is the opposite of
+   * what a default means.
+   *
+   * A static redirect rather than middleware: the destination is now constant,
+   * so there is nothing left to compute per request and no reason to run an
+   * edge function on the busiest path of the site.
+   *
+   * 307, not 308. Which locale the root points at is a routing decision that
+   * may change, and a permanent redirect would sit in browser caches
+   * indefinitely and be very hard to take back.
+   */
+  async redirects() {
+    return [{ source: '/', destination: `/${DEFAULT_LOCALE}`, permanent: false }]
+  },
 
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }]

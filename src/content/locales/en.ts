@@ -548,7 +548,7 @@ export const en: Dictionary = {
       body: 'Thank you. I will get back to you within 24 hours.',
     },
     trust: [
-      { label: 'hello@morphixflow.io', icon: 'mail' },
+      { label: 'service@morphixflow.de', icon: 'mail' },
       { label: 'Aachen, Germany', icon: 'pin' },
       { label: 'Reply within 24 hours', icon: 'clock' },
     ],
