@@ -5,37 +5,13 @@ import { motion, useReducedMotion } from 'motion/react'
 import { WhatsappLogo } from '@phosphor-icons/react'
 import { type ServiceSlug } from '@/content/site'
 import { useContent } from '@/content/use-content'
-import { formatEuro } from '@/lib/format'
+import { formatEuro, parsePrice } from '@/lib/format'
 import { Section, SectionHeading } from '@/components/ui/section'
 import { Tabs } from '@/components/ui/tabs'
 import { ButtonLink } from '@/components/ui/button'
 import { buildWhatsAppLink } from '@/lib/whatsapp'
 
 const EASE = [0.23, 1, 0.32, 1] as const
-
-/**
- * Reads the numeric value out of a localised price string.
- *
- * The three locales write the same amount three ways ("1.234,56 €",
- * "€1,234.56", "1,234.56 €"), so a fixed rule for one misreads the
- * others: treating "," as the decimal point turns the English €1,234.56
- * into 1.23456. Instead keep the digits and both separators, then treat the
- * last separator as the decimal point unless it is followed by exactly three
- * digits, which makes it a thousands group.
- *
- * Returns 0 for prices with no digits at all ("Auf Anfrage"), which the
- * caller already handles by skipping the payback figure.
- */
-function parsePrice(main: string): number {
-  const digits = main.replace(/[^0-9.,]/g, '')
-  const lastSeparator = Math.max(digits.lastIndexOf(','), digits.lastIndexOf('.'))
-  if (lastSeparator === -1) return parseFloat(digits) || 0
-
-  const whole = digits.slice(0, lastSeparator).replace(/[.,]/g, '')
-  const tail = digits.slice(lastSeparator + 1)
-  if (tail.length === 3) return parseFloat(whole + tail) || 0
-  return parseFloat(`${whole}.${tail}`) || 0
-}
 
 export function Calculator() {
   const { t, locale } = useContent()

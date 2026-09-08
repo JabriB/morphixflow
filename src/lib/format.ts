@@ -46,3 +46,29 @@ export function formatNumber(value: number, locale: Locale): string {
   const { numberLocale } = MONEY[locale] ?? MONEY.de
   return Math.round(value).toLocaleString(numberLocale)
 }
+
+/**
+ * Reads the numeric amount out of a localised price string.
+ *
+ * The three locales write the same amount three ways ("1.234,56 €",
+ * "€1,234.56", "1,234.56 €"), so a fixed rule for one misreads the others:
+ * treating "," as the decimal point turns the English €1,234.56 into 1.23456.
+ * Instead keep the digits and both separators, then treat the last separator
+ * as the decimal point unless exactly three digits follow it, which makes it a
+ * thousands group.
+ *
+ * Returns 0 for a string with no digits at all ("Auf Anfrage", "On request").
+ * Callers must treat 0 as "no price given" rather than as free: the JSON-LD
+ * builder omits the Offer price entirely in that case, because publishing
+ * price="0" for a quote-only package would be a false statement in the markup.
+ */
+export function parsePrice(main: string): number {
+  const digits = main.replace(/[^0-9.,]/g, '')
+  const lastSeparator = Math.max(digits.lastIndexOf(','), digits.lastIndexOf('.'))
+  if (lastSeparator === -1) return parseFloat(digits) || 0
+
+  const whole = digits.slice(0, lastSeparator).replace(/[.,]/g, '')
+  const tail = digits.slice(lastSeparator + 1)
+  if (tail.length === 3) return parseFloat(whole + tail) || 0
+  return parseFloat(`${whole}.${tail}`) || 0
+}

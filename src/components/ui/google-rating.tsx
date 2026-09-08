@@ -1,4 +1,7 @@
+'use client'
+
 import { Star } from '@phosphor-icons/react'
+import { useContent } from '@/content/use-content'
 import { cn } from '@/lib/utils'
 
 export function GoogleMark({ size = 16 }: { size?: number }) {
@@ -13,8 +16,13 @@ export function GoogleMark({ size = 16 }: { size?: number }) {
 }
 
 export function Stars({ rating, size = 13 }: { rating: number; size?: number }) {
+  const { t } = useContent()
   return (
-    <div role="img" className="flex gap-0.5" aria-label={`${rating} von 5 Sternen`}>
+    <div
+      role="img"
+      className="flex gap-0.5"
+      aria-label={t.ui.starsLabel.replace('{rating}', String(rating))}
+    >
       {Array.from({ length: 5 }, (_, i) => (
         <Star
           key={i}
@@ -40,6 +48,7 @@ export function GoogleRatingBadge({
   tone?: 'light' | 'dark'
   className?: string
 }) {
+  const { t } = useContent()
   return (
     <div
       className={cn(
@@ -56,7 +65,9 @@ export function GoogleRatingBadge({
           </span>
           <Stars rating={5} />
         </div>
-        <span className="text-2xs text-ink-subtle">{count} Bewertungen</span>
+        <span className="text-2xs text-ink-subtle">
+          {t.ui.reviewCount.replace('{count}', String(count))}
+        </span>
       </div>
     </div>
   )

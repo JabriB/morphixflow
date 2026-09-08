@@ -19,6 +19,18 @@ export const en: Dictionary = {
       'MorphixFlow builds websites, AI automation and ad campaigns from a single source. Personal consulting from the Aachen and Düren area. Free first call on WhatsApp.',
     ogDescription:
       'More customers. More revenue. Websites, AI automation and ad campaigns from a single source, personally handled from the Aachen area.',
+    keywords: [
+      'web development agency',
+      'landing page',
+      'AI automation',
+      'workflow automation',
+      'ad campaigns',
+      'Meta Ads',
+      'Google Ads',
+      'web design Aachen',
+      'web agency Germany',
+      'MorphixFlow',
+    ],
   },
 
   navLinks: [
@@ -81,6 +93,8 @@ export const en: Dictionary = {
     menuClose: 'Close menu',
     rangeTo: 'to',
     durationRange: 'approx. {low} to {high} days',
+    reviewCount: '{count} reviews',
+    starsLabel: '{rating} out of 5 stars',
   },
 
   toolchain: {

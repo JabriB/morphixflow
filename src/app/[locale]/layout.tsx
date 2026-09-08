@@ -9,7 +9,7 @@ import {
   isRtl,
   type Locale,
 } from '@/content/dictionary'
-import { legalIsComplete, site } from '@/content/site'
+import { legal, legalIsComplete, site } from '@/content/site'
 import { siteUrl } from '@/lib/site-url'
 import { ContentProvider } from '@/content/use-content'
 import { HtmlShell } from '@/components/html-shell'
@@ -39,6 +39,14 @@ export async function generateMetadata({
     metadataBase: new URL(siteUrl),
     title: { default: t.meta.title, template: `%s | ${site.name}` },
     description: t.meta.description,
+    /* Ignored by Google since 2009, still read by a few smaller engines and by
+       some social scrapers. Kept truthful rather than stuffed: every term here
+       appears in the page's own copy, and the localities are the ones the
+       Impressum actually names. */
+    keywords: [...t.meta.keywords],
+    authors: [{ name: legal.fullName }],
+    creator: legal.fullName,
+    publisher: legal.businessName,
     alternates: {
       /* Self-referencing canonical per locale. Without it every utm_source and
          fbclid a campaign appends becomes a separate URL competing with the
@@ -55,15 +63,32 @@ export async function generateMetadata({
     },
     openGraph: {
       type: 'website',
+      /* Absolute and locale-specific. Without og:url a scraper that reached the
+         page through a redirect or a tracking parameter attributes the share to
+         that URL instead of the canonical one. */
+      url: `${siteUrl}/${locale}`,
       locale: LOCALE_TAGS[locale],
+      /* Lets Facebook and LinkedIn offer the other two languages for the same
+         share, instead of treating each locale as an unrelated page. */
+      alternateLocale: LOCALES.filter((l) => l !== locale).map((l) => LOCALE_TAGS[l]),
       siteName: site.name,
       title: t.meta.title,
       description: t.meta.ogDescription,
+      images: [
+        {
+          url: `/og/morphixflow-${locale}.jpg`,
+          width: 1200,
+          height: 630,
+          type: 'image/jpeg',
+          alt: `${site.name}. ${t.footer.tagline}`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: t.meta.title,
       description: t.meta.ogDescription,
+      images: [`/og/morphixflow-${locale}.jpg`],
     },
     /* Indexing stays gated on a complete Impressum. An indexed German
        commercial site without one is the most common Abmahnung trigger. */

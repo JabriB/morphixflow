@@ -15,6 +15,23 @@ import { siteUrl } from '@/lib/site-url'
  * and a crawler hammering `/api/leads` would burn the rate limit that protects
  * real enquiries.
  */
+/**
+ * Paths that exist but must never be indexed.
+ *
+ * `/_next/` is deliberately absent. Blocking it stops Googlebot fetching the
+ * CSS and JS it needs to render the page, so the page gets judged on unstyled
+ * markup and loses its mobile-friendly status. It is the single most common
+ * self-inflicted SEO wound in a Next.js robots.txt.
+ */
+const PRIVATE_PATHS = [
+  '/api/',
+  '/dashboard',
+  '/dashboard/',
+  '/login',
+  '/registrieren',
+  '/passwort-vergessen',
+]
+
 export default function robots(): MetadataRoute.Robots {
   if (!legalIsComplete()) {
     return { rules: [{ userAgent: '*', disallow: '/' }] }
@@ -22,18 +39,14 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/dashboard',
-          '/dashboard/',
-          '/login',
-          '/registrieren',
-          '/passwort-vergessen',
-        ],
-      },
+      { userAgent: '*', allow: '/', disallow: PRIVATE_PATHS },
+      /* Named explicitly as well as covered by `*`. Both crawlers apply the
+         most specific matching group and ignore the rest, so stating them
+         means a later tightening of the wildcard rule cannot silently lock
+         out the two engines that actually send this site traffic. */
+      { userAgent: 'Googlebot', allow: '/', disallow: PRIVATE_PATHS },
+      { userAgent: 'Googlebot-Image', allow: '/', disallow: PRIVATE_PATHS },
+      { userAgent: 'Bingbot', allow: '/', disallow: PRIVATE_PATHS },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,

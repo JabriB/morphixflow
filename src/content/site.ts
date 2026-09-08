@@ -29,6 +29,23 @@ export const site = {
       'MorphixFlow baut Webseiten, AI Automationen und Werbekampagnen aus einer Hand. Persönliche Beratung aus dem Raum Aachen und Düren. Kostenlose Erstberatung per WhatsApp.',
     ogDescription:
       'Mehr Kunden. Mehr Umsatz. Webseiten, AI Automationen und Werbekampagnen aus einer Hand, persönlich beraten aus dem Raum Aachen.',
+    /* Only terms this site can actually stand behind: each names a service that
+       is really offered, or a locality the Impressum really claims. Inventing a
+       reach the business does not have ("Webagentur Berlin") is the fastest way
+       to earn irrelevant traffic that bounces. */
+    keywords: [
+      'Webseite erstellen lassen',
+      'Webentwicklung',
+      'Landing Page',
+      'AI Automation',
+      'Workflow Automation',
+      'Werbekampagnen',
+      'Meta Ads',
+      'Google Ads',
+      'Webdesign Aachen',
+      'Webagentur Düren',
+      'MorphixFlow',
+    ],
   },
 } as const
 
@@ -184,6 +201,9 @@ export const ui = {
   /** Connector in "ca. 6 bis 7 Tage". */
   rangeTo: 'bis',
   durationRange: 'ca. {low} bis {high} Tage',
+  /* Google rating badge. {count} is substituted at render time. */
+  reviewCount: '{count} Bewertungen',
+  starsLabel: '{rating} von 5 Sternen',
 } as const
 
 /* ─── Toolchain ───────────────────────────────────────────────────
@@ -359,6 +379,29 @@ export const projects: ReadonlyArray<{
 ]
 
 /* ─── Reviews ─────────────────────────────────────────────────────── */
+
+/**
+ * Whether the entries in `reviews` are genuine, attributable customer reviews.
+ *
+ * Gates the `AggregateRating` and `Review` JSON-LD in `structured-data.tsx`,
+ * and nothing else: the reviews render on the page either way.
+ *
+ * It exists because rating markup is the one piece of SEO that is actively
+ * dangerous to get wrong. Two separate rules bite:
+ *
+ *  - Google's structured data policy requires ratings to come from real
+ *    customers. Marking up invented ones risks a manual action against the
+ *    whole domain, which costs far more traffic than star snippets earn.
+ *  - UWG Anhang zu § 3 Abs. 3 Nr. 23b makes it a per-se unlawful commercial
+ *    practice to present reviews as customer reviews without having taken
+ *    reasonable steps to verify they are. That is an abmahnfähig offence in
+ *    Germany, independent of what any search engine does.
+ *
+ * TODO(owner): set to true once every entry in `reviews` is a real review from
+ * a named customer, ideally mirrored on the Google Business Profile so the
+ * claim is externally checkable. Flipping this alone turns the markup on.
+ */
+export const reviewsAreVerified = false
 
 export const reviewsIntro = {
   heading: 'Was Kunden sagen',

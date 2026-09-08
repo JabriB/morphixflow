@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { DEFAULT_LOCALE, LOCALES, LOCALE_TAGS } from '@/content/dictionary'
+import { footer } from '@/content/site'
 import { siteUrl } from '@/lib/site-url'
 
 /**
@@ -17,6 +18,23 @@ import { siteUrl } from '@/lib/site-url'
  * sitemap is a request to index it, and doing that while robots.txt disallows
  * the same path wastes crawl budget at best and indexes a login page at worst.
  */
+/**
+ * German-only routes, listed once each.
+ *
+ * Driven off `footer.legal` so adding a legal page to the footer adds it to the
+ * sitemap automatically, instead of leaving a page that is linked but never
+ * submitted. Low priority on purpose: these must be indexable to satisfy §5
+ * DDG, but they should never outrank the pages that sell anything.
+ */
+function germanOnlyRoutes(lastModified: Date): MetadataRoute.Sitemap {
+  return footer.legal.map((entry) => ({
+    url: `${siteUrl}${entry.href}`,
+    lastModified,
+    changeFrequency: 'yearly' as const,
+    priority: 0.3,
+  }))
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date()
 
@@ -25,6 +43,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'x-default': `${siteUrl}/${DEFAULT_LOCALE}`,
   }
 
+  /* The marketing site is one page per locale. Packages, process and contact
+     are sections of it, addressed by fragment (#pakete, #kontakt), and a
+     fragment is not a separate URL: search engines drop everything after the
+     hash when they canonicalise, so listing them would submit the same URL
+     several times and split nothing but crawl budget. */
   const localized: MetadataRoute.Sitemap = LOCALES.map((locale) => ({
     url: `${siteUrl}/${locale}`,
     lastModified,
@@ -33,19 +56,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages },
   }))
 
-  return [
-    ...localized,
-    {
-      url: `${siteUrl}/impressum`,
-      lastModified,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${siteUrl}/datenschutz`,
-      lastModified,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-  ]
+  return [...localized, ...germanOnlyRoutes(lastModified)]
 }
