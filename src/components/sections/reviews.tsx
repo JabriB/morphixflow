@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'motion/react'
 import { useContent } from '@/content/use-content'
+import { reviewsAreVerified } from '@/content/site'
 import { Section, SectionHeading } from '@/components/ui/section'
 import { ButtonLink } from '@/components/ui/button'
 import { GoogleMark, GoogleRatingBadge, Stars } from '@/components/ui/google-rating'
@@ -20,9 +21,18 @@ export function Reviews() {
 
   /* Derived here rather than at module scope: the review set now comes from
      the active locale, so it cannot be computed once at import time. */
-  const average = (
-    t.reviews.reduce((sum, r) => sum + r.rating, 0) / t.reviews.length
-  ).toFixed(1)
+  const average =
+    t.reviews.length > 0
+      ? (t.reviews.reduce((sum, r) => sum + r.rating, 0) / t.reviews.length).toFixed(1)
+      : /* Guarded: with the reviews gated off the array is empty, and 0/0
+           would render the string "NaN". */
+        '0.0'
+
+  /* The section states outright that these are "Echte Erfahrungen echter
+     Kunden, direkt von Google". Publishing that over invented testimonials
+     is a per-se unlawful practice under UWG Anhang zu §3 Abs. 3 Nr. 23b,
+     so the whole section stays out until the reviews are genuine. */
+  if (!reviewsAreVerified) return null
 
   return (
     <Section id="stimmen" className="bg-raised">

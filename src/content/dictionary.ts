@@ -67,6 +67,7 @@ type Widen<T> = T extends string
 export interface Dictionary {
   meta: Widen<typeof de.site.meta>
   ui: Widen<typeof de.ui>
+  cookieConsent: Widen<typeof de.cookieConsent>
   navLinks: Widen<typeof de.navLinks>
   navCta: Widen<typeof de.navCta>
   whatsappWidget: Widen<typeof de.whatsappWidget>
@@ -124,14 +125,33 @@ export interface Dictionary {
 }
 
 /** Every locale, resolvable by tag. */
+/**
+ * The dictionary for a locale, with unverified claims stripped.
+ *
+ * The gating happens here rather than only in `site.ts` because `en.ts` and
+ * `ar.ts` carry their own translated copies of the same reviews, figures and
+ * case studies. Gating the German source alone would leave the English and
+ * Arabic pages still publishing them.
+ *
+ * Stripping rather than hiding matters: the dictionary is serialised into the
+ * RSC payload, so anything left in it ships inside the document and is
+ * readable in view-source even when no component renders it.
+ */
 export function getDictionary(locale: Locale): Dictionary {
-  return dictionaries[locale] ?? deDictionary
+  const dictionary = dictionaries[locale] ?? deDictionary
+  return {
+    ...dictionary,
+    figures: de.figuresAreVerified ? dictionary.figures : [],
+    projects: de.projectsAreVerified ? dictionary.projects : [],
+    reviews: de.reviewsAreVerified ? dictionary.reviews : [],
+  }
 }
 
 /** German, assembled from the source file rather than duplicated. */
 export const deDictionary: Dictionary = {
   meta: de.site.meta,
   ui: de.ui,
+  cookieConsent: de.cookieConsent,
   navLinks: de.navLinks,
   navCta: de.navCta,
   whatsappWidget: de.whatsappWidget,

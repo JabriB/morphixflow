@@ -13,6 +13,8 @@ import { legal, legalIsComplete, site } from '@/content/site'
 import { siteUrl } from '@/lib/site-url'
 import { ContentProvider } from '@/content/use-content'
 import { HtmlShell } from '@/components/html-shell'
+import { CookieConsent } from '@/components/cookie-consent'
+import { ConsentScripts } from '@/components/consent-scripts'
 import '../globals.css'
 
 /** Prerenders every locale at build time, so none of them costs a cold render. */
@@ -123,6 +125,10 @@ export default async function LocaleLayout({
     >
       <ContentProvider value={{ t: getDictionary(locale), locale, rtl }}>
         {children}
+        {/* Inside the provider on purpose: the banner has to speak the
+            language of the page it interrupts. */}
+        <CookieConsent />
+        <ConsentScripts />
       </ContentProvider>
     </HtmlShell>
   )

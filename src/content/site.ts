@@ -206,6 +206,49 @@ export const ui = {
   starsLabel: '{rating} von 5 Sternen',
 } as const
 
+/* ─── Cookie consent ──────────────────────────────────────────────
+   Only rendered when a service in consent-services.ts is actually
+   configured. The wording avoids "wir verwenden Cookies", because the
+   consent is about storing and reading data on the visitor's device,
+   which is what §25 TDDDG regulates, not about the file format.
+   ──────────────────────────────────────────────────────────────── */
+
+export const cookieConsent = {
+  heading: 'Deine Entscheidung über Tracking',
+  body:
+    'Diese Seite funktioniert ohne Tracking. Für Messung und Werbung würden wir zusätzliche Dienste laden, die Daten auf deinem Gerät speichern und an ihre Anbieter übertragen. Das passiert nur, wenn du zustimmst.',
+  /* Both buttons are deliberately identical in size and weight. Ablehnen has
+     to be as easy to reach as Zustimmen, and a green "accept" next to a grey
+     "reject" is the exact pattern German authorities treat as invalid. */
+  acceptAll: 'Alle akzeptieren',
+  rejectAll: 'Nur notwendige',
+  save: 'Auswahl speichern',
+  settings: 'Einstellungen',
+  close: 'Schließen',
+  privacyLink: 'Datenschutzerklärung',
+  /** Permanent footer control, so withdrawal is as easy as consent. */
+  footerLabel: 'Cookie-Einstellungen',
+  withdraw: 'Einwilligung widerrufen',
+  categories: {
+    necessary: {
+      name: 'Notwendig',
+      body:
+        'Halten die Seite funktionsfähig, etwa deine Sprach- und Designauswahl. Ohne sie funktioniert die Seite nicht, daher ist dafür keine Einwilligung nötig.',
+      always: 'Immer aktiv',
+    },
+    statistics: {
+      name: 'Statistik',
+      body: 'Zeigen anonymisiert, welche Inhalte gelesen werden und wo Besucher abspringen.',
+    },
+    marketing: {
+      name: 'Marketing',
+      body:
+        'Messen, welche Anzeige zu einer Anfrage geführt hat, und ermöglichen es, dich auf anderen Plattformen erneut anzusprechen.',
+    },
+  },
+  providedBy: 'Anbieter',
+} as const
+
 /* ─── Toolchain ───────────────────────────────────────────────────
    The stack actually used in delivery. Named honestly: these are
    tools, not client logos, and the strip is labelled as such so it
@@ -233,15 +276,40 @@ export const toolchain = {
 /* ─── Proof figures ───────────────────────────────────────────────
    Shown once, in Results only. The old build repeated the same four
    numbers in the hero and again in Results.
-   TODO(real-value): confirm these are defensible before launch.
    ──────────────────────────────────────────────────────────────── */
 
-export const figures = [
+/**
+ * Whether the numbers in `figures` describe work that actually happened.
+ *
+ * A concrete performance claim ("50+ Projekte umgesetzt", "98%
+ * Kundenzufriedenheit") is a Werbeaussage. §5 UWG makes an untrue claim about
+ * the results of a business an irreführende geschäftliche Handlung, and under
+ * §5 Abs. 3 the burden of proving it sits with whoever published it, not with
+ * the person who doubts it. Numbers that cannot be evidenced on request are
+ * therefore a liability, not marketing.
+ *
+ * TODO(owner): set to true once each figure can be backed by records, then the
+ * strip returns with no other change.
+ */
+export const figuresAreVerified = false
+
+export interface Figure {
+  value: string
+  label: string
+}
+
+/** Authored copy, kept so re-enabling is a one-flag change. */
+const authoredFigures: readonly Figure[] = [
   { value: '50+', label: 'Projekte umgesetzt' },
   { value: '98%', label: 'Kundenzufriedenheit' },
   { value: '3x', label: 'Durchschnittlicher ROI' },
   { value: '24h', label: 'Antwortzeit' },
-] as const
+]
+
+/* Emptied rather than merely hidden. The dictionary is serialised into the RSC
+   payload, so content that is only hidden at render time still ships in the
+   document and is readable in view-source. */
+export const figures: readonly Figure[] = figuresAreVerified ? authoredFigures : []
 
 /* ─── Services ────────────────────────────────────────────────────── */
 
@@ -352,7 +420,20 @@ export const resultsIntro = {
   filterAll: 'Alle',
 } as const
 
-export const projects: ReadonlyArray<{
+/**
+ * Whether the entries in `projects` are real engagements.
+ *
+ * They read as case studies: a named project, a client-style domain and a
+ * measured outcome ("+180% Umsatz im ersten Monat"). Presenting invented ones
+ * as delivered work is an untrue claim about the business under §5 Abs. 2 Nr. 3
+ * UWG, and the domains shown belong to nobody, which makes it checkable.
+ *
+ * TODO(owner): set to true once these describe delivered projects, ideally with
+ * the client's permission to name them.
+ */
+export const projectsAreVerified = false
+
+const authoredProjects: ReadonlyArray<{
   name: string
   category: string
   result: string
@@ -377,6 +458,10 @@ export const projects: ReadonlyArray<{
     slug: 'ads',
   },
 ]
+
+export const projects: typeof authoredProjects = projectsAreVerified
+  ? authoredProjects
+  : []
 
 /* ─── Reviews ─────────────────────────────────────────────────────── */
 
@@ -410,7 +495,15 @@ export const reviewsIntro = {
   ctaLabel: 'Kostenlos starten',
 } as const
 
-export const reviews = [
+export interface Review {
+  name: string
+  initials: string
+  when: string
+  rating: number
+  body: string
+}
+
+const authoredReviews: readonly Review[] = [
   {
     name: 'Lena Hoffmann',
     initials: 'LH',
@@ -453,7 +546,9 @@ export const reviews = [
     rating: 5,
     body: 'Landing Page und TikTok-Ads-Kampagne in unter 2 Wochen live. Conversion-Rate ist deutlich gestiegen. Super netter Kontakt über WhatsApp, immer erreichbar und hilfsbereit.',
   },
-] as const
+]
+
+export const reviews: readonly Review[] = reviewsAreVerified ? authoredReviews : []
 
 /* ─── ROI Rechner ─────────────────────────────────────────────────── */
 

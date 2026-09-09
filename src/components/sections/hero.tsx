@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { ArrowDown, ShieldCheck, WhatsappLogo } from '@phosphor-icons/react'
+import { reviewsAreVerified } from '@/content/site'
 import { useContent } from '@/content/use-content'
 import { ButtonLink } from '@/components/ui/button'
 import { GoogleRatingBadge } from '@/components/ui/google-rating'
@@ -15,9 +16,12 @@ export function Hero() {
   const { t, rtl } = useContent()
   /* Derived here rather than at module scope: the review set now comes from
      the active locale, so it cannot be computed once at import time. */
-  const average = (
-    t.reviews.reduce((sum, r) => sum + r.rating, 0) / t.reviews.length
-  ).toFixed(1)
+  const average =
+    t.reviews.length > 0
+      ? (t.reviews.reduce((sum, r) => sum + r.rating, 0) / t.reviews.length).toFixed(1)
+      : /* Guarded: with the reviews gated off the array is empty, and 0/0
+           would render the string "NaN". */
+        '0.0'
 
 
   return (
@@ -116,7 +120,11 @@ export function Hero() {
           className="reveal-fade-up mt-7 flex flex-wrap items-center gap-x-5 gap-y-3"
           style={{ animationDelay: '0.72s' }}
         >
-          <GoogleRatingBadge rating={average} count={t.reviews.length} tone="dark" />
+          {/* A 5.0 Google rating is a factual claim about a public profile.
+              Shown only once the reviews behind it exist. */}
+          {reviewsAreVerified && (
+            <GoogleRatingBadge rating={average} count={t.reviews.length} tone="dark" />
+          )}
           <p className="flex items-center gap-2 text-xs text-ink-subtle">
             <ShieldCheck size={14} weight="bold" className="text-accent" aria-hidden="true" />
             {t.hero.trustNote}

@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { type ServiceSlug } from '@/content/site'
 import { useContent } from '@/content/use-content'
+import { figuresAreVerified, projectsAreVerified } from '@/content/site'
 import { Section, SectionHeading } from '@/components/ui/section'
 import { Tabs } from '@/components/ui/tabs'
 import { TiltCard } from '@/components/ui/tilt-card'
@@ -45,12 +46,17 @@ export function Results() {
     [indexed, filter],
   )
 
+  /* With neither half evidenced there is nothing left to show, and an empty
+     "Zahlen sprechen für sich" heading would be worse than no section. */
+  if (!figuresAreVerified && !projectsAreVerified) return null
+
   return (
     <Section id="ergebnisse">
       <SectionHeading sub={t.resultsIntro.subtext}>
         {t.resultsIntro.heading}
       </SectionHeading>
 
+      {figuresAreVerified && (
       <motion.div
         onViewportEnter={() => setRun(true)}
         viewport={{ once: true, margin: '-10% 0px' }}
@@ -63,7 +69,10 @@ export function Results() {
           <Figure key={f.label} value={f.value} label={f.label} run={run} />
         ))}
       </motion.div>
+      )}
 
+      {projectsAreVerified && (
+      <>
       <div className="mt-20 flex flex-wrap items-center justify-between gap-6">
         <h3 className="text-xl font-extrabold">{t.resultsIntro.projectsHeading}</h3>
         <Tabs
@@ -120,6 +129,8 @@ export function Results() {
           )
         })}
       </div>
+      </>
+      )}
     </Section>
   )
 }

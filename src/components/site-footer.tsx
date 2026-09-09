@@ -2,6 +2,7 @@ import { InstagramLogo, TiktokLogo, WhatsappLogo } from '@phosphor-icons/react/d
 import { site } from '@/content/site'
 import { DEFAULT_LOCALE, getDictionary, type Locale } from '@/content/dictionary'
 import { Logo } from '@/components/ui/logo'
+import { CookieSettingsLink } from '@/components/cookie-consent'
 
 const socialIcons = {
   Instagram: InstagramLogo,
@@ -39,7 +40,12 @@ export function SiteFooter({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
 
         <div className="flex flex-col gap-5">
           <ul className="flex gap-2.5">
-            {t.footer.socials.map((social) => {
+            {/* An icon linking to "#" looks like a broken profile rather than
+                a missing one, and it scrolls the visitor to the top instead.
+                Each icon appears once its href is real. */}
+            {t.footer.socials
+              .filter((social) => social.href && social.href !== '#')
+              .map((social) => {
               const Icon = socialIcons[social.label as keyof typeof socialIcons]
               return (
                 <li key={social.label}>
@@ -81,6 +87,12 @@ export function SiteFooter({ locale = DEFAULT_LOCALE }: { locale?: Locale }) {
               </a>
             </li>
           ))}
+          {/* Renders only while a consent-requiring service is configured.
+              Art. 7 Abs. 3 DSGVO: withdrawing has to be as easy as consenting,
+              which means a control on every page, not a paragraph in a policy. */}
+          <li>
+            <CookieSettingsLink />
+          </li>
         </ul>
       </div>
     </footer>

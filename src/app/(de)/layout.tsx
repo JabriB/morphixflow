@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { legalIsComplete, site } from '@/content/site'
 import { siteUrl } from '@/lib/site-url'
 import { HtmlShell } from '@/components/html-shell'
+import { CookieConsent } from '@/components/cookie-consent'
+import { ConsentScripts } from '@/components/consent-scripts'
 import '../globals.css'
 
 /**
@@ -39,6 +41,10 @@ export default function GermanRootLayout({
   return (
     <HtmlShell lang="de" skipLabel="Zum Inhalt springen">
       {children}
+      {/* No ContentProvider here, so useContent falls back to German. That is
+          the right dictionary for these routes, which are German only. */}
+      <CookieConsent />
+      <ConsentScripts />
     </HtmlShell>
   )
 }

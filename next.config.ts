@@ -1,6 +1,7 @@
 import path from 'node:path'
 import type { NextConfig } from 'next'
 import { DEFAULT_LOCALE } from './src/content/dictionary'
+import { consentCspSources } from './src/content/consent-services'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -21,13 +22,28 @@ const isDev = process.env.NODE_ENV === 'development'
  * clickjacking, plugin injection, base-tag hijacking and form exfiltration are
  * closed off. 'unsafe-eval' is dev only, where React refresh requires it.
  */
+/**
+ * Origins the configured consent services need, and nothing beyond them.
+ *
+ * Derived from `consent-services.ts` rather than hand-maintained, so the policy
+ * cannot fall behind the services or, worse, stay permanently widened for a
+ * pixel that was removed. While no service is configured these are empty and
+ * the strict `'self'` policy below is untouched.
+ *
+ * Widening the CSP for a service is not the same as loading it: the tags are
+ * still injected only after consent. This only stops the browser blocking them
+ * once the visitor has said yes.
+ */
+const consentCsp = consentCspSources()
+const extra = (sources: string[]) => (sources.length ? ' ' + sources.join(' ') : '')
+
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${extra(consentCsp.scriptSrc)}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  `img-src 'self' data: blob:${extra(consentCsp.imgSrc)}`,
   "font-src 'self'",
-  "connect-src 'self'",
+  `connect-src 'self'${extra(consentCsp.connectSrc)}`,
   "form-action 'self'",
   "frame-ancestors 'none'",
   "base-uri 'self'",

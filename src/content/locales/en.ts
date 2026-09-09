@@ -97,6 +97,38 @@ export const en: Dictionary = {
     starsLabel: '{rating} out of 5 stars',
   },
 
+  cookieConsent: {
+    heading: 'Your choice about tracking',
+    body:
+      'This site works without tracking. For measurement and advertising we would load additional services that store data on your device and send it to their providers. That only happens if you agree.',
+    acceptAll: 'Accept all',
+    rejectAll: 'Necessary only',
+    save: 'Save selection',
+    settings: 'Settings',
+    close: 'Close',
+    privacyLink: 'Privacy policy',
+    footerLabel: 'Cookie settings',
+    withdraw: 'Withdraw consent',
+    categories: {
+      necessary: {
+        name: 'Necessary',
+        body:
+          'Keep the site working, such as your language and theme choice. The site does not work without them, so no consent is required.',
+        always: 'Always active',
+      },
+      statistics: {
+        name: 'Statistics',
+        body: 'Show anonymously which content gets read and where visitors drop off.',
+      },
+      marketing: {
+        name: 'Marketing',
+        body:
+          'Measure which ad led to an enquiry, and make it possible to reach you again on other platforms.',
+      },
+    },
+    providedBy: 'Provider',
+  },
+
   toolchain: {
     label: 'Built with',
     items: [
