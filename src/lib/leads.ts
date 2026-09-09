@@ -10,6 +10,9 @@ export const LEAD_LIMITS = {
   email: 254,
   phone: 40,
   message: 4000,
+  /* Bounded like every other field. It arrives from the client, so it is
+     untrusted input even though this site is the only thing that writes it. */
+  attribution: 500,
 } as const
 
 /** Same pragmatic pattern the client uses; full RFC parsing buys nothing here. */
@@ -46,6 +49,10 @@ export function parseLead(body: unknown): ParsedLead {
   const phone = asTrimmedString(record.phone)
   const paket = asTrimmedString(record.paket)
   const message = asTrimmedString(record.message)
+  const attribution = asTrimmedString(record.attribution).slice(
+    0,
+    LEAD_LIMITS.attribution,
+  )
 
   const errors: LeadFieldErrors = {}
 
@@ -76,6 +83,15 @@ export function parseLead(body: unknown): ParsedLead {
 
   return {
     ok: true,
-    lead: { name, email, phone, paket: knownPaket, message },
+    /* Never a validation failure: a missing or malformed attribution must not
+       cost a lead, so it is simply dropped when absent. */
+    lead: {
+      name,
+      email,
+      phone,
+      paket: knownPaket,
+      message,
+      ...(attribution ? { attribution } : {}),
+    },
   }
 }

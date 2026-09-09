@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { activeServices } from '@/content/consent-services'
 import { CONSENT_CHANGE_EVENT, readConsent } from '@/lib/consent'
+import { captureAttribution, clearAttribution } from '@/lib/attribution'
 
 /**
  * Loads the configured tracking services, and only after consent.
@@ -33,8 +34,18 @@ export function ConsentScripts() {
     return () => window.removeEventListener(CONSENT_CHANGE_EVENT, read)
   }, [])
 
+  /* First-party attribution. Written only while marketing consent stands, and
+     expired the moment it is withdrawn, so the cookie's lifetime never outlives
+     the permission it depends on. */
   useEffect(() => {
-    const services = activeServices().filter((s) => granted[s.category])
+    if (granted.marketing) captureAttribution()
+    else clearAttribution()
+  }, [granted.marketing])
+
+  useEffect(() => {
+    const services = activeServices()
+      .filter((s) => !s.firstParty)
+      .filter((s) => granted[s.category])
     if (services.length === 0) return
 
     const injected: HTMLScriptElement[] = []

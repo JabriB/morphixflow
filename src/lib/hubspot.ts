@@ -27,6 +27,14 @@ export interface LeadInput {
   phone: string
   paket?: string
   message: string
+  /**
+   * Where the enquiry came from, as a pre-formatted line.
+   *
+   * Present only when the visitor granted marketing consent; absent otherwise,
+   * and the note simply omits the section rather than saying "unbekannt",
+   * which would imply a failed lookup rather than a respected choice.
+   */
+  attribution?: string
 }
 
 interface HubSpotUpsertResponse {
@@ -78,7 +86,13 @@ export async function createHubSpotLead(lead: LeadInput): Promise<string> {
       headers: hubspotHeaders(),
       body: JSON.stringify({
         properties: {
-          hs_note_body: `Paket: ${lead.paket || 'Nicht angegeben'}\n\nNachricht:\n${lead.message}`,
+          /* The Herkunft block is appended only when it exists. Printing
+             "Herkunft: unbekannt" for a visitor who declined would look like a
+             failed lookup rather than a respected choice. */
+          hs_note_body:
+            `Paket: ${lead.paket || 'Nicht angegeben'}\n\n` +
+            `Nachricht:\n${lead.message}` +
+            (lead.attribution ? `\n\nHerkunft:\n${lead.attribution}` : ''),
           hs_timestamp: Date.now(),
         },
         associations: [

@@ -17,6 +17,7 @@ import { Section, SectionHeading } from '@/components/ui/section'
 import { Button, ButtonLink } from '@/components/ui/button'
 import { Field, Input, Select, Textarea } from '@/components/ui/field'
 import { buildWhatsAppLink } from '@/lib/whatsapp'
+import { describeAttribution, readAttribution } from '@/lib/attribution'
 
 const EASE = [0.23, 1, 0.32, 1] as const
 const waHref = buildWhatsAppLink()
@@ -132,6 +133,12 @@ export function Contact() {
           message: get('message'),
           consent: consented,
           website: get('website'),
+          /* Present only if marketing consent was given: the cookie does not
+             exist otherwise, so this is undefined and simply omitted. */
+          attribution: (() => {
+            const a = readAttribution()
+            return a ? describeAttribution(a) : undefined
+          })(),
         }),
       })
       if (res.status === 400) {

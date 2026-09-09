@@ -106,12 +106,42 @@ export default function DatenschutzPage() {
 
         <h2>Cookies und lokale Speicherung</h2>
         <p>
-          Diese Website setzt keine Cookies und verwendet weder Analyse- noch
-          Marketing-Werkzeuge, kein Tracking und keine Pixel. Es findet keine
-          Profilbildung statt. Ein Einwilligungsbanner ist deshalb nach § 25 Abs.
-          2 TDDDG nicht erforderlich. Sollten künftig Analyse- oder
-          Marketing-Dienste eingebunden werden, geschieht dies erst nach deiner
-          vorherigen Einwilligung.
+          Ohne deine Einwilligung speichert diese Website nur, was für den
+          Betrieb notwendig ist: deine Sprach- und Designauswahl sowie deine
+          Entscheidung über dieses Banner selbst. Diese Speicherung ist nach
+          § 25 Abs. 2 Nr. 2 TDDDG einwilligungsfrei, weil sie den von dir
+          ausdrücklich gewünschten Dienst erst ermöglicht.
+        </p>
+        <p>
+          Es sind keine Analyse-Werkzeuge, keine Pixel und keine Dienste von
+          Google, Meta oder TikTok eingebunden. Es findet keine Profilbildung
+          statt und es werden keine Daten an Drittländer übermittelt.
+        </p>
+
+        <h2>Kampagnen-Zuordnung</h2>
+        <p>
+          Mit deiner Einwilligung speichern wir in einem eigenen Cookie
+          (<code>mf_attr</code>, Laufzeit 30 Tage), über welche Anzeige oder
+          welche verweisende Seite du zu uns gekommen bist. Erfasst werden
+          ausschließlich Kampagnenkennungen aus der aufgerufenen Adresse
+          (utm-Parameter, gclid, fbclid, ttclid), der Hostname der verweisenden
+          Seite sowie die zuerst aufgerufene Unterseite. Es wird kein
+          Nutzungsverhalten aufgezeichnet und keine seitenübergreifende
+          Profilbildung durchgeführt.
+        </p>
+        <p>
+          Diese Angaben werden ausschließlich auf unseren eigenen Systemen
+          verarbeitet und an keinen Drittanbieter übermittelt. Sendest du das
+          Kontaktformular ab, werden sie deiner Anfrage beigefügt, damit wir
+          nachvollziehen können, welche Werbemaßnahme zu deiner Anfrage geführt
+          hat. Rechtsgrundlage ist deine Einwilligung nach Art. 6 Abs. 1 lit. a
+          DSGVO in Verbindung mit § 25 Abs. 1 TDDDG.
+        </p>
+        <p>
+          Du kannst deine Einwilligung jederzeit über den Link
+          „Cookie-Einstellungen“ im Seitenfuß mit Wirkung für die Zukunft
+          widerrufen. Das Cookie wird dabei sofort gelöscht. Die Rechtmäßigkeit
+          der bis dahin erfolgten Verarbeitung bleibt unberührt.
         </p>
 
         <h2>Externe Ressourcen</h2>

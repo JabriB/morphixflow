@@ -41,8 +41,16 @@ export interface ConsentService {
   /**
    * The account id. Blank means "not configured", which means the service is
    * not offered and nothing about it reaches the browser.
+   *
+   * Not required for a `firstParty` service, which has no external account.
    */
   accountId: string
+  /**
+   * Runs entirely on this domain: no third party receives anything, no CSP
+   * origin is opened. Still consent-gated, because §25 TDDDG is about writing
+   * to the visitor's device, not about who reads it afterwards.
+   */
+  firstParty?: boolean
   /** Script origin, folded into script-src only while the service is active. */
   scriptSrc?: string
   /** Origins the service beacons to, folded into connect-src the same way. */
@@ -60,6 +68,15 @@ export interface ConsentService {
  * use is a legal liability with no upside.
  */
 export const consentServices: ConsentService[] = [
+  {
+    id: 'attribution',
+    category: 'marketing',
+    name: 'Kampagnen-Zuordnung',
+    provider: 'MorphixFlow (eigene Verarbeitung, keine Weitergabe)',
+    privacyUrl: '/datenschutz',
+    accountId: '',
+    firstParty: true,
+  },
   {
     id: 'google-ads',
     category: 'marketing',
@@ -97,9 +114,14 @@ export const consentServices: ConsentService[] = [
   },
 ]
 
-/** Only configured services. An unconfigured one is never offered or loaded. */
+/**
+ * Only services that can actually do something.
+ *
+ * A third-party service counts once its account id is filled in. A first-party
+ * one has no account to configure, so it counts as soon as it is registered.
+ */
 export function activeServices(): ConsentService[] {
-  return consentServices.filter((s) => s.accountId.trim() !== '')
+  return consentServices.filter((s) => s.firstParty || s.accountId.trim() !== '')
 }
 
 /** Categories that have at least one configured service behind them. */
