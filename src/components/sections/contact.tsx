@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { toast } from 'sonner'
 import {
   CheckCircle,
   CircleNotch,
@@ -21,6 +20,24 @@ import { describeAttribution, readAttribution } from '@/lib/attribution'
 
 const EASE = [0.23, 1, 0.32, 1] as const
 const waHref = buildWhatsAppLink()
+
+/**
+ * Raises an error toast, reaching Sonner through a call-time import.
+ *
+ * Never `import { toast } from 'sonner'` at module scope. This component
+ * renders on every page view, so a static import pulled the whole 35 kB
+ * library into the initial bundle for a message that cannot appear until a
+ * submit has already failed. Deferring only the `<Toaster>` host does not
+ * help: this one import keeps the library resident, and the deferred host
+ * then loads a second copy of it.
+ *
+ * The await costs nothing in practice: by the time a submit can fail, the
+ * visitor has typed into the form, which already armed the toast host.
+ */
+async function notifyError(message: string) {
+  const { toast } = await import('sonner')
+  toast.error(message)
+}
 
 const trustIcons = {
   mail: EnvelopeSimple,
@@ -115,7 +132,7 @@ export function Contact() {
 
     setErrors(next)
     if (Object.values(next).some(Boolean)) {
-      toast.error(t.contact.toastInvalid)
+      void notifyError(t.contact.toastInvalid)
       focusFirstInvalid(next)
       return
     }
@@ -149,17 +166,17 @@ export function Contact() {
           setErrors(body.fields)
           focusFirstInvalid(body.fields)
         }
-        toast.error(t.contact.toastInvalid)
+        void notifyError(t.contact.toastInvalid)
         return
       }
       if (res.status === 429) {
-        toast.error(t.contact.toastRateLimited)
+        void notifyError(t.contact.toastRateLimited)
         return
       }
       if (!res.ok) throw new Error('request failed')
       setSent(true)
     } catch {
-      toast.error(t.contact.toastFailed)
+      void notifyError(t.contact.toastFailed)
     } finally {
       setPending(false)
     }

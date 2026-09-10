@@ -1,4 +1,9 @@
 import { DEFAULT_LOCALE, isLocale, type Locale } from '@/content/dictionary'
+import {
+  figuresAreVerified,
+  projectsAreVerified,
+  reviewsAreVerified,
+} from '@/content/site'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/sections/hero'
@@ -43,8 +48,13 @@ export default async function LandingPage({
         <Services />
         <Showcase />
         <Process />
-        <Results />
-        <Reviews />
+        {/* Decided on the server, not inside the components. Both return null
+            while their content is unverified, but a client component that
+            renders null still has to be shipped and hydrated. Gating here
+            keeps two client modules and their Motion usage out of the initial
+            work entirely until the flags in site.ts flip. */}
+        {(figuresAreVerified || projectsAreVerified) && <Results />}
+        {reviewsAreVerified && <Reviews />}
         <Calculator />
         <Pricing />
         <Faq />

@@ -46,12 +46,15 @@ function DeviceFrame({ device }: { device: DeviceId }) {
         className="relative overflow-hidden rounded-lg"
         style={{ aspectRatio: `${config.frameWidth} / ${config.frameHeight}` }}
       >
+        {/* Its own flat interface render, not the Web Development card's photo.
+            That one shows a laptop on a desk, and a laptop sitting inside this
+            section's browser chrome reads as a screen within a screen. */}
         <Image
-          src="/media/service-web.jpg"
+          src="/media/showcase.jpg"
           alt=""
           fill
           sizes="(min-width: 1024px) 40vw, 90vw"
-          className="object-cover"
+          className="object-cover object-top"
         />
       </div>
     </div>

@@ -49,6 +49,12 @@ export function Hero() {
           alt=""
           fill
           priority
+          /* Explicit on purpose. In Next 16 `priority` emits the preload link
+             but no longer sets fetchpriority on it or on the <img>, so the
+             browser started this at Low and only promoted it later. On Slow 4G
+             that was the largest single slice of the LCP: ~630 ms between the
+             document arriving and the image request even being sent. */
+          fetchPriority="high"
           sizes="100vw"
           className={cn('object-cover object-right', rtl && 'scale-x-[-1]')}
         />
@@ -81,16 +87,23 @@ export function Hero() {
       />
 
       <div className="shell relative flex min-h-[92svh] flex-col justify-end pb-20 pt-32 sm:pb-24">
+        {/* The stagger below is the same choreography at roughly a third of
+            the wait. Every one of these delays is added straight onto LCP:
+            with `animation-fill-mode: both` the element sits at opacity 0
+            until its delay elapses, and Chrome does not count an invisible
+            element as painted. On a mid-range phone the old 0.5 s on the
+            subtext, plus the time the main thread needed before the
+            animation could start at all, was the reported render delay. */}
         <RevealLines
           as="h1"
           lines={t.hero.headline}
-          delay={0.15}
+          delay={0.05}
           className="max-w-[16ch] text-4xl"
         />
 
         <p
           className="reveal-fade-up measure mt-6 text-lg text-ink-muted"
-          style={{ animationDelay: '0.5s' }}
+          style={{ animationDelay: '0.12s' }}
         >
           {t.hero.subtextLead}{' '}
           <span className="text-ink">{t.hero.subtextEmphasis}</span>
@@ -98,7 +111,7 @@ export function Hero() {
 
         <div
           className="reveal-fade-up mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
-          style={{ animationDelay: '0.62s' }}
+          style={{ animationDelay: '0.2s' }}
         >
           <ButtonLink
             href={waHref}
@@ -118,7 +131,7 @@ export function Hero() {
             interrupting the type block between subtext and buttons. */}
         <div
           className="reveal-fade-up mt-7 flex flex-wrap items-center gap-x-5 gap-y-3"
-          style={{ animationDelay: '0.72s' }}
+          style={{ animationDelay: '0.28s' }}
         >
           {/* A 5.0 Google rating is a factual claim about a public profile.
               Shown only once the reviews behind it exist. */}
@@ -136,7 +149,7 @@ export function Hero() {
       <a
         href="#leistungen"
         aria-label={t.hero.scrollLabel}
-        style={{ animationDelay: '1.4s' }}
+        style={{ animationDelay: '0.6s' }}
         className="reveal-fade-up absolute bottom-7 end-[max(1.25rem,5vw)] hidden h-10 w-10 place-items-center rounded-full border border-line-strong text-ink-muted transition-colors duration-200 hover:border-accent hover:text-accent sm:grid"
       >
         <ArrowDown size={15} weight="bold" />

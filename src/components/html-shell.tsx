@@ -1,5 +1,5 @@
-import { Toaster } from 'sonner'
 import { cabinet, satoshi } from '@/app/fonts'
+import { DeferredToaster } from '@/components/deferred-toaster'
 import { ThemeScript } from '@/components/theme-script'
 
 /**
@@ -57,24 +57,9 @@ export function HtmlShell({
         </a>
         {children}
         <div className="grain" aria-hidden="true" />
-        <Toaster
-          /* Follows the document theme instead of pinning to dark. */
-          theme="system"
-          position="top-right"
-          offset={{ top: '84px' }}
-          toastOptions={{
-            classNames: {
-              toast: '!rounded-lg !border !border-line-strong !bg-card !text-ink !shadow-lg',
-              title: '!text-ink',
-              description: '!text-ink-muted',
-              actionButton: '!bg-accent !text-accent-ink',
-              cancelButton: '!bg-fill-soft !text-ink-muted',
-              error: '!border-negative/40',
-              success: '!border-positive/40',
-              closeButton: '!bg-card !border-line-strong !text-ink-muted',
-            },
-          }}
-        />
+        {/* Loads Sonner only after the first interaction. Nothing on the site
+            can raise a toast before then, so the 35 kB stays out of first paint. */}
+        <DeferredToaster />
       </body>
     </html>
   )
