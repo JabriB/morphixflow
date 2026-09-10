@@ -8,6 +8,32 @@ const HUBSPOT_API = 'https://api.hubapi.com'
 /** Note to Contact, a standard HubSpot-defined association type. */
 const NOTE_TO_CONTACT_ASSOCIATION_TYPE_ID = 202
 
+/**
+ * Ceiling for every call to a third party.
+ *
+ * `fetch` has no default timeout. Without this, a HubSpot outage that accepts
+ * the connection but never answers would hold the request open until the
+ * platform's own limit, and `/dashboard/kunden` renders on the server from
+ * exactly such a call: a hung upstream would mean a hung page, indistinguishable
+ * from the site being down.
+ *
+ * Eight seconds is well past HubSpot's normal response and well inside any
+ * sensible function limit, so a slow upstream degrades into a handled error
+ * rather than a hang.
+ */
+const UPSTREAM_TIMEOUT_MS = 8000
+
+/**
+ * `fetch` with a hard deadline.
+ *
+ * `AbortSignal.timeout` raises a `TimeoutError`, which the callers already
+ * treat like any other upstream failure: the lead route answers 502 and the
+ * dashboard falls back to its error card. Both are recoverable; a hang is not.
+ */
+function fetchUpstream(url: string, init: RequestInit = {}): Promise<Response> {
+  return fetch(url, { ...init, signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS) })
+}
+
 function hubspotHeaders(): HeadersInit {
   const token = process.env.HUBSPOT_ACCESS_TOKEN
   if (!token) {
@@ -50,7 +76,7 @@ export async function createHubSpotLead(lead: LeadInput): Promise<string> {
   const [firstname, ...rest] = lead.name.trim().split(/\s+/)
   const lastname = rest.join(' ') || undefined
 
-  const upsertRes = await fetch(`${HUBSPOT_API}/crm/v3/objects/contacts/batch/upsert`, {
+  const upsertRes = await fetchUpstream(`${HUBSPOT_API}/crm/v3/objects/contacts/batch/upsert`, {
     method: 'POST',
     headers: hubspotHeaders(),
     body: JSON.stringify({
@@ -81,7 +107,7 @@ export async function createHubSpotLead(lead: LeadInput): Promise<string> {
   }
 
   try {
-    await fetch(`${HUBSPOT_API}/crm/v3/objects/notes`, {
+    await fetchUpstream(`${HUBSPOT_API}/crm/v3/objects/notes`, {
       method: 'POST',
       headers: hubspotHeaders(),
       body: JSON.stringify({
@@ -148,7 +174,7 @@ export async function notifyViaHubSpotForm(lead: LeadInput): Promise<boolean> {
   ].filter((f) => f.value)
 
   try {
-    const res = await fetch(
+    const res = await fetchUpstream(
       `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`,
       {
         method: 'POST',
@@ -193,7 +219,7 @@ interface HubSpotSearchResult {
 
 /** Most recently created HubSpot contacts, for the dashboard's Kunden view. */
 export async function listRecentHubSpotLeads(limit = 20): Promise<HubSpotContact[]> {
-  const res = await fetch(`${HUBSPOT_API}/crm/v3/objects/contacts/search`, {
+  const res = await fetchUpstream(`${HUBSPOT_API}/crm/v3/objects/contacts/search`, {
     method: 'POST',
     headers: hubspotHeaders(),
     body: JSON.stringify({
