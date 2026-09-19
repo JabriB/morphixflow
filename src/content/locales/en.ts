@@ -396,7 +396,7 @@ export const en: Dictionary = {
       tagline: 'Your digital presence',
       badge: null,
       featured: false,
-      price: { main: '€299', suffix: 'one-time', note: 'plus €99 per month maintenance' },
+      price: { main: '€499', suffix: 'one-time', note: 'plus €99 per month maintenance' },
       features: [
         { label: 'Website, landing page, web app or e-commerce', included: true },
         { label: 'Design to your brief (colours, logo, style)', included: true },
@@ -414,7 +414,7 @@ export const en: Dictionary = {
       tagline: 'Website plus automation',
       badge: null,
       featured: false,
-      price: { main: '€599', suffix: 'one-time', note: 'plus €99 per month maintenance' },
+      price: { main: '€699', suffix: 'one-time', note: 'plus €99 per month maintenance' },
       features: [
         { label: 'Website, landing page, web app or e-commerce', included: true },
         { label: 'Design to your brief', included: true },
@@ -470,7 +470,7 @@ export const en: Dictionary = {
 
   builderBase: {
     label: 'Base website',
-    price: 299,
+    price: 499,
     features: [
       'Website, landing page, web app or e-commerce',
       'Design to your brief',
@@ -485,7 +485,7 @@ export const en: Dictionary = {
       id: 'automation',
       label: 'AI automation workflow',
       body: 'CRM, email and lead automation',
-      price: 300,
+      price: 200,
     },
     {
       id: 'ads',

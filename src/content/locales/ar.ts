@@ -399,7 +399,7 @@ export const ar: Dictionary = {
       tagline: 'حضورك الرقمي',
       badge: null,
       featured: false,
-      price: { main: '299 €', suffix: 'دفعة واحدة', note: 'إضافة إلى 99 € شهرياً للصيانة' },
+      price: { main: '499 €', suffix: 'دفعة واحدة', note: 'إضافة إلى 99 € شهرياً للصيانة' },
       features: [
         { label: 'موقع أو صفحة هبوط أو تطبيق ويب أو متجر إلكتروني', included: true },
         { label: 'تصميم وفق طلبك (ألوان، شعار، أسلوب)', included: true },
@@ -417,7 +417,7 @@ export const ar: Dictionary = {
       tagline: 'موقع مع أتمتة',
       badge: null,
       featured: false,
-      price: { main: '599 €', suffix: 'دفعة واحدة', note: 'إضافة إلى 99 € شهرياً للصيانة' },
+      price: { main: '699 €', suffix: 'دفعة واحدة', note: 'إضافة إلى 99 € شهرياً للصيانة' },
       features: [
         { label: 'موقع أو صفحة هبوط أو تطبيق ويب أو متجر إلكتروني', included: true },
         { label: 'تصميم وفق طلبك', included: true },
@@ -473,7 +473,7 @@ export const ar: Dictionary = {
 
   builderBase: {
     label: 'موقع أساسي',
-    price: 299,
+    price: 499,
     features: [
       'موقع أو صفحة هبوط أو تطبيق ويب أو متجر إلكتروني',
       'تصميم وفق طلبك',
@@ -488,7 +488,7 @@ export const ar: Dictionary = {
       id: 'automation',
       label: 'سير عمل مؤتمت بالذكاء الاصطناعي',
       body: 'أتمتة CRM والبريد والعملاء المحتملين',
-      price: 300,
+      price: 200,
     },
     {
       id: 'ads',

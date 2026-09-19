@@ -646,7 +646,7 @@ export const packages = [
     tagline: 'Dein digitaler Auftritt',
     badge: null,
     featured: false,
-    price: { main: '299 €', suffix: 'einmalig', note: 'zzgl. 99 € pro Monat Wartung' },
+    price: { main: '499 €', suffix: 'einmalig', note: 'zzgl. 99 € pro Monat Wartung' },
     features: [
       { label: 'Webseite, Landing Page, Web App oder E-Commerce', included: true },
       { label: 'Design nach deinen Wünschen (Farben, Logo, Stil)', included: true },
@@ -664,7 +664,7 @@ export const packages = [
     tagline: 'Website plus Automation',
     badge: null,
     featured: false,
-    price: { main: '599 €', suffix: 'einmalig', note: 'zzgl. 99 € pro Monat Wartung' },
+    price: { main: '699 €', suffix: 'einmalig', note: 'zzgl. 99 € pro Monat Wartung' },
     features: [
       { label: 'Webseite, Landing Page, Web App oder E-Commerce', included: true },
       { label: 'Design nach deinen Wünschen', included: true },
@@ -722,7 +722,7 @@ export const builderIntro = {
 
 export const builderBase = {
   label: 'Basis Website',
-  price: 299,
+  price: 499,
   features: [
     'Webseite, Landing Page, Web App oder E-Commerce',
     'Design nach deinen Wünschen',
@@ -737,7 +737,7 @@ export const builderAddons = [
     id: 'automation',
     label: 'AI Automation Workflow',
     body: 'CRM, E-Mail und Lead Automation',
-    price: 300,
+    price: 200,
   },
   {
     id: 'ads',
